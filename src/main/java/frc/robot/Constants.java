@@ -13,6 +13,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class DriveConstants {
+    public static final double CONTROLLER_SENSETIVITY = 0.2;
+  }
   public static class Ports {
     // Ports for the differential drive
     public static class Drive {
@@ -33,4 +36,6 @@ public final class Constants {
       public static final int OPERATOR_CONTROLLER  = 1;
     }
   }
+
+
 }
