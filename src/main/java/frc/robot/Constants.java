@@ -19,10 +19,10 @@ public final class Constants {
   public static class Ports {
     // Ports for the differential drive
     public static class Drive {
-      public static final int LEFT_MOTOR_FRONT = 12;
-      public static final int LEFT_MOTOR_REAR = 13;
-      public static final int RIGHT_MOTOR_FRONT = 0;
-      public static final int RIGHT_MOTOR_REAR = 1;
+      public static final int FRONT_LEFT_MOTOR = 12;
+      public static final int REAR_LEFT_MOTOR = 13;
+      public static final int FRONT_RIGHT_MOTOR = 0;
+      public static final int REAR_RIGHT_MOTOR = 1;
     }
 
     public static class Intake {}

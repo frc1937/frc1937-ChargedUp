@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -11,54 +11,45 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports.*;
 
 public class DriveSubsystem extends SubsystemBase {
+  private Spark m_frontLeftMotor = new Spark(Drive.FRONT_LEFT_MOTOR);
+  private Spark m_rearLeftMotor = new Spark(Drive.REAR_LEFT_MOTOR);
+  private MotorControllerGroup m_left = new MotorControllerGroup(m_frontLeftMotor, m_rearLeftMotor);
 
-  private final CANSparkMax left_motor_front = new CANSparkMax(Drive.LEFT_MOTOR_FRONT, MotorType.kBrushless);
-  private final CANSparkMax left_motor_rear = new CANSparkMax(Drive.LEFT_MOTOR_REAR, MotorType.kBrushless);
-  private final MotorControllerGroup m_left = new MotorControllerGroup(left_motor_front, left_motor_rear);
+  private Spark m_frontRightMotor = new Spark(Drive.FRONT_RIGHT_MOTOR);
+  private Spark m_rearRightMotor = new Spark(Drive.REAR_RIGHT_MOTOR);
+  private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
 
-  private final CANSparkMax right_motor_front = new CANSparkMax(Drive.RIGHT_MOTOR_FRONT, MotorType.kBrushless);
-  private final CANSparkMax right_motor_rear = new CANSparkMax(Drive.RIGHT_MOTOR_REAR, MotorType.kBrushless);
-  private final MotorControllerGroup m_right = new MotorControllerGroup(right_motor_front, right_motor_rear);
-
-  // differential drive and pigeon
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  private final WPI_Pigeon2 pigeon = new WPI_Pigeon2(0);
-
+  private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   
   public DriveSubsystem() {
-    ResetPigeon();
+    // Sets the motors as inverted since wpi does'nt do it already ):
+    m_frontLeftMotor.setInverted(true);
+    m_rearLeftMotor.setInverted(true);
+    m_frontRightMotor.setInverted(true);
+    m_rearRightMotor.setInverted(true);
   }
 
   @Override
   public void periodic() {}
 
   /*
-   * Move the robot according to variables:
-   * @param speed - the speed of the motor (-1 - 1)
-   * @param rotation - rotation of the movement (0 - 180)
+   * Drive the robot by controlling the speed and rotation:
+   * @param speed the speed of movement. In range [-1, 1].
+   *  Positive values move the robot forwards and negative values move it backwards.
+   * @param rotation - rotation of the movement (-180 - 180)
+   *  positive turns the robot right whilst negetive left.
    */
   public void ArcadeDrive(double speed, double rotatiion) {
     m_drive.arcadeDrive(speed, rotatiion);
   }
 
-  // Stop the motors dead in its tracks
-  public void StopMotors() {
+  // Stop the motors on the robot
+  public void StopMotor() {
     m_drive.stopMotor();
   }
-
-  // Reset the pigeon data
-  public void ResetPigeon() {
-    pigeon.reset();
-  }
-
-  // Get the current Yaw of the pigeon
-  public double GetYaw() {
-    return pigeon.getYaw();
-  }
-
-
 }

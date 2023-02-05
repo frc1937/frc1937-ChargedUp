@@ -5,17 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Subsystems.DriveSubsystem;
 
-//anables drivers control the robot during tele-op with xbox controller.
+// Enables drivers control the robot during teleop period with xbox controller.
 public class ArcadeDrive extends CommandBase {
   private final DriveSubsystem m_drive;
-  private final XboxController xboxController;
+  private final CommandXboxController xboxController;
 
-  /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(XboxController xboxController, DriveSubsystem m_drive) {
+  public ArcadeDrive(CommandXboxController xboxController, DriveSubsystem m_drive) {
     addRequirements(m_drive);
 
     this.m_drive = m_drive;
@@ -37,8 +36,9 @@ public class ArcadeDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(!interrupted) { // If the robot is disturbed stop the motors
-      m_drive.StopMotors();
+    if (!interrupted) {
+      // If the robot is disturbed and unable continue, stop the robot
+      m_drive.StopMotor();
     }
   }
 
