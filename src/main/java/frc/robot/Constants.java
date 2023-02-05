@@ -14,15 +14,15 @@ package frc.robot;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final double CONTROLLER_SENSETIVITY = 0.2;
+    public static final double CONTROLLER_SENSETIVITY = 0.5;
   }
   public static class Ports {
     // Ports for the differential drive
     public static class Drive {
-      public static final int FRONT_LEFT_MOTOR = 12;
-      public static final int REAR_LEFT_MOTOR = 13;
-      public static final int FRONT_RIGHT_MOTOR = 0;
-      public static final int REAR_RIGHT_MOTOR = 1;
+      public static final int FRONT_LEFT_MOTOR = 8;
+      public static final int REAR_LEFT_MOTOR = 9;
+      public static final int FRONT_RIGHT_MOTOR = 1;
+      public static final int REAR_RIGHT_MOTOR = 2;
     }
 
     public static class Intake {}

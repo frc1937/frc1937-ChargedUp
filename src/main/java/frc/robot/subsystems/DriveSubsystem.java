@@ -16,20 +16,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports.*;
 
 public class DriveSubsystem extends SubsystemBase {
-  private Spark m_frontLeftMotor = new Spark(Drive.FRONT_LEFT_MOTOR);
-  private Spark m_rearLeftMotor = new Spark(Drive.REAR_LEFT_MOTOR);
+  private CANSparkMax m_frontLeftMotor = new CANSparkMax(Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_rearLeftMotor = new CANSparkMax(Drive.REAR_LEFT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_left = new MotorControllerGroup(m_frontLeftMotor, m_rearLeftMotor);
 
-  private Spark m_frontRightMotor = new Spark(Drive.FRONT_RIGHT_MOTOR);
-  private Spark m_rearRightMotor = new Spark(Drive.REAR_RIGHT_MOTOR);
+  private CANSparkMax m_frontRightMotor = new CANSparkMax(Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   
   public DriveSubsystem() {
-    // Sets the motors as inverted since wpi does'nt do it already ):
-    m_frontLeftMotor.setInverted(true);
-    m_rearLeftMotor.setInverted(true);
+    // Sets the motors as inverted since wpi does not do it already ):
     m_frontRightMotor.setInverted(true);
     m_rearRightMotor.setInverted(true);
   }
