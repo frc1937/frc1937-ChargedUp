@@ -34,7 +34,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {}
 
   /*
-   * Drive the robot by controlling the speed and rotation:
+   * Drive the robot by controlling the speed and rotation
+   * 
    * @param speed the speed of movement. In range [-1, 1], Positive values move the robot forwards,
    * negative values move it backwards. @param rotation - rotation of the movement (-180 - 180) positive 
    * turns the robot right whilst negetive left.
