@@ -29,7 +29,7 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void execute() {
     // Get the controller values every time the schedueler runs and moves the robot in those values
-    m_drive.ArcadeDrive(XboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
+    m_drive.arcadeDrive(XboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
     XboxController.getRightX() * DriveConstants.CONTROLLER_SENSETIVITY);
   }
 
