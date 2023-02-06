@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-// Enables drivers control the robot during teleop period with xbox controller.
+// Enables drivers control the robot during teleop period with xbox controller
 public class ArcadeDrive extends CommandBase {
   private final DriveSubsystem m_drive;
-  private final CommandXboxController xboxController;
+  private final CommandXboxController XboxController;
 
-  public ArcadeDrive(CommandXboxController xboxController, DriveSubsystem m_drive) {
+  public ArcadeDrive(CommandXboxController XboxController, DriveSubsystem m_drive) {
     addRequirements(m_drive);
 
     this.m_drive = m_drive;
-    this.xboxController = xboxController;
+    this.XboxController = XboxController;
   }
 
   // Called when the command is initially scheduled.
@@ -29,16 +29,16 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void execute() {
     // Get the controller values every time the schedueler runs and moves the robot in those values
-    m_drive.ArcadeDrive(xboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
-    xboxController.getRightX() * DriveConstants.CONTROLLER_SENSETIVITY);
+    m_drive.ArcadeDrive(XboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
+    XboxController.getRightX() * DriveConstants.CONTROLLER_SENSETIVITY);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     if (!interrupted) {
-      // If the robot is disturbed and unable continue, stop the robot
-      m_drive.StopMotor();
+      // Stops the driving if the command ends
+      m_drive.stopMotor();
     }
   }
 
