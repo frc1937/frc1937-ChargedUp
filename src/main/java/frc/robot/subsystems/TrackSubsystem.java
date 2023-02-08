@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,14 +22,15 @@ public class TrackSubsystem extends SubsystemBase {
     PneumaticsModuleType.CTREPCM, Track.OPEN_TRACK_SOLENOID, Track.CLOSE_TRACK_SOLENOID);
   
   // The micro-switch in the track system
-  private final SensorCollection m_microSwitch = m_trackMotor.getSensorCollection();
+  private final SensorCollection m_minReachSwitch = m_trackMotor.getSensorCollection();
+  private final DigitalInput m_maxReachSwitch = new DigitalInput(Track.CLOSED_TRACK_SWITCH);
 
   // Is the track closed or opened
-  private boolean isOpen = false;
+  private boolean trackActive = false;
   
   /** Creates a new TrackSubsystem. */
   public TrackSubsystem() {
-    m_trackMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+    m_trackMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
   }
 
   @Override
@@ -39,7 +41,7 @@ public class TrackSubsystem extends SubsystemBase {
   // Toggle the track piston
   public void togglePiston() {
     m_trackPiston.toggle();
-    isOpen = !isOpen;
+    trackActive = !trackActive;
   }
 
   // Start the movement of the track using @param speed which is the speed of the track [-1 - 1].
@@ -52,9 +54,14 @@ public class TrackSubsystem extends SubsystemBase {
     m_trackMotor.set(ControlMode.Disabled, 0);
   }
 
-  // Check if the track has hit the micro switch
-  public boolean switchActivated() {
-    return m_microSwitch.isRevLimitSwitchClosed();
+  // Check if the track has hit the micro switch at max position
+  public boolean reachedMaxSwitch() {
+    return m_maxReachSwitch.get();
+  }
+
+  // Check if the track has hit the micro switch at max position
+  public boolean reachedMinSwitch() {
+    return m_minReachSwitch.isRevLimitSwitchClosed();
   }
 
   // Check if the motor has arrived in its max position
@@ -64,7 +71,7 @@ public class TrackSubsystem extends SubsystemBase {
   }
 
   // Check if the track is opened or closed and return that value
-  public boolean isOpen() {
-    return isOpen;
+  public boolean isTrackActive() {
+    return trackActive;
   }
 }
