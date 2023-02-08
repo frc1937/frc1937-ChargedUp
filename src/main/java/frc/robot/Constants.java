@@ -13,8 +13,17 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class DriveConstants {
-    public static final double CONTROLLER_SENSETIVITY = 0.5;
+  public static class PhysicalProperties {
+    public static class DriveConstants {
+      public static final double CONTROLLER_SENSETIVITY = 0.5;
+    }
+
+    public static class BeakConstants {
+      // the velocity of the motor
+      public static final double BEAK_MOTOR_SPEED = 0.2;
+      // the value of the max position of the beak
+      public static final int BEAK_MAX_POS = 0;
+    }
   }
   public static class Ports {
     // Ports for the differential drive
@@ -29,7 +38,9 @@ public final class Constants {
 
     public static class Elevator {}
   
-    public static class Arm {}
+    public static class Beak {
+      public static final int BEAK_MOTOR_PORT = 4;
+    }
 
     public static class Controllers {
       public static final int DRIVER_CONTROLLER = 0;
