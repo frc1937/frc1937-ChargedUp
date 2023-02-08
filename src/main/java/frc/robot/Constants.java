@@ -24,7 +24,7 @@ public final class Constants {
       public static final int MAX_MOTOR_POS = -1;
 
       // The velocity of the track retraction and opening [in precenteges (-1 - 1)]
-      public static final double TRACK_SPEED = 0.5;
+      public static final double TRACK_MOVEMENT_SPEED = 0.5;
     }
   }
   public static class Ports {
