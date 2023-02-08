@@ -11,13 +11,13 @@ import frc.robot.subsystems.TrackSubsystem;
 public class ToggleTrack extends CommandBase {
   private TrackSubsystem m_track;
   private boolean isOpen;
-  private double speed = PhysicalProperties.TrackConstants.TRACK_SPEED;
+  private double speed = PhysicalProperties.TrackConstants.TRACK_MOVEMENT_SPEED;
   /** Creates a new ToggleTrack. */
   public ToggleTrack(TrackSubsystem m_track) {
     addRequirements(m_track);
     
     this.m_track = m_track;
-    this.isOpen = m_track.isOpen();
+    this.isOpen = m_track.isTrackActive();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,10 +34,6 @@ public class ToggleTrack extends CommandBase {
       m_track.setSpeed(-speed);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -49,6 +45,17 @@ public class ToggleTrack extends CommandBase {
   @Override
   public boolean isFinished() {
     // Return true if the track has arrived at its max position whether it's closed or opened
-    return ((isOpen && m_track.switchActivated()) || (!isOpen && m_track.reachedMaxPos()));
+    return reachedClose() || reachedOpen();
+  }
+
+  // @return true if the track reached it's max pos starting closed, otherwise false
+  public boolean reachedClose() {
+    return isOpen && m_track.reachedMinSwitch();
+  }
+
+  
+  // @return true if the track reached it's min pos starting opened, otherwise false
+  public boolean reachedOpen() {
+    return !isOpen && m_track.reachedMaxSwitch();
   }
 }
