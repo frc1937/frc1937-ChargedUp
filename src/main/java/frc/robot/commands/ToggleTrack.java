@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties;
+import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
 // Toggle the track so if it started open it will close and if it started closed it will open
 public class ToggleTrack extends CommandBase {
   private TrackSubsystem m_track;
   private boolean isOpen;
-  private double speed = PhysicalProperties.TrackConstants.TRACK_MOVEMENT_SPEED;
+  private double speed = TrackConstants.TRACK_MOVEMENT_SPEED;
   
 
   /** Creates a new ToggleTrack. */

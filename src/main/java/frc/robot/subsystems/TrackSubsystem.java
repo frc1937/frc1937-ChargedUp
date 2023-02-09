@@ -55,12 +55,12 @@ public class TrackSubsystem extends SubsystemBase {
     m_trackMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  // Stop the movement of the track
+  // Stops the movement of the track
   public void stopMotor() {
     m_trackMotor.set(ControlMode.Disabled, 0);
   }
 
-  // Check if the track has hit the micro switch at max position
+  // Checks if the track has hit the micro switch at maximum position
   public boolean reachedMaxSwitch() {
     return m_trackMotor.isFwdLimitSwitchClosed() == 1;
   }
@@ -70,13 +70,14 @@ public class TrackSubsystem extends SubsystemBase {
     return m_trackMotor.isRevLimitSwitchClosed() == 1;
   }
 
-  // Check if the motor has arrived in its max position
+  // Check if the motor has arrived in its maximum position
   // @return  true if the motor has passed the position and false if it has yet arrived.
   public boolean reachedMaxPos() {
     return m_trackMotor.getSelectedSensorPosition() >= TrackConstants.MAX_MOTOR_POS;
   }
 
-  // Check if the track is opened or closed and return that value
+  // Check if the track is opened or closed
+  // @return true if the track is opened, otherwise false.
   public boolean isTrackActive() {
     return trackActive;
   }
