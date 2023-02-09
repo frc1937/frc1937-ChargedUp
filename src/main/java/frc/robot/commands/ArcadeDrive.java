@@ -12,13 +12,13 @@ import frc.robot.subsystems.DriveSubsystem;
 // Enables drivers control the robot during teleop period with xbox controller
 public class ArcadeDrive extends CommandBase {
   private DriveSubsystem m_drive;
-  private CommandXboxController XboxController;
+  private CommandXboxController xboxController;
 
-  public ArcadeDrive(CommandXboxController XboxController, DriveSubsystem m_drive) {
+  public ArcadeDrive(CommandXboxController xboxController, DriveSubsystem m_drive) {
     addRequirements(m_drive);
 
     this.m_drive = m_drive;
-    this.XboxController = XboxController;
+    this.xboxController = xboxController;
   }
 
   // Called when the command is initially scheduled.
@@ -29,8 +29,8 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void execute() {
     // Get the controller values every time the schedueler runs and moves the robot in those values
-    m_drive.arcadeDrive(-XboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
-    -XboxController.getRightX() * DriveConstants.CONTROLLER_SENSETIVITY);
+    m_drive.arcadeDrive(xboxController.getLeftY() * DriveConstants.CONTROLLER_SENSETIVITY, 
+      xboxController.getRightX() * DriveConstants.CONTROLLER_SENSETIVITY);
   }
 
   // Called once the command ends or is interrupted.

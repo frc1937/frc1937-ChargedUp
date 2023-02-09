@@ -46,8 +46,14 @@ public class TrackSubsystem extends SubsystemBase {
     trackActive = !trackActive;
   }
 
+  // Close the piston
   public void closePiston() {
     m_trackPiston.set(Value.kReverse);
+  }
+
+  //  Open the piston
+  public void openPiston() {
+    m_trackPiston.set(Value.kForward);
   }
 
   // Start the movement of the track using @param speed which is the speed of the track [-1 - 1].
@@ -65,20 +71,14 @@ public class TrackSubsystem extends SubsystemBase {
     return m_trackMotor.isFwdLimitSwitchClosed() == 1;
   }
 
-  // Check if the track has hit the micro switch at max position
+  // Checks if the track has hit the micro switch at max position
   public boolean reachedMinSwitch() {
     return m_trackMotor.isRevLimitSwitchClosed() == 1;
   }
 
-  // Check if the motor has arrived in its maximum position
+  // Checks if the motor has arrived in its maximum position
   // @return  true if the motor has passed the position and false if it has yet arrived.
   public boolean reachedMaxPos() {
     return m_trackMotor.getSelectedSensorPosition() >= TrackConstants.MAX_MOTOR_POS;
-  }
-
-  // Check if the track is opened or closed
-  // @return true if the track is opened, otherwise false.
-  public boolean isTrackActive() {
-    return trackActive;
   }
 }

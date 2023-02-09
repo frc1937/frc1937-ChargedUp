@@ -13,7 +13,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
   public static class TrackConstants {
       // The velocity of the track retraction and opening. In range [-1, 1].
       public static final double TRACK_MOVEMENT_SPEED = 0.5;
