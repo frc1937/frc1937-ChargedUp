@@ -25,6 +25,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(true);
     m_rearRightMotor.setInverted(true);
+    m_frontLeftMotor.setInverted(false);
+    m_rearLeftMotor.setInverted(false);
   }
 
   @Override
