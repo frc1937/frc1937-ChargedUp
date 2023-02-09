@@ -22,8 +22,9 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_frontRightMotor = new CANSparkMax(Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
   private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
-
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+  
+
   public DriveSubsystem() {
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(true);
@@ -48,4 +49,6 @@ public class DriveSubsystem extends SubsystemBase {
   public void stopMotor() {
     m_drive.stopMotor();
   }
+
+  
 }
