@@ -14,18 +14,20 @@ package frc.robot;
  */
 public final class Constants {
 
-  public static class PhysicalProperties {
-    public static class DriveConstants {
-      public static final double CONTROLLER_SENSETIVITY = 0.5;
-    }
+  public static class TrackConstants {
+      // The velocity of the track retraction and opening. In range [-1, 1].
+      public static final double TRACK_MOVEMENT_SPEED = 0.5;
+  }
 
+  public static class DriveConstants {
+    public static final double CONTROLLER_SENSETIVITY = 0.5;
+  }
+
+  public static class PhysicalProperties {
     public static class TrackConstants {
       /** The maximum position of the track motor */
       // TODO Check this value.
       public static final int MAX_MOTOR_POS = -1;
-
-      // The velocity of the track retraction and opening [in precenteges (-1 - 1)]
-      public static final double TRACK_MOVEMENT_SPEED = 0.5;
     }
   }
   public static class Ports {
@@ -52,7 +54,6 @@ public final class Constants {
       public static final int OPERATOR_CONTROLLER  = 1;
     }
 
-  
   }
 
 }
