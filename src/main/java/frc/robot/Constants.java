@@ -20,7 +20,8 @@ public final class Constants {
     }
 
     public static class TrackConstants {
-      // The max position of the track motor, the value is incorrect and needs to be checked.
+      /** The maximum position of the track motor */
+      // TODO Check this value.
       public static final int MAX_MOTOR_POS = -1;
 
       // The velocity of the track retraction and opening [in precenteges (-1 - 1)]
