@@ -13,6 +13,7 @@ public class ToggleTrack extends CommandBase {
   private TrackSubsystem m_track;
   private boolean isOpen;
   private double speed = PhysicalProperties.TrackConstants.TRACK_MOVEMENT_SPEED;
+  
 
   /** Creates a new ToggleTrack. */
   public ToggleTrack(TrackSubsystem m_track) {
