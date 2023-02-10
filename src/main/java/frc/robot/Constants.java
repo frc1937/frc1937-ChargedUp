@@ -13,8 +13,21 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class TrackConstants {
+      // The velocity of the track retraction and opening. In range [-1, 1].
+      public static final double TRACK_MOVEMENT_SPEED = 0.5;
+  }
+
   public static class DriveConstants {
     public static final double CONTROLLER_SENSETIVITY = 0.5;
+  }
+
+  public static class PhysicalProperties {
+    public static class TrackConstants {
+      /** The maximum position of the track motor */
+      // TODO Check this value.
+      public static final int MAX_MOTOR_POS = -1;
+    }
   }
   public static class Ports {
     // Ports for the differential drive
@@ -29,12 +42,17 @@ public final class Constants {
 
     public static class Elevator {}
   
-    public static class Arm {}
+    public static class Track {
+      public static final int TRACK_MOTOR = 7;
+      public static final int OPEN_TRACK_SOLENOID = 1;
+      public static final int CLOSE_TRACK_SOLENOID = 4;
+    }
 
     public static class Controllers {
       public static final int DRIVER_CONTROLLER = 0;
       public static final int OPERATOR_CONTROLLER  = 1;
     }
+
   }
 
 }
