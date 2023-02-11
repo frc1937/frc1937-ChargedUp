@@ -69,4 +69,8 @@ public class BeakSubsystem extends SubsystemBase {
   public boolean getIsOpen() {
     return isOpen;
   }
+
+  public double getPos() {
+    return m_encoder.getPosition();
+  }
 }
