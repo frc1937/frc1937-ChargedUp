@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -25,6 +26,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   public DriveSubsystem(IntakeSubsystem m_intake) {
+    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
+    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
+    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(false);
     m_rearRightMotor.setInverted(false);

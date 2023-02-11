@@ -11,6 +11,10 @@ import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.CloseIntakeAngle;
+import frc.robot.commands.LaunchIntake;
+import frc.robot.commands.OpenIntake;
+import frc.robot.commands.OpenIntakeAngle;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +30,6 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
-  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,7 +48,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

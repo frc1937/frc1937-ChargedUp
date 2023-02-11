@@ -19,7 +19,7 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final double CONTROLLER_SENSETIVITY = 0.5;
+    public static final double CONTROLLER_SENSETIVITY = 1;
   }
 
   public static class PhysicalProperties {
