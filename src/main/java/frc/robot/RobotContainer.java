@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
+import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.ToggleBeak;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,12 +20,14 @@ import frc.robot.commands.ArcadeDrive;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private BeakSubsystem m_beak = new BeakSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
+  private final Trigger xButton = m_driverController.x();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -42,6 +46,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.whileTrue(new ToggleBeak(m_beak));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

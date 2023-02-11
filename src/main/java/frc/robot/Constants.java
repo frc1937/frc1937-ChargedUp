@@ -23,6 +23,11 @@ public final class Constants {
       public static final double BEAK_MOTOR_SPEED = 0.2;
       // the value of the max position of the beak
       public static final int BEAK_MAX_POS = 0;
+
+      // PID variables
+      public static final double K_P = 3;
+      public static final double K_I = 0;
+      public static final double K_D = 0.2;
     }
   }
   public static class Ports {
@@ -39,7 +44,7 @@ public final class Constants {
     public static class Elevator {}
   
     public static class Beak {
-      public static final int BEAK_MOTOR_PORT = 4;
+      public static final int BEAK_MOTOR_PORT = 3;
     }
 
     public static class Controllers {

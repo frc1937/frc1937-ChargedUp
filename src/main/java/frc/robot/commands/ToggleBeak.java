@@ -5,13 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
+import com.revrobotics.CANSparkMax;
 
 public class ToggleBeak extends CommandBase {
   private BeakSubsystem m_beak;
-  private double speed = BeakConstants.BEAK_MOTOR_SPEED;
-  private boolean isOpen;
 
   // Close if open or open if close
   public ToggleBeak(BeakSubsystem m_beak) {
@@ -21,9 +19,7 @@ public class ToggleBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isOpen = m_beak.getIsOpen();
-    m_beak.setInverted();
-    m_beak.setSpeed(speed);
+    m_beak.getController().setReference(m_beak.getSetpoint(), CANSparkMax.ControlType.kPosition);
   }
 
   /* Called once the command ends or is interrupted and stop the beak motor.
@@ -36,6 +32,6 @@ public class ToggleBeak extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_beak.reachedClosed(isOpen) || m_beak.reachedOpen(isOpen);
+    return false;
   }
 }

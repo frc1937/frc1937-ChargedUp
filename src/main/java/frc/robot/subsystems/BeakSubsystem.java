@@ -4,30 +4,41 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PhysicalProperties.BeakConstants;
 import frc.robot.Constants.Ports.Beak;
 
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Beak.BEAK_MOTOR_PORT, MotorType.kBrushless);
-  private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
+  
+  private double m_setPoint = 0;
+  private double k_p = BeakConstants.K_P;
+  private double k_i = BeakConstants.K_I;
+  private double k_d = BeakConstants.K_D;
 
-  private double m_startPos = 0;
-  private boolean isOpen = false;
+  private SparkMaxPIDController m_controller = m_beakMotor.getPIDController();
   
   /** Creates a new BeakSubsystem. */
   public BeakSubsystem() {
-    m_encoder.setPosition(m_startPos);
+    m_beakMotor.setIdleMode(IdleMode.kBrake);
+    SmartDashboard.setDefaultNumber("Set point", m_setPoint);
+
+    m_controller.setD(k_d);
+    m_controller.setP(k_p);
+    m_controller.setI(k_i);
+    m_controller.setOutputRange(-0.6, 0.6);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
   }
 
   // Stop the beaks movement
@@ -35,42 +46,24 @@ public class BeakSubsystem extends SubsystemBase {
     m_beakMotor.stopMotor();
   }
 
-  /* check if the beak is closed
-   * @param   isUp - true if the beak is up, false if down
-   * @return  true if reached the close pos, otherwise false
+  /*
+   * @return the point the motor needs to reach
    */
-  public boolean reachedClosed(boolean isUp) {
-    return m_encoder.getPosition() <= m_startPos && isUp;
+  public double getSetpoint() {
+    return m_setPoint;
   }
 
-  /* check if the beak is open
-   * @param   isUp - true if the beak is up, false if down
-   * @return  true if reached the open pos, otherwise false
+  /* 
+   * @return the pid controller
    */
-  public boolean reachedOpen(boolean isUp) {
-    return m_encoder.getPosition() >= BeakConstants.BEAK_MAX_POS && !isUp;
-  }
-  /* set the speed of the beak motor
-   * @params  speed - double value of the speed of the beak motor 
-  */
-  public void setSpeed(double speed) {
-    m_beakMotor.set(speed);
-    isOpen = !isOpen;
-  }
+  public SparkMaxPIDController getController() {
+    return m_controller;
+  } 
 
-  // set the value of the isOpen to false if true and true if false
-  public void setInverted() {
-    m_beakMotor.setInverted(isOpen);
-  }
-
-  /* give the value of isOpen
-   * @return  the value of isOpen
+  /*
+   * Reset the beak encoder 
    */
-  public boolean getIsOpen() {
-    return isOpen;
-  }
-
-  public double getPos() {
-    return m_encoder.getPosition();
+  public void ResetBeakEncoder() {
+    m_beakMotor.getEncoder().setPosition(0);
   }
 }
