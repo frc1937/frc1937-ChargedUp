@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.ArcadeDrive;
 
 /**
@@ -18,12 +19,14 @@ import frc.robot.commands.ArcadeDrive;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private DriveSubsystem m_drive = new DriveSubsystem();
+  private IntakeSubsystem m_intake = new IntakeSubsystem();
+  private DriveSubsystem m_drive = new DriveSubsystem(m_intake);
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

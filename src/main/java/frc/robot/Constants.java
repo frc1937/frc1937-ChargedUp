@@ -38,7 +38,14 @@ public final class Constants {
       public static final int REAR_RIGHT_MOTOR = 2;
     }
 
-    public static class Intake {}
+    public static class Intake {
+      public static final int INTAKE_ANGLE_MOTOR = 6;
+      public static final int RIGHT_INTAKE_MOTOR = 4;
+      public static final int LEFT_INTAKE_MOTOR = 5;
+
+      public static final int OPEN_PISTONS = 7;
+      public static final int CLOSE_PISTONS = 0; 
+    }
 
     public static class Elevator {}
   
