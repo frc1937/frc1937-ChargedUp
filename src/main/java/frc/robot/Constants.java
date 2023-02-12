@@ -14,11 +14,11 @@ package frc.robot;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final double CONTROLLER_SENSETIVITY = 0.5;
+    public static final double CONTROLLER_SENSETIVITY = 0.75;
   }
   public static class LiftConstants{
-    public static final double INITIALIZE_SPEED = 0.3;
-    public static final double MAXIMUM_ENCODER_POSITION = 0; //TODO: find the right value
+    public static final double MAXIMUM_ENCODER_POSITION = 100000;
+    public static final double MINIMUM_MOTOR_POSITION = 25000;
   }
   public static class Ports {
     // Ports for the differential drive
@@ -32,9 +32,8 @@ public final class Constants {
     public static class Intake {}
 
     public static class Lift {
-      public static final int DOWN_MOTOR = 10;
-      public static final int ENCODER = 0;
-      public static final int SWITCH = 69;
+      public static final int LIFT_MOTOR = 10;
+      public static final int SWITCH = 8;
     }
   
     public static class Arm {}

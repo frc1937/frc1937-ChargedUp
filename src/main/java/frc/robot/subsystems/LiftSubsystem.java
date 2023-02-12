@@ -4,53 +4,37 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.Ports;
+import frc.robot.Constants.Ports.Lift;
 
 public class LiftSubsystem extends SubsystemBase {
-  private WPI_TalonFX m_liftMotor = new WPI_TalonFX(Ports.Lift.DOWN_MOTOR);
-  private DigitalInput m_switch = new DigitalInput(Ports.Lift.SWITCH);
-  private boolean isToggleLift = false;
+  private TalonFX m_liftMotor = new TalonFX(Lift.LIFT_MOTOR);
+  //private DigitalInput m_switch = new DigitalInput(Ports.Lift.SWITCH);
   
   /** Creates a new LiftSubsystem. */
-  public LiftSubsystem() {}
+  public LiftSubsystem() {
+    m_liftMotor.setSelectedSensorPosition(0);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("asdasdas dasd asd", m_liftMotor.getSelectedSensorPosition());
   }
 
-  //moves motor
-  public void startMotor(double speed){
-    m_liftMotor.set(speed);
-  }
-
-  //stops motor 
+  // Stop motor 
   public void stopMotor(){
-    m_liftMotor.stopMotor();
+    m_liftMotor.set(ControlMode.Disabled, 0);
   }
 
-   // Check if the lift has hit the micro switch at min position
-   public boolean reachedMinSwitch() {
-    return m_switch.get();
-  }
-
-  ///chek if  lift is in the micro switch at min position
-  public boolean reachedMaxPossion(){
-    return m_liftMotor.getSelectedSensorPosition() >= Constants.LiftConstants.MAXIMUM_ENCODER_POSITION;
-  }
-
-  //get if up or down
-  public boolean isToggleLift(){
-    return this.isToggleLift;
-  }
-
-  //set up or down
-  public void setIsToggleLift(){
-    isToggleLift = !isToggleLift;
+  // Set the motor position
+  public void setPosition(double enoderPosition) {
+    m_liftMotor.set(ControlMode.Position, enoderPosition);
   }
 }
