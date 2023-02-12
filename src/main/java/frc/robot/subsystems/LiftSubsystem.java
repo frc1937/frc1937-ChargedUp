@@ -12,7 +12,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Ports;
 
 public class LiftSubsystem extends SubsystemBase {
-  private WPI_TalonFX m_Motorlift = new WPI_TalonFX(Ports.Lift.DOWN_MOTOR);
+  private WPI_TalonFX m_liftMotor = new WPI_TalonFX(Ports.Lift.DOWN_MOTOR);
   private DigitalInput m_switch = new DigitalInput(Ports.Lift.SWITCH);
   private boolean isToggleLift = false;
   
@@ -26,12 +26,12 @@ public class LiftSubsystem extends SubsystemBase {
 
   //moves motor
   public void startMotor(double speed){
-    m_Motorlift.set(speed);
+    m_liftMotor.set(speed);
   }
 
   //stops motor 
   public void stopMotor(){
-    m_Motorlift.stopMotor();
+    m_liftMotor.stopMotor();
   }
 
    // Check if the lift has hit the micro switch at min position
@@ -41,7 +41,7 @@ public class LiftSubsystem extends SubsystemBase {
 
   ///chek if  lift is in the micro switch at min position
   public boolean reachedMaxPossion(){
-    return m_Motorlift.getSelectedSensorPosition() >= Constants.LiftConstants.MAXIMUM_ENCODER_POSITION;
+    return m_liftMotor.getSelectedSensorPosition() >= Constants.LiftConstants.MAXIMUM_ENCODER_POSITION;
   }
 
   //get if up or down
