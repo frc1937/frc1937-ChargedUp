@@ -49,16 +49,12 @@ public class BeakSubsystem extends SubsystemBase {
     m_beakMotor.stopMotor();
   }
 
-  /*
-   * @return the point the motor needs to reach
-   */
-  public double getSetpoint() {
+   // @return the point the motor needs to reach
+   public double getSetpoint() {
     return m_setPoint;
   }
-
-  /* 
-   * @return the pid controller
-   */
+ 
+  // @return the pid controller
   public SparkMaxPIDController getController() {
     return m_controller;
   } 
@@ -68,6 +64,7 @@ public class BeakSubsystem extends SubsystemBase {
     m_beakMotor.getEncoder().setPosition(0);
   }
 
+  // @return true if the beak is raised and false if it's not
   public boolean getBeakUp() {
     BeakRaised = !BeakRaised;
     return !BeakRaised;

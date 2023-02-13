@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.PhysicalProperties.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/* 
+ * TODO: add ability to detect whether there is a large amount of
+ * resistance from the object for catching both cones and boxes.
+*/
+// Close the beak if it's raised and open if closed.
 public class ToggleBeak extends InstantCommand {
   private BeakSubsystem m_beak;
   private boolean beakUp;
