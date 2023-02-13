@@ -36,37 +36,45 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  // @return whether the intake is up or down, true means up.
   public boolean getIsIntakeUp() {
     return intakeUp;
   }
   
+  // Set the intake angle motor position to given value [revolutions].
   public void setIntakePosition(double position) {
     m_angleMotor.set(ControlMode.Position, position);
-    intakeUp = !intakeUp;
+    intakeUp = !intakeUp; // Change the value of whether the intake is up or down.
   }
 
+  // Open the intake pistons
   public void openIntake() {
     m_intakePistons.set(Value.kReverse);
   }
 
+  // Close the intake pistons
   public void closeIntake() {
     m_intakePistons.set(Value.kForward);
   }
 
+  // Set intake wheel speed for given value (-1 - 1)
   public void setIntakeWheelSpeed(double speed) {
     m_leftMotor.set(ControlMode.PercentOutput, speed);
     m_rightMotor.set(ControlMode.PercentOutput, -speed);
   }
 
+  // Stop angle motor
   public void stopAngle() {
     m_angleMotor.set(ControlMode.Disabled, 0);
   }
 
+  // Stop the intake wheel motors
   public void stopIntakeWheel() {
     m_leftMotor.set(ControlMode.Disabled, 0);
     m_rightMotor.set(ControlMode.Disabled, 0);
   }
 
+   // Toggle the intake pistons
   public void togglePistons() {
     m_intakePistons.toggle();
   }
