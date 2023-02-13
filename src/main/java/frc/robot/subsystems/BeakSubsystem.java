@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,6 +17,7 @@ import frc.robot.Constants.Ports.Beak;
 
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Beak.BEAK_MOTOR_PORT, MotorType.kBrushless);
+  private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
   private boolean BeakRaised = true;
   
   private double m_setPoint = 0;
@@ -29,8 +31,7 @@ public class BeakSubsystem extends SubsystemBase {
   public BeakSubsystem() {
     m_beakMotor.setIdleMode(IdleMode.kBrake);
     SmartDashboard.setDefaultNumber("Set point", m_setPoint);
-    SmartDashboard.setDefaultNumber("Position", m_beakMotor.getEncoder().getPosition());
-
+    SmartDashboard.setDefaultNumber("Position", m_encoder.getPosition());
     m_controller.setD(k_d);
     m_controller.setP(k_p);
     m_controller.setI(k_i);
