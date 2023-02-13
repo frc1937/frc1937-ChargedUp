@@ -4,34 +4,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import com.revrobotics.CANSparkMax.ControlType;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.PhysicalProperties.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
-import com.revrobotics.CANSparkMax;
 
-public class ToggleBeak extends CommandBase {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class ToggleBeak extends InstantCommand {
   private BeakSubsystem m_beak;
+  private boolean beakUp;
 
-  // Close if open or open if close
   public ToggleBeak(BeakSubsystem m_beak) {
-    addRequirements(m_beak);
     this.m_beak = m_beak;
+    this.beakUp = m_beak.getBeakUp();
+
+    addRequirements(m_beak);
   }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(m_beak.getSetpoint(), CANSparkMax.ControlType.kPosition);
-  }
-
-  /* Called once the command ends or is interrupted and stop the beak motor.
-   */
-  @Override
-  public void end(boolean interrupted) {
-    m_beak.stopMotor();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    if (beakUp) {
+      m_beak.getController().setReference(BeakConstants.BEAK_MIN_POS, ControlType.kPosition);
+    } else {
+      m_beak.getController().setReference(BeakConstants.BEAK_MAX_POS, ControlType.kPosition);
+    }
   }
 }
