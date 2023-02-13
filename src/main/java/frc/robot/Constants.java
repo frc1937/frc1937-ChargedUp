@@ -33,7 +33,7 @@ public final class Constants {
 
     public static class Lift {
       public static final int LIFT_MOTOR = 10;
-      public static final int SWITCH = 8;
+      public static final int LIFT_SWITCH = 8;
     }
   
     public static class Arm {}
