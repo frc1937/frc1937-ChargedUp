@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Ports.Drive;
@@ -22,8 +21,6 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
 
-  private IntakeSubsystem m_intake;
-
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   public DriveSubsystem(IntakeSubsystem m_intake) {
     m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
@@ -35,8 +32,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRightMotor.setInverted(false);
     m_frontLeftMotor.setInverted(true);
     m_rearLeftMotor.setInverted(true);
-
-    this.m_intake = m_intake;
   }
 
   @Override

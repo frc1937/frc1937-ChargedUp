@@ -20,11 +20,15 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonSRX m_rightMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
 
+  private boolean intakeUp;
+
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    m_leftMotor.setInverted(false);
-    m_rightMotor.setInverted(true);
+    m_leftMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
+
+    intakeUp = m_angleMotor.isRevLimitSwitchClosed() == 1;
   }
 
   @Override
@@ -32,12 +36,13 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public boolean microSwitchEnabaled() {
-    return m_angleMotor.isRevLimitSwitchClosed() == 1;
+  public boolean getIsIntakeUp() {
+    return intakeUp;
   }
-
-  public void setAngleSpeed(double speed) {
-    m_angleMotor.set(ControlMode.PercentOutput, speed);
+  
+  public void setIntakePosition(double position) {
+    m_angleMotor.set(ControlMode.Position, position);
+    intakeUp = !intakeUp;
   }
 
   public void openIntake() {
@@ -48,21 +53,21 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakePistons.set(Value.kForward);
   }
 
-  public void setIntakeSpeed(double speed) {
+  public void setIntakeWheelSpeed(double speed) {
     m_leftMotor.set(ControlMode.PercentOutput, speed);
     m_rightMotor.set(ControlMode.PercentOutput, -speed);
-  }
-
-  public double getAnglePos() {
-    return m_angleMotor.getSelectedSensorPosition();
   }
 
   public void stopAngle() {
     m_angleMotor.set(ControlMode.Disabled, 0);
   }
 
-  public void stopMotor() {
+  public void stopIntakeWheel() {
     m_leftMotor.set(ControlMode.Disabled, 0);
     m_rightMotor.set(ControlMode.Disabled, 0);
+  }
+
+  public void togglePistons() {
+    m_intakePistons.toggle();
   }
 }

@@ -16,19 +16,21 @@ public final class Constants {
   public static class TrackConstants {
       // The velocity of the track retraction and opening. In range [-1, 1].
       public static final double TRACK_MOVEMENT_SPEED = 0.5;
+      public static final int MAX_MOTOR_POS = -1;
+  }
+
+  public static class IntakeConstants {
+    public static final double INTAKE_WHEEL_SPEED = 0.5;
+    public static final double MINIMUM_POSITION = 0;
+    public static final double MAXIMUM_POSITION = 20000;
   }
 
   public static class DriveConstants {
     public static final double CONTROLLER_SENSETIVITY = 1;
   }
 
-  public static class PhysicalProperties {
-    public static class TrackConstants {
-      /** The maximum position of the track motor */
-      // TODO Check this value.
-      public static final int MAX_MOTOR_POS = -1;
-    }
-  }
+  public static class PhysicalProperties {}
+
   public static class Ports {
     // Ports for the differential drive
     public static class Drive {

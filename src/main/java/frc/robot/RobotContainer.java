@@ -8,13 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
+import frc.robot.commands.driveCommands.ArcadeDrive;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.CloseIntakeAngle;
-import frc.robot.commands.LaunchIntake;
-import frc.robot.commands.OpenIntake;
-import frc.robot.commands.OpenIntakeAngle;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

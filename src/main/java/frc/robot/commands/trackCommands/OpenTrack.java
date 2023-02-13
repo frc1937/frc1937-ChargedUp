@@ -2,39 +2,37 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.trackCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TrackSubsystem;
+import frc.robot.Constants.TrackConstants;
 
-public class OpenIntake extends CommandBase {
-  private IntakeSubsystem m_intake;
-  private double speed;
-  /** Creates a new OpenIntake. */
-  public OpenIntake(IntakeSubsystem m_intake, double speed) {
-    this.m_intake = m_intake;
-    this.speed = speed;
+public class OpenTrack extends CommandBase {
+  private TrackSubsystem m_track;
+  /** Creates a new OpenTrack. */
+  public OpenTrack(TrackSubsystem m_track) {
+    this.m_track = m_track;
 
-    addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_track);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.openIntake();
-    m_intake.setIntakeSpeed(speed);
+    m_track.closePiston();
+    m_track.setSpeed(TrackConstants.TRACK_MOVEMENT_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.closeIntake();
+    m_track.stopMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_track.reachedMaxSwitch(); /* @return true if reached forward limit switch */
   }
 }
