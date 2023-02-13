@@ -16,6 +16,7 @@ import frc.robot.Constants.Ports.Beak;
 
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Beak.BEAK_MOTOR_PORT, MotorType.kBrushless);
+  private boolean BeakRaised = true;
   
   private double m_setPoint = 0;
   private double k_p = BeakConstants.K_P;
@@ -28,6 +29,7 @@ public class BeakSubsystem extends SubsystemBase {
   public BeakSubsystem() {
     m_beakMotor.setIdleMode(IdleMode.kBrake);
     SmartDashboard.setDefaultNumber("Set point", m_setPoint);
+    SmartDashboard.setDefaultNumber("Position", m_beakMotor.getEncoder().getPosition());
 
     m_controller.setD(k_d);
     m_controller.setP(k_p);
@@ -39,6 +41,7 @@ public class BeakSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
+    SmartDashboard.putNumber("Position", m_beakMotor.getEncoder().getPosition());
   }
 
   // Stop the beaks movement
@@ -60,10 +63,13 @@ public class BeakSubsystem extends SubsystemBase {
     return m_controller;
   } 
 
-  /*
-   * Reset the beak encoder 
-   */
+  // Reset the beak encoder 
   public void ResetBeakEncoder() {
     m_beakMotor.getEncoder().setPosition(0);
+  }
+
+  public boolean getBeakUp() {
+    BeakRaised = !BeakRaised;
+    return !BeakRaised;
   }
 }
