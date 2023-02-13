@@ -8,27 +8,25 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Ports;
 import frc.robot.Constants.Ports.Lift;
 
 public class LiftSubsystem extends SubsystemBase {
   private TalonFX m_liftMotor = new TalonFX(Lift.LIFT_MOTOR);
-  //private DigitalInput m_switch = new DigitalInput(Ports.Lift.SWITCH);
+  private DigitalInput m_switch = new DigitalInput(Lift.LIFT_SWITCH);
+  private boolean m_liftUp = false;
   
   /** Creates a new LiftSubsystem. */
-  public LiftSubsystem() {
-    m_liftMotor.setSelectedSensorPosition(0);
-  }
+  public LiftSubsystem() {}
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("asdasdas dasd asd", m_liftMotor.getSelectedSensorPosition());
+    // Reset encoder if micro switch is pressed.
+    if (m_switch.get())
+      m_liftMotor.setSelectedSensorPosition(0);
   }
 
-  // Stop motor 
+  // Stop the lift Motor
   public void stopMotor(){
     m_liftMotor.set(ControlMode.Disabled, 0);
   }
@@ -36,5 +34,11 @@ public class LiftSubsystem extends SubsystemBase {
   // Set the motor position
   public void setPosition(double enoderPosition) {
     m_liftMotor.set(ControlMode.Position, enoderPosition);
+  }
+
+  // @return true if the lift is up and false if it's down.
+  public boolean getLiftIsUp() {
+    m_liftUp = !m_liftUp;
+    return !m_liftUp;
   }
 }
