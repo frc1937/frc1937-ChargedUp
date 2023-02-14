@@ -17,8 +17,8 @@ public final class Constants {
     public static final double CONTROLLER_SENSETIVITY = 0.75;
   }
   public static class LiftConstants{
-    public static final double MAXIMUM_ENCODER_POSITION = 100000;
-    public static final double MINIMUM_MOTOR_POSITION = 25000;
+    public static final double MAXIMUM_LIFT_POSITION = 100000;
+    public static final double MINIMUM_LIFT_POSITION = 25000;
   }
   public static class Ports {
     // Ports for the differential drive
