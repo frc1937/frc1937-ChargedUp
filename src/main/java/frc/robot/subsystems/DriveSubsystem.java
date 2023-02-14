@@ -20,22 +20,18 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-
-  private LiftSubsystem m_lift = new LiftSubsystem();
   
 
-  public DriveSubsystem(LiftSubsystem m_lift) {
+  public DriveSubsystem() {
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(true);
     m_rearRightMotor.setInverted(true);
-
-    this.m_lift = m_lift;
+    m_rearLeftMotor.setInverted(false);
+    m_frontLeftMotor.setInverted(false);
   }
 
   @Override
-  public void periodic() {
-    m_lift.periodic();
-  }
+  public void periodic() {}
 
   /*
    * Drive the robot by controlling the speed and rotation

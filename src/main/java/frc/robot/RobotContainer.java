@@ -20,7 +20,7 @@ import frc.robot.commands.ArcadeDrive;
  */
 public class RobotContainer {
   private LiftSubsystem m_lift = new LiftSubsystem();
-  private DriveSubsystem m_drive = new DriveSubsystem(m_lift);
+  private DriveSubsystem m_drive = new DriveSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
