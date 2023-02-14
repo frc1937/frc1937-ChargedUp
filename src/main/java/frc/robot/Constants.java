@@ -19,7 +19,11 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final double CONTROLLER_SENSETIVITY = 0.5;
+    public static final double CONTROLLER_SENSETIVITY = 0.75;
+  }
+  public static class LiftConstants{
+    public static final double MAXIMUM_LIFT_POSITION = 100000;
+    public static final double MINIMUM_LIFT_POSITION = 25000;
   }
 
   public static class PhysicalProperties {
@@ -40,7 +44,10 @@ public final class Constants {
 
     public static class Intake {}
 
-    public static class Elevator {}
+    public static class Lift {
+      public static final int LIFT_MOTOR = 10;
+      public static final int LIFT_SWITCH = 8;
+    }
   
     public static class Track {
       public static final int TRACK_MOTOR = 7;
