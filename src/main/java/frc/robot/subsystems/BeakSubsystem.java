@@ -30,6 +30,7 @@ public class BeakSubsystem extends SubsystemBase {
   /** Creates a new BeakSubsystem. */
   public BeakSubsystem() {
     m_beakMotor.setIdleMode(IdleMode.kBrake);
+    m_beakMotor.getEncoder().setPosition(0);
     SmartDashboard.setDefaultNumber("Set point", m_setPoint);
     SmartDashboard.setDefaultNumber("Position", m_encoder.getPosition());
     m_controller.setD(k_d);
