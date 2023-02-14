@@ -25,10 +25,7 @@ public class ToggleLift extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_liftup) {
-      m_lift.setPosition(LiftConstants.MINIMUM_MOTOR_POSITION);
-    } else {
-      m_lift.setPosition(LiftConstants.MAXIMUM_ENCODER_POSITION);
-    }
+    double motorPosition = m_liftup ? LiftConstants.MINIMUM_MOTOR_POSITION : LiftConstants.MAXIMUM_ENCODER_POSITION;
+    m_lift.setPosition(motorPosition);
   }
 }
