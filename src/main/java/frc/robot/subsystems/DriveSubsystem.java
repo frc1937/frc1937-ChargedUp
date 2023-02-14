@@ -52,6 +52,4 @@ public class DriveSubsystem extends SubsystemBase {
   public void stopMotor() {
     m_drive.stopMotor();
   }
-
-  
 }
