@@ -6,16 +6,11 @@ package frc.robot.commands;
 
 import com.revrobotics.CANSparkMax.ControlType;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.PhysicalProperties.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-/* 
- * TODO: add ability to detect whether there is a large amount of
- * resistance from the object for catching both cones and boxes.
-*/
-// Close the beak if it's raised and open if closed.
-public class ToggleBeak extends InstantCommand {
+public class ToggleBeak extends CommandBase {
   private BeakSubsystem m_beak;
   private boolean beakUp;
 
@@ -32,7 +27,25 @@ public class ToggleBeak extends InstantCommand {
     if (beakUp) {
       m_beak.getController().setReference(BeakConstants.BEAK_MIN_POS, ControlType.kPosition);
     } else {
-      m_beak.getController().setReference(BeakConstants.BEAK_MAX_POS, ControlType.kPosition);
+      m_beak.getController().setReference(BeakConstants.BEAK_CUBE_MAX_POS, ControlType.kPosition);
     }
+  }
+  
+  @Override
+  public void execute() {
+    if (m_beak.getPosition() == BeakConstants.BEAK_CUBE_MAX_POS && beakUp) {
+      m_beak.getController().setOutputRange(-0.1, 0.1);
+      m_beak.getController().setReference(BeakConstants.BEAK_CONE_MAX_POS, ControlType.kPosition);
+    }
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

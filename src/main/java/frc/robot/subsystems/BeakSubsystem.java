@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +30,7 @@ public class BeakSubsystem extends SubsystemBase {
   
   /** Creates a new BeakSubsystem. */
   public BeakSubsystem() {
-    m_beakMotor.setIdleMode(IdleMode.kBrake);
+    m_beakMotor.setIdleMode(IdleMode.kCoast);
     m_beakMotor.getEncoder().setPosition(0);
     SmartDashboard.setDefaultNumber("Set point", m_setPoint);
     SmartDashboard.setDefaultNumber("Position", m_encoder.getPosition());
@@ -37,6 +38,8 @@ public class BeakSubsystem extends SubsystemBase {
     m_controller.setP(k_p);
     m_controller.setI(k_i);
     m_controller.setOutputRange(-0.6, 0.6);
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, (float)BeakConstants.BEAK_CONE_MAX_POS);
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, (float)BeakConstants.BEAK_MIN_POS);
   }
 
   @Override
@@ -44,6 +47,8 @@ public class BeakSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
     SmartDashboard.putNumber("Position", m_beakMotor.getEncoder().getPosition());
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kReverse, -100);
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
   }
 
   // Stop the beaks movement
@@ -68,7 +73,10 @@ public class BeakSubsystem extends SubsystemBase {
 
   // @return true if the beak is raised and false if it's not
   public boolean getBeakUp() {
-    BeakRaised = !BeakRaised;
-    return !BeakRaised;
+    return BeakRaised;
+  }
+
+  public double getPosition() {
+    return m_encoder.getPosition();
   }
 }
