@@ -11,7 +11,8 @@ import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.ToggleBeak;
+import frc.robot.commands.CloseBeak;
+import frc.robot.commands.OpenBeak;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +29,8 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
   private final Trigger xButton = m_driverController.x();
+  
+  private final Trigger yButton = m_driverController.y();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,8 +48,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    xButton.whileTrue(new ToggleBeak(m_beak));
+    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.onTrue(new CloseBeak(m_beak));
+    yButton.onTrue(new OpenBeak(m_beak));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

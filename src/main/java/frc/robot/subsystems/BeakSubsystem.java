@@ -38,8 +38,9 @@ public class BeakSubsystem extends SubsystemBase {
     m_controller.setP(k_p);
     m_controller.setI(k_i);
     m_controller.setOutputRange(-0.6, 0.6);
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, (float)BeakConstants.BEAK_CONE_MAX_POS);
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, (float)BeakConstants.BEAK_MIN_POS);
+    SmartDashboard.setDefaultNumber("Voltage", getVoltage());
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kReverse, -180);
+    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
   }
 
   @Override
@@ -47,8 +48,8 @@ public class BeakSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
     SmartDashboard.putNumber("Position", m_beakMotor.getEncoder().getPosition());
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kReverse, -100);
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
+    SmartDashboard.putNumber("Voltage", getVoltage());
+
   }
 
   // Stop the beaks movement
@@ -78,5 +79,9 @@ public class BeakSubsystem extends SubsystemBase {
 
   public double getPosition() {
     return m_encoder.getPosition();
+  }
+
+  public double getVoltage() {
+    return m_beakMotor.getBusVoltage() * m_beakMotor.getAppliedOutput();
   }
 }
