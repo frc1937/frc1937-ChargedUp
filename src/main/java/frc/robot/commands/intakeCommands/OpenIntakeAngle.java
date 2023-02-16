@@ -8,16 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class ToggleIntake extends CommandBase {
+public class OpenIntakeAngle extends CommandBase {
   private IntakeSubsystem m_intake;
-  private final double speed = IntakeConstants.INTAKE_WHEEL_SPEED;
-
-  /* 
-  * If the intake is up, lower it and open it as well as start the wheels,
-  * when the button stops being pressed, close the intake but don't raise it nor stop the wheels.
-  * If the intake is down, raise it as well as stop the wheels.
-  */
-  public ToggleIntake(IntakeSubsystem m_intake) {
+  /** Creates a new OpenIntakeAngle. */
+  public OpenIntakeAngle(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
 
     addRequirements(m_intake);
@@ -26,19 +20,18 @@ public class ToggleIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      m_intake.openIntake();
-      m_intake.setIntakeWheelSpeed(speed);
+    m_intake.movePID(1);
   }
 
-  // Called once the command ends or is interrupted.
+  // Stop the intake angle motor when it reached it's maximum position 
   @Override
   public void end(boolean interrupted) {
-    m_intake.closeIntake();
+    m_intake.stopAngle();
   }
 
-  // Returns true when the command should end.
+  // Returns true when the intake angle reached it's max position.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_intake.getPosition() >= IntakeConstants.MAXIMUM_POSITION;
   }
 }

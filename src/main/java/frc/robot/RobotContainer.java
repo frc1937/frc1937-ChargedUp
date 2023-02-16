@@ -9,8 +9,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
 import frc.robot.commands.driveCommands.ArcadeDrive;
+import frc.robot.commands.intakeCommands.CloseIntake;
+import frc.robot.commands.intakeCommands.OpenIntakePistons;
+import frc.robot.commands.intakeCommands.ToggleIntake;
+import frc.robot.commands.trackCommands.OpenTrack;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,11 +26,15 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class RobotContainer {
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem(m_intake);
+  private TrackSubsystem m_track = new TrackSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
+  private final Trigger xButton = m_driverController.x();
+  private final Trigger yButton = m_driverController.y();
+  private final Trigger aButton = m_driverController.a();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,6 +53,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.onTrue(new OpenIntakePistons(m_intake));
+    yButton.whileTrue(new ToggleIntake(m_intake));
+    aButton.onTrue(new CloseIntake(m_intake));
   }
 
   /**
