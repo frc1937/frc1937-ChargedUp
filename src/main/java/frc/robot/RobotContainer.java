@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
 import frc.robot.commands.driveCommands.ArcadeDrive;
 import frc.robot.commands.intakeCommands.CloseIntake;
+import frc.robot.commands.intakeCommands.CloseIntakeAngle;
+import frc.robot.commands.intakeCommands.OpenIntakeAngle;
 import frc.robot.commands.intakeCommands.OpenIntakePistons;
 import frc.robot.commands.intakeCommands.ToggleIntake;
 import frc.robot.commands.trackCommands.OpenTrack;
@@ -52,10 +54,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    xButton.onTrue(new OpenIntakePistons(m_intake));
-    yButton.whileTrue(new ToggleIntake(m_intake));
-    aButton.onTrue(new CloseIntake(m_intake));
+    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    yButton.onTrue(new OpenIntakeAngle(m_intake));
+    aButton.onTrue(new CloseIntakeAngle(m_intake));
   }
 
   /**

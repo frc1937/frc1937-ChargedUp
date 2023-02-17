@@ -22,7 +22,7 @@ public final class Constants {
   public static class IntakeConstants {
     public static final double INTAKE_WHEEL_SPEED = 0.5;
     public static final double MINIMUM_POSITION = 0;
-    public static final double MAXIMUM_POSITION = 6000;
+    public static final double MAXIMUM_POSITION = 4000;
   }
 
   public static class DriveConstants {
