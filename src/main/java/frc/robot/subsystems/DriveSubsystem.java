@@ -22,7 +22,7 @@ public class DriveSubsystem extends SubsystemBase {
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  public DriveSubsystem(IntakeSubsystem m_intake) {
+  public DriveSubsystem() {
     m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
     m_frontRightMotor.setIdleMode(IdleMode.kBrake);
     m_rearLeftMotor.setIdleMode(IdleMode.kBrake);

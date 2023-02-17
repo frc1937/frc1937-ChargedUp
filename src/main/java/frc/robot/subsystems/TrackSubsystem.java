@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -21,7 +20,6 @@ public class TrackSubsystem extends SubsystemBase {
   private final TalonSRX m_trackMotor = new TalonSRX(Track.TRACK_MOTOR);
   private final DoubleSolenoid m_trackPiston = new DoubleSolenoid(
     PneumaticsModuleType.CTREPCM, Track.OPEN_TRACK_SOLENOID, Track.CLOSE_TRACK_SOLENOID);
-  private final Compressor m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
   // Is the track closed or opened
   private boolean trackActive = false;
@@ -30,7 +28,6 @@ public class TrackSubsystem extends SubsystemBase {
   public TrackSubsystem() {
     m_trackMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     m_trackPiston.set(Value.kReverse);
-    m_compressor.disable();
     m_trackMotor.setInverted(true);
   }
 
