@@ -48,7 +48,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
     xButton.onTrue(new CloseBeak(m_beak));
     yButton.onTrue(new OpenBeak(m_beak));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
