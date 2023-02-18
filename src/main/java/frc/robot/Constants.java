@@ -22,8 +22,10 @@ public final class Constants {
       // the velocity of the motor
       public static final double BEAK_MOTOR_SPEED = 0.2;
       // the value of the maximum and minimum position of the beak
-      public static final double BEAK_CUBE_MAX_POS = -110;
-      public static final double BEAK_CONE_MAX_POS = -60;
+      public static final double BEAK_CUBE_START_POS = -125;
+      public static final double BEAK_CUBE_HOLD_POS = -130;
+      public static final double BEAK_CUBE_MAX_POS = -135;
+      public static final double BEAK_CONE_MAX_POS = -155;
       public static final double BEAK_MIN_POS = 0;
 
       // PID variables

@@ -49,6 +49,7 @@ public class BeakSubsystem extends SubsystemBase {
     m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
     SmartDashboard.putNumber("Position", m_beakMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("Voltage", getVoltage());
+    SmartDashboard.putNumber("velocity", m_encoder.getVelocity());
 
   }
 
@@ -83,5 +84,13 @@ public class BeakSubsystem extends SubsystemBase {
 
   public double getVoltage() {
     return m_beakMotor.getBusVoltage() * m_beakMotor.getAppliedOutput();
+  }
+
+  public void setVoltage(double voltage) {
+    m_beakMotor.setVoltage(voltage);
+  }
+
+  public double getVelocity() {
+    return m_encoder.getVelocity();
   }
 }

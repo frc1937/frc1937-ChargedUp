@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CloseBeak;
+import frc.robot.commands.MoveBeak;
 import frc.robot.commands.OpenBeak;
 
 /**
@@ -29,8 +31,12 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
   private final Trigger xButton = m_driverController.x();
-  
+  private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
+
+  private final Command autoBeakCloseCommand = new SequentialCommandGroup(
+    new CloseBeak(m_beak),
+    new MoveBeak(m_beak));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -50,7 +56,9 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
     xButton.onTrue(new CloseBeak(m_beak));
+    
     yButton.onTrue(new OpenBeak(m_beak));
+    bButton.onTrue(autoBeakCloseCommand);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

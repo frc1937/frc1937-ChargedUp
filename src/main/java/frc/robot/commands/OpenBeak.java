@@ -25,6 +25,6 @@ public class OpenBeak extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(BeakConstants.BEAK_CUBE_MAX_POS, ControlType.kPosition);
+    m_beak.getController().setReference(BeakConstants.BEAK_MIN_POS, ControlType.kPosition);
   }
 }
