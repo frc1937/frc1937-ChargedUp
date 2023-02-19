@@ -5,12 +5,10 @@
 package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class CloseIntake extends CommandBase {
   private IntakeSubsystem m_intake;
-  private final double speed = IntakeConstants.INTAKE_WHEEL_SPEED;
   /** Creates a new CloseIntake. */
   public CloseIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;

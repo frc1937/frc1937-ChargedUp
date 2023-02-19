@@ -5,7 +5,6 @@
 package frc.robot.commands.trackCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
 public class CloseTrack extends CommandBase {
