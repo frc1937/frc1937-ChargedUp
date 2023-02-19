@@ -46,6 +46,7 @@ public final class Constants {
       public static final double K_I = 0;
       public static final double K_D = 0.2;
     }
+  }
     
   public static class TrackConstants {
       // The velocity of the track retraction and opening. In range [-1, 1].
@@ -78,6 +79,7 @@ public final class Constants {
   
     public static class Beak {
       public static final int BEAK_MOTOR = 3;
+    }
       
     public static class Track {
       public static final int TRACK_MOTOR = 7;
