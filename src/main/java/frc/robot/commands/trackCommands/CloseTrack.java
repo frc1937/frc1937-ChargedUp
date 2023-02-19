@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.trackCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.TrackConstants;
@@ -21,18 +21,19 @@ public class CloseTrack extends CommandBase {
   @Override
   public void initialize() {
     m_track.openPiston();
-    m_track.setSpeed(-TrackConstants.TRACK_MOVEMENT_SPEED);
+    //m_track.setSpeed(-TrackConstants.TRACK_MOVEMENT_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_track.stopMotor();
+    //m_track.stopMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_track.reachedMinSwitch(); /* @return true if reached reverse limit switch */
+    //return m_track.reachedMinSwitch(); /* @return true if reached reverse limit switch */
+    return false;
   }
 }

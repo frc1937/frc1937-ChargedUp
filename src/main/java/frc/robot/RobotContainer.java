@@ -16,6 +16,15 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CloseBeak;
 import frc.robot.commands.MoveBeak;
 import frc.robot.commands.OpenBeak;
+import frc.robot.commands.driveCommands.ArcadeDrive;
+import frc.robot.commands.intakeCommands.CloseIntake;
+import frc.robot.commands.intakeCommands.CloseIntakeAngle;
+import frc.robot.commands.intakeCommands.OpenIntakeAngle;
+import frc.robot.commands.intakeCommands.OpenIntakePistons;
+import frc.robot.commands.intakeCommands.ToggleIntake;
+import frc.robot.commands.trackCommands.OpenTrack;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +35,9 @@ import frc.robot.commands.OpenBeak;
 public class RobotContainer {
   private BeakSubsystem m_beak = new BeakSubsystem();
   private LiftSubsystem m_lift = new LiftSubsystem();
+  private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
+  private TrackSubsystem m_track = new TrackSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -35,6 +46,7 @@ public class RobotContainer {
   private final Trigger xButton = m_driverController.x();
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
+  private final Trigger aButton = m_driverController.a();
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
@@ -42,7 +54,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
   }
 
@@ -64,6 +75,9 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.onTrue(new OpenIntakeAngle(m_intake));
+    aButton.onTrue(new CloseIntakeAngle(m_intake));
   }
 
   /**
@@ -72,7 +86,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return null;
   }
 }
