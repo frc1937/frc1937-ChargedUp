@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class PhysicalProperties {
     public static class DriveConstants {
-      public static final double CONTROLLER_SENSETIVITY = 0.5;
+      public static final double CONTROLLER_SENSETIVITY = -0.75;
     }
     
     public static class TrackConstants {
