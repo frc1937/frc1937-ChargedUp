@@ -7,10 +7,10 @@ package frc.robot.commands.intakeCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class CloseIntake extends CommandBase {
+public class ResetIntake extends CommandBase {
   private IntakeSubsystem m_intake;
-  /** Creates a new CloseIntake. */
-  public CloseIntake(IntakeSubsystem m_intake) {
+  
+  public ResetIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
 
     addRequirements(m_intake);
@@ -19,7 +19,9 @@ public class CloseIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.stopIntakeWheel();
+    if(!m_intake.getSwitch()){
+      m_intake.movePID(0);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

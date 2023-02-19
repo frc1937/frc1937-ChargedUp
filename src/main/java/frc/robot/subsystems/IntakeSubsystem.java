@@ -85,4 +85,9 @@ public class IntakeSubsystem extends SubsystemBase {
   public double getPosition() {
     return m_angleMotor.getSelectedSensorPosition();
   }
+
+  public boolean getSwitch(){
+    return m_angleMotor.isRevLimitSwitchClosed() == 1;
+  }
+
 }

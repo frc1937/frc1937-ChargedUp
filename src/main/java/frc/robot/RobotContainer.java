@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -18,6 +19,9 @@ import frc.robot.commands.OpenBeak;
 import frc.robot.commands.driveCommands.ArcadeDrive;
 import frc.robot.commands.intakeCommands.CloseIntakeAngle;
 import frc.robot.commands.intakeCommands.OpenIntakeAngle;
+import frc.robot.commands.intakeCommands.OpenIntakePistons;
+import frc.robot.commands.intakeCommands.ResetIntake;
+import frc.robot.commands.intakeCommands.StartIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TrackSubsystem;
 
@@ -42,6 +46,8 @@ public class RobotContainer {
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
   private final Trigger aButton = m_driverController.a();
+  private final Trigger rbButton = m_driverController.rightBumper();
+  private final Trigger rtButton = m_driverController.rightTrigger();
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
@@ -49,6 +55,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    new ResetIntake(m_intake);
+
     configureBindings();
   }
 
@@ -66,6 +75,8 @@ public class RobotContainer {
     
     yButton.onTrue(new OpenBeak(m_beak));
     bButton.onTrue(autoBeakCloseCommand);
+
+    rbButton.onTrue(new ParallelCommandGroup(new StartIntake(m_intake), new OpenIntakePistons(m_intake)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
