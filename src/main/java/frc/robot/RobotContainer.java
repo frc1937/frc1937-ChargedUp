@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CloseBeak;
 import frc.robot.commands.MoveBeak;
@@ -24,6 +25,7 @@ import frc.robot.commands.OpenBeak;
  */
 public class RobotContainer {
   private BeakSubsystem m_beak = new BeakSubsystem();
+  private LiftSubsystem m_lift = new LiftSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
   // The robot's subsystems and commands are defined here...
 

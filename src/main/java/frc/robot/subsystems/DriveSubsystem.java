@@ -6,11 +6,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Ports.*;
+
+import frc.robot.Constants.Ports.Drive;
 
 public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_frontLeftMotor = new CANSparkMax(Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
@@ -19,12 +19,15 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_frontRightMotor = new CANSparkMax(Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
   private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
-
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+  
+
   public DriveSubsystem() {
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(true);
     m_rearRightMotor.setInverted(true);
+    m_rearLeftMotor.setInverted(false);
+    m_frontLeftMotor.setInverted(false);
   }
 
   @Override
