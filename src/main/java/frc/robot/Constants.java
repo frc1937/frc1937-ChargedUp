@@ -18,15 +18,22 @@ public final class Constants {
       public static final double CONTROLLER_SENSETIVITY = 0.5;
     }
 
-    public static class BeakConstants {
+    public static class Beak {
       // the velocity of the motor
-      public static final double BEAK_MOTOR_SPEED = 0.2;
-      // the value of the maximum and minimum position of the beak
-      public static final double BEAK_CUBE_START_POS = -125;
-      public static final double BEAK_CUBE_HOLD_POS = -130;
-      public static final double BEAK_CUBE_MAX_POS = -135;
-      public static final double BEAK_CONE_MAX_POS = -155;
-      public static final double BEAK_MIN_POS = 0;
+      public static final double BEAK_MOTOR_SPEED = 0.4;
+
+      // The value of the encoder position when starting to detect objects.
+      public static final double BEAK_CUBE_START_POSITION = -120;
+
+      // The encoder value the beak needs to catch the object
+      public static final double BEAK_CUBE_HOLD_POSITION = -135;
+      public static final double BEAK_CONE_HOLD_POS = -155;
+      
+      // If the beak passes this value then the object is a cone
+      public static final double BEAK_CUBE_MAX_POSITION = -140;
+
+      // The Minimum position of the beak
+      public static final double BEAK_MIN_POSITION = 0;
 
       // PID variables
       public static final double K_P = 3;
@@ -48,7 +55,7 @@ public final class Constants {
     public static class Elevator {}
   
     public static class Beak {
-      public static final int BEAK_MOTOR_PORT = 3;
+      public static final int BEAK_MOTOR = 3;
     }
 
     public static class Controllers {

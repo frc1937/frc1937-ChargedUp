@@ -7,9 +7,13 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.BeakConstants;
+import frc.robot.Constants.PhysicalProperties.Beak;
 import frc.robot.subsystems.BeakSubsystem;
 
+/*
+ * Moves the beak until it detects resistance, if it reaches the max position of the cube 
+ * then act as if it's a cone.
+ */
 public class MoveBeak extends CommandBase {
   private BeakSubsystem m_beak;
   /** Creates a new MoveBeak. */
@@ -22,26 +26,26 @@ public class MoveBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.setVoltage(-0.4);
+    m_beak.setVoltage(-0.7);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // Called every time the scheduler runs while tPhe command is scheduled.
   @Override
   public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POS) {
-      m_beak.getController().setReference(BeakConstants.BEAK_CONE_MAX_POS, ControlType.kPosition);
+    if (m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION) {
+      m_beak.getController().setReference(Beak.BEAK_CONE_HOLD_POS, ControlType.kPosition);
     } else {
-      m_beak.getController().setReference(BeakConstants.BEAK_CUBE_HOLD_POS, ControlType.kPosition);
+      m_beak.getController().setReference(Beak.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POS || Math.abs(m_beak.getVelocity()) < 5;
+    return m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5;
   }
 }

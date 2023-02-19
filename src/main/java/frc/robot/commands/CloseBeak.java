@@ -7,9 +7,12 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.BeakConstants;
+import frc.robot.Constants.PhysicalProperties.Beak;
 import frc.robot.subsystems.BeakSubsystem;
 
+/*
+ * Set the beaks position to the position of starting the detection
+ */
 public class CloseBeak extends CommandBase {
   private BeakSubsystem m_beak;
   /** Creates a new OpenBeak. */
@@ -22,7 +25,7 @@ public class CloseBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(BeakConstants.BEAK_CUBE_START_POS, ControlType.kPosition);
+    m_beak.getController().setReference(Beak.BEAK_CUBE_START_POSITION, ControlType.kPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +41,6 @@ public class CloseBeak extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_beak.getPosition() - BeakConstants.BEAK_CUBE_START_POS) < 1;
+    return Math.abs(m_beak.getPosition() - Beak.BEAK_CUBE_START_POSITION) < 1;
   }
 }

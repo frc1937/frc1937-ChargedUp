@@ -8,62 +8,45 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.PhysicalProperties.BeakConstants;
-import frc.robot.Constants.Ports.Beak;
+
+import frc.robot.Constants.PhysicalProperties.Beak;
+import frc.robot.Constants.Ports;
 
 public class BeakSubsystem extends SubsystemBase {
-  private CANSparkMax m_beakMotor = new CANSparkMax(Beak.BEAK_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax m_beakMotor = new CANSparkMax(Ports.Beak.BEAK_MOTOR, MotorType.kBrushless);
   private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
-  private boolean BeakRaised = true;
   
-  private double m_setPoint = 0;
-  private double k_p = BeakConstants.K_P;
-  private double k_i = BeakConstants.K_I;
-  private double k_d = BeakConstants.K_D;
+  private double k_p = Beak.K_P;
+  private double k_i = Beak.K_I;
+  private double k_d = Beak.K_D;
 
   private SparkMaxPIDController m_controller = m_beakMotor.getPIDController();
   
   /** Creates a new BeakSubsystem. */
   public BeakSubsystem() {
+    m_beakMotor.restoreFactoryDefaults();
+
     m_beakMotor.setIdleMode(IdleMode.kCoast);
     m_beakMotor.getEncoder().setPosition(0);
-    SmartDashboard.setDefaultNumber("Set point", m_setPoint);
-    SmartDashboard.setDefaultNumber("Position", m_encoder.getPosition());
     m_controller.setD(k_d);
     m_controller.setP(k_p);
     m_controller.setI(k_i);
     m_controller.setOutputRange(-0.6, 0.6);
-    SmartDashboard.setDefaultNumber("Voltage", getVoltage());
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kReverse, -180);
-    m_beakMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    m_setPoint = SmartDashboard.getNumber("Set point", m_setPoint);
-    SmartDashboard.putNumber("Position", m_beakMotor.getEncoder().getPosition());
-    SmartDashboard.putNumber("Voltage", getVoltage());
-    SmartDashboard.putNumber("velocity", m_encoder.getVelocity());
-
-  }
+  public void periodic() {}
 
   // Stop the beaks movement
   public void stopMotor() {
     m_beakMotor.stopMotor();
   }
-
-   // @return the point the motor needs to reach
-   public double getSetpoint() {
-    return m_setPoint;
-  }
  
-  // @return the pid controller
+  /*
+   * @return  PIDController of the beak motor
+   */
   public SparkMaxPIDController getController() {
     return m_controller;
   } 
@@ -73,23 +56,23 @@ public class BeakSubsystem extends SubsystemBase {
     m_beakMotor.getEncoder().setPosition(0);
   }
 
-  // @return true if the beak is raised and false if it's not
-  public boolean getBeakUp() {
-    return BeakRaised;
-  }
-
+  /*
+   * @return  The motors current position
+   */
   public double getPosition() {
     return m_encoder.getPosition();
   }
 
-  public double getVoltage() {
-    return m_beakMotor.getBusVoltage() * m_beakMotor.getAppliedOutput();
-  }
-
+  /*
+   * @param voltage the motor will get
+   */
   public void setVoltage(double voltage) {
     m_beakMotor.setVoltage(voltage);
   }
 
+  /*
+   * @return  The velocity of the motor
+   */
   public double getVelocity() {
     return m_encoder.getVelocity();
   }
