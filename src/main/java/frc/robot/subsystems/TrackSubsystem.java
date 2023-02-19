@@ -22,9 +22,6 @@ public class TrackSubsystem extends SubsystemBase {
   private final DoubleSolenoid m_trackPiston = new DoubleSolenoid(
     PneumaticsModuleType.CTREPCM, Track.OPEN_TRACK_SOLENOID, Track.CLOSE_TRACK_SOLENOID);
   private final Compressor m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-
-  // Is the track closed or opened
-  private boolean trackActive = false;
   
   /** Creates a new TrackSubsystem. */
   public TrackSubsystem() {
@@ -38,12 +35,6 @@ public class TrackSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Position : ", m_trackMotor.getSelectedSensorPosition());
-  }
-
-  // Toggle the track piston
-  public void togglePiston() {
-    m_trackPiston.toggle();
-    trackActive = !trackActive;
   }
 
   // Close the piston
