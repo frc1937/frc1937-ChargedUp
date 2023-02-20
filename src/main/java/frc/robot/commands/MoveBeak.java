@@ -16,6 +16,7 @@ import frc.robot.subsystems.BeakSubsystem;
  */
 public class MoveBeak extends CommandBase {
   private BeakSubsystem m_beak;
+  
   /** Creates a new MoveBeak. */
   public MoveBeak(BeakSubsystem m_beak) {
     this.m_beak = m_beak;

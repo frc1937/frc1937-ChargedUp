@@ -22,6 +22,7 @@ public final class Constants {
       /** The maximum position of the track motor */
       // TODO Check this value.
       public static final int MAX_MOTOR_POS = -1;
+      public static final int MIN_MOTOR_POS = -1;
     }
 
     public static class Beak {
@@ -55,7 +56,7 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final double INTAKE_WHEEL_SPEED = 0.5;
+    public static final double INTAKE_WHEEL_SPEED = 0.3;
     public static final double MINIMUM_POSITION = 0;
     public static final double MAXIMUM_POSITION = 4000;
   }
@@ -88,7 +89,7 @@ public final class Constants {
 
     public static class Lift {
       public static final int LIFT_MOTOR = 10;
-      public static final int LIFT_SWITCH = 8;
+      public static final int LIFT_SWITCH = 6;
     }
   
     public static class Beak {

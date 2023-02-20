@@ -33,12 +33,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRightMotor.setInverted(true);
     m_rearLeftMotor.setInverted(false);
     m_frontLeftMotor.setInverted(false);
+
+    m_drive.setSafetyEnabled(false);
+    m_drive.feed();
   }
 
   @Override
   public void periodic() {}
 
-  /*
+  /**
    * Drive the robot by controlling the speed and rotation
    * 
    * @param speed the speed of movement. In range [-1, 1], Positive values move the robot forwards,

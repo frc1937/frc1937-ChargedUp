@@ -6,24 +6,29 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports.Lift;
 
 public class LiftSubsystem extends SubsystemBase {
   private TalonFX m_liftMotor = new TalonFX(Lift.LIFT_MOTOR);
-  private DigitalInput m_switch = new DigitalInput(Lift.LIFT_SWITCH);
+  //private TalonSRX m_lifLimitSwitch = IntakeSubsystem.m_leftMotor;
   private boolean m_liftUp = false;
   
   /** Creates a new LiftSubsystem. */
-  public LiftSubsystem() {}
+  public LiftSubsystem() {
+    m_liftMotor.setSelectedSensorPosition(0);
+  }
 
   @Override
   public void periodic() {
     // Reset encoder if micro switch is pressed.
-    if (m_switch.get())
-      m_liftMotor.setSelectedSensorPosition(0);
+    //if (m_lifLimitSwitch.isRevLimitSwitchClosed() == 1) {
+      //m_liftMotor.setSelectedSensorPosition(0);
+    //}
+    //SmartDashboard.putBoolean("Pressed", m_lifLimitSwitch.isRevLimitSwitchClosed() == 1);
   }
 
   // Stop the lift Motor

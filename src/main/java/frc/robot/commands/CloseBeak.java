@@ -15,6 +15,7 @@ import frc.robot.subsystems.BeakSubsystem;
  */
 public class CloseBeak extends CommandBase {
   private BeakSubsystem m_beak;
+  
   /** Creates a new OpenBeak. */
   public CloseBeak(BeakSubsystem m_beak) {
     this.m_beak = m_beak;

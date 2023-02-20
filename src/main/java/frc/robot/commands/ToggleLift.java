@@ -13,11 +13,9 @@ import frc.robot.subsystems.LiftSubsystem;
  */
 public class ToggleLift extends InstantCommand {
   private LiftSubsystem m_lift;
-  private boolean m_liftup;
   /** Creates a new ToggleLift. */
   public ToggleLift(LiftSubsystem m_lift) {
     this.m_lift = m_lift;
-    this.m_liftup = m_lift.getLiftIsUp();
 
     addRequirements(m_lift);
   }
@@ -25,7 +23,7 @@ public class ToggleLift extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double motorPosition = m_liftup ? LiftConstants.MINIMUM_LIFT_POSITION : LiftConstants.MAXIMUM_LIFT_POSITION;
+    double motorPosition = m_lift.getLiftIsUp() ? LiftConstants.MINIMUM_LIFT_POSITION : LiftConstants.MAXIMUM_LIFT_POSITION;
     m_lift.setPosition(motorPosition);
   }
 }

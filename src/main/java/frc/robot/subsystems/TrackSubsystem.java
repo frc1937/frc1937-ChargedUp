@@ -20,6 +20,7 @@ public class TrackSubsystem extends SubsystemBase {
   private final TalonSRX m_trackMotor = new TalonSRX(Track.TRACK_MOTOR);
   private final DoubleSolenoid m_trackPiston = new DoubleSolenoid(
     PneumaticsModuleType.CTREPCM, Track.OPEN_TRACK_SOLENOID, Track.CLOSE_TRACK_SOLENOID);
+  private boolean isOpen = false;
 
   // Is the track closed or opened
   private boolean trackActive = false;
@@ -77,5 +78,22 @@ public class TrackSubsystem extends SubsystemBase {
   // @return  true if the motor has passed the position and false if it has yet arrived.
   public boolean reachedMaxPos() {
     return m_trackMotor.getSelectedSensorPosition() >= TrackConstants.MAX_MOTOR_POS;
+  }
+
+  /**
+   * Check whether the track is opened or closed
+   * @return true if the track is open
+   */
+  public boolean isOpen() {
+    isOpen = !isOpen;
+    return !isOpen;
+  }
+
+  /**
+   * Move the track in its position
+   * @param position  the target position the motor will arrive to
+   */
+  public void setPosition(double position) {
+    m_trackMotor.set(ControlMode.Position, position);
   }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -12,18 +13,17 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CloseBeak;
+import frc.robot.commands.CloseIntake;
 import frc.robot.commands.MoveBeak;
 import frc.robot.commands.OpenBeak;
-import frc.robot.commands.driveCommands.ArcadeDrive;
-import frc.robot.commands.intakeCommands.CloseIntakeAngle;
-import frc.robot.commands.intakeCommands.OpenIntakeAngle;
-import frc.robot.commands.intakeCommands.OpenIntakePistons;
-import frc.robot.commands.intakeCommands.ResetIntake;
-import frc.robot.commands.intakeCommands.StartIntake;
+import frc.robot.commands.OpenIntake;
+import frc.robot.commands.ResetIntakeAngle;
+import frc.robot.commands.ToggleIntakePistons;
+import frc.robot.commands.ToggleLift;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.TrackSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,10 +33,9 @@ import frc.robot.subsystems.TrackSubsystem;
  */
 public class RobotContainer {
   private BeakSubsystem m_beak = new BeakSubsystem();
-  private LiftSubsystem m_lift = new LiftSubsystem();
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
-  private TrackSubsystem m_track = new TrackSubsystem();
+  private LiftSubsystem m_lift = new LiftSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -48,6 +47,8 @@ public class RobotContainer {
   private final Trigger aButton = m_driverController.a();
   private final Trigger rbButton = m_driverController.rightBumper();
   private final Trigger rtButton = m_driverController.rightTrigger();
+  private final Trigger lbButton = m_driverController.leftBumper();
+  private final Trigger ltButton = m_driverController.leftTrigger();
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
@@ -55,8 +56,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    new ResetIntake(m_intake);
 
     configureBindings();
   }
@@ -72,18 +71,17 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    
-    yButton.onTrue(new OpenBeak(m_beak));
-    bButton.onTrue(autoBeakCloseCommand);
 
-    rbButton.onTrue(new ParallelCommandGroup(new StartIntake(m_intake), new OpenIntakePistons(m_intake)));
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    rtButton.whileTrue(new OpenIntake(m_intake));
+    rbButton.onTrue(new CloseIntake(m_intake));
+    lbButton.onTrue(autoBeakCloseCommand);
+    ltButton.onTrue(new OpenBeak(m_beak));
+    xButton.onTrue(new ToggleIntakePistons(m_intake));
+  }
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    xButton.onTrue(new OpenIntakeAngle(m_intake));
-    aButton.onTrue(new CloseIntakeAngle(m_intake));
+
+  public void teleopInit() {
+    new ResetIntakeAngle(m_intake).schedule();
   }
 
   /**
