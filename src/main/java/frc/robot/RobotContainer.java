@@ -5,12 +5,21 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
+import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
-import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.CloseBeak;
+import frc.robot.commands.MoveBeak;
+import frc.robot.commands.OpenBeak;
+import frc.robot.commands.driveCommands.ArcadeDrive;
+import frc.robot.commands.intakeCommands.CloseIntakeAngle;
+import frc.robot.commands.intakeCommands.OpenIntakeAngle;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,17 +28,27 @@ import frc.robot.commands.ArcadeDrive;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private BeakSubsystem m_beak = new BeakSubsystem();
   private LiftSubsystem m_lift = new LiftSubsystem();
+  private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
+  private TrackSubsystem m_track = new TrackSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
+  private final Trigger xButton = m_driverController.x();
+  private final Trigger bButton = m_driverController.b();
+  private final Trigger yButton = m_driverController.y();
+  private final Trigger aButton = m_driverController.a();
+
+  private final Command autoBeakCloseCommand = new SequentialCommandGroup(
+    new CloseBeak(m_beak),
+    new MoveBeak(m_beak));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
   }
 
@@ -45,10 +64,15 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
     
+    yButton.onTrue(new OpenBeak(m_beak));
+    bButton.onTrue(autoBeakCloseCommand);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    //m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.onTrue(new OpenIntakeAngle(m_intake));
+    aButton.onTrue(new CloseIntakeAngle(m_intake));
   }
 
   /**
@@ -57,7 +81,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return null;
   }
 }
