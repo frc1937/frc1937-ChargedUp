@@ -85,7 +85,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
    // Toggle the intake pistons
   public void togglePistons() {
-    m_intakePistons.toggle();
+    m_intakePistons.set(m_intakePistons.get() == Value.kForward ? Value.kReverse : Value.kForward);;
   }
 
   /**

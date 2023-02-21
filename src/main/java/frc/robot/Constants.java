@@ -57,7 +57,7 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final double INTAKE_WHEEL_SPEED = 0.3;
+    public static final double INTAKE_WHEEL_SPEED = 0.4;
     public static final double MINIMUM_POSITION = 0;
     public static final double MAXIMUM_POSITION = 4000;
   }

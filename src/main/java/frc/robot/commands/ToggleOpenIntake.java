@@ -23,12 +23,9 @@ public class ToggleOpenIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (!m_intake.getIsUp()) {
-      m_intake.togglePistons();
-    } else {
-      m_intake.movePID(1);
-      m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
-      m_intake.setIsUp(false);
-    }
+    m_intake.movePID(1);
+    m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
+    m_intake.setIsUp(false);
+    m_intake.togglePistons();
   }
 }

@@ -28,6 +28,7 @@ public class CloseIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.setIsUp(true);
+    m_intake.closeIntake();
   }
 
   // Returns true when the command should end.
