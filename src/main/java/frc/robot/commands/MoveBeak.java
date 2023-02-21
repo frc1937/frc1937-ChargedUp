@@ -7,7 +7,7 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.Beak;
+import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
 /*
@@ -38,16 +38,16 @@ public class MoveBeak extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION && m_beak.isBeakAble()) {
-      m_beak.getController().setReference(Beak.BEAK_CONE_HOLD_POS, ControlType.kPosition);
+    if (m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POSITION && m_beak.isBeakAble()) {
+      m_beak.getController().setReference(BeakConstants.BEAK_CONE_HOLD_POS, ControlType.kPosition);
     } else if (m_beak.isBeakAble()) {
-      m_beak.getController().setReference(Beak.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
+      m_beak.getController().setReference(BeakConstants.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5 || !m_beak.isBeakAble();
+    return m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5 || !m_beak.isBeakAble();
   }
 }

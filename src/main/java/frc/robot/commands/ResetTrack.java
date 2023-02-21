@@ -8,20 +8,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TrackSubsystem;
 
 public class ResetTrack extends CommandBase {
-  private TrackSubsystem m_track;
-
+  private final TrackSubsystem m_track;
   /** Creates a new ResetTrack. */
   public ResetTrack(TrackSubsystem m_track) {
     this.m_track = m_track;
 
     addRequirements(m_track);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.closePiston();
-    m_track.setSpeed(0);
+    m_track.setSpeed(-0.4);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,11 +29,15 @@ public class ResetTrack extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_track.resetEncoder();
+    m_track.stopMotor();
+    m_track.closePiston();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_track.reachedMinSwitch();
   }
 }

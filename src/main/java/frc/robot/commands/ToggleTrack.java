@@ -20,8 +20,8 @@ public class ToggleTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double speed = m_track.isOpen() ? -TrackConstants.TRACK_MOVEMENT_SPEED : TrackConstants.TRACK_MOVEMENT_SPEED;
-    m_track.setSpeed(speed);
+    double targetPosition = m_track.isOpen() ? TrackConstants.MINIMUM_MOTOR_POS : TrackConstants.MAXIMUM_MOTOR_POS;
+    m_track.setPosition(targetPosition);
   }
 
   // Called once the command ends or is interrupted.
@@ -29,13 +29,21 @@ public class ToggleTrack extends CommandBase {
   public void end(boolean interrupted) {
     if (m_track.isOpen())
       m_track.closePiston();
-    else 
+    else
       m_track.openPiston();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_track.reachedMaxSwitch() && !m_track.isOpen()) || (m_track.reachedMinSwitch() && m_track.isOpen());
+    return isClosed() || isOpened();
+  }
+
+  private boolean isOpened() {
+    return !m_track.isOpen() && m_track.getPosition() > TrackConstants.MAXIMUM_MOTOR_POS - TrackConstants.MAXIMUM_TOLERANCE;
+  }
+
+  private boolean isClosed() {
+    return m_track.isOpen() && m_track.getPosition() <= 1000;
   }
 }

@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -25,7 +23,6 @@ public class TrackSubsystem extends SubsystemBase {
   
   /** Creates a new TrackSubsystem. */
   public TrackSubsystem() {
-    m_trackMotor.configFactoryDefault();
   }
 
   @Override
@@ -33,22 +30,16 @@ public class TrackSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  // Toggle the track piston
-  public void togglePiston() {
-    isOpen = !isOpen;
-    m_trackPiston.toggle();
-  }
-
   // Close the piston
   public void closePiston() {
-    m_trackPiston.set(Value.kReverse);
     isOpen = false;
+    m_trackPiston.set(Value.kReverse);
   }
 
   // Open the piston
   public void openPiston() {
-    m_trackPiston.set(Value.kForward);
     isOpen = true;
+    m_trackPiston.set(Value.kForward);
   }
 
   // Start the movement of the track using @param speed which is the speed of the track [-1 - 1].
@@ -91,5 +82,13 @@ public class TrackSubsystem extends SubsystemBase {
    */
   public void setPosition(double position) {
     m_trackMotor.set(ControlMode.Position, position);
+  }
+
+  public double getPosition() {
+    return m_trackMotor.getSelectedSensorPosition();
+  }
+
+  public void resetEncoder() {
+    m_trackMotor.setSelectedSensorPosition(0);
   }
 }

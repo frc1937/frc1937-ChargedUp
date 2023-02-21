@@ -4,30 +4,24 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax.ControlType;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.BeakConstants;
-import frc.robot.subsystems.BeakSubsystem;
+import frc.robot.Constants.TrackConstants;
+import frc.robot.subsystems.TrackSubsystem;
 
-/*
- * Set the beaks position to the position of starting the detection
- */
-public class CloseBeak extends CommandBase {
-  private BeakSubsystem m_beak;
-  
-  /** Creates a new OpenBeak. */
-  public CloseBeak(BeakSubsystem m_beak) {
-    this.m_beak = m_beak;
+public class CloseTrack extends CommandBase {
+  private final TrackSubsystem m_track;
+  /** Creates a new CloseTrack. */
+  public CloseTrack(TrackSubsystem m_track) {
+    this.m_track = m_track;
 
-    addRequirements(m_beak);
+    addRequirements(m_track);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_beak.isBeakAble())
-      m_beak.getController().setReference(BeakConstants.BEAK_CUBE_START_POSITION, ControlType.kPosition);
+    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,12 +31,12 @@ public class CloseBeak extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_beak.stopMotor();
+    m_track.closePiston();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_beak.getPosition() - BeakConstants.BEAK_CUBE_START_POSITION) < 1 || !m_beak.isBeakAble();
+    return m_track.getPosition() <= 1000;
   }
 }

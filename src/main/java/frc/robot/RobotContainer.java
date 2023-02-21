@@ -18,11 +18,15 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CloseBeak;
 import frc.robot.commands.CloseIntake;
+import frc.robot.commands.CloseLift;
+import frc.robot.commands.CloseTrack;
 import frc.robot.commands.MoveBeak;
 import frc.robot.commands.OpenBeak;
 import frc.robot.commands.OpenIntake;
+import frc.robot.commands.OpenLift;
 import frc.robot.commands.OpenTrack;
 import frc.robot.commands.ResetIntakeAngle;
+import frc.robot.commands.ResetTrack;
 import frc.robot.commands.ConeLeft;
 import frc.robot.commands.ConeRight;
 import frc.robot.commands.ToggleIntakePistons;
@@ -50,6 +54,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
+  private final CommandJoystick m_opController = new CommandJoystick(1);
+
   private final Trigger xButton = m_driverController.x();
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
@@ -60,16 +66,17 @@ public class RobotContainer {
   private final Trigger ltButton = m_driverController.leftTrigger();
 
 
-  private final CommandJoystick m_OPController = new CommandJoystick(1);
-  private final Trigger j3Button = m_OPController.button(3);
-  private final Trigger j4Button = m_OPController.button(4);
+  private final Trigger j3Button = m_opController.button(3);
+  private final Trigger j4Button = m_opController.button(4);
 
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
     new MoveBeak(m_beak));
   private final Command raiseIntake = new ParallelCommandGroup(new CloseIntake(m_intake), new OpenBeak(m_beak));
-  private final Command ToggleIntakePistons = new ParallelCommandGroup(new ToggleTrack(m_track), new ToggleLift(m_lift));
+  private final Command ToggleLiftTrack = new ToggleLift(m_lift).alongWith(new ToggleTrack(m_track));
+  private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(new OpenTrack(m_track));
+  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(new CloseTrack(m_track));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -88,18 +95,21 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
+    xButton.onTrue(OpenLiftTrack);
+    yButton.onTrue(CloseLiftTrack);
 
-    rtButton.onTrue(new ToggleOpenIntake(m_intake));
-    rbButton.onTrue(new CloseIntake(m_intake));
+    //rtButton.onTrue(new ToggleOpenIntake(m_intake));
+    //rbButton.onTrue(new CloseIntake(m_intake));
 
 
-    j3Button.onTrue(new ConeLeft(m_intake));
-    j4Button.onTrue(new ConeRight(m_intake));
+    //j3Button.onTrue(new ConeLeft(m_intake));
+    //j4Button.onTrue(new ConeRight(m_intake));
   }
 
 
   public void teleopInit() {
-    new ResetIntakeAngle(m_intake).schedule();
+    //new ResetIntakeAngle(m_intake).schedule();
+    new ResetTrack(m_track).schedule();
   }
 
   /**

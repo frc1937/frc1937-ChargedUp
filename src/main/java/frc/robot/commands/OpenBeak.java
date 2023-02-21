@@ -7,7 +7,7 @@ package frc.robot.commands;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.PhysicalProperties.Beak;
+import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
 /*
@@ -25,6 +25,6 @@ public class OpenBeak extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(Beak.BEAK_MIN_POSITION, ControlType.kPosition);
+    m_beak.getController().setReference(BeakConstants.BEAK_TOP_POSITION, ControlType.kPosition);
   }
 }

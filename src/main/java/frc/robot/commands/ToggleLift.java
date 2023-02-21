@@ -10,20 +10,21 @@ import frc.robot.subsystems.LiftSubsystem;
 
 public class ToggleLift extends CommandBase {
   private LiftSubsystem m_lift;
-  private boolean toTop;
+  private boolean isUp; //target place is up or down
   /** Creates a new ToggleLift. */
   public ToggleLift(LiftSubsystem m_lift) {
-    this.toTop = !m_lift.getLiftIsUp();
     this.m_lift = m_lift;
+    this.isUp = m_lift.getLiftIsUp();
 
     addRequirements(m_lift);
   }
 
   // Called when the command is initially scheduled.
+  // set the target position to the min if the currpos is up and the oppsite
   @Override
   public void initialize() {
-    double targetPos = toTop ? LiftConstants.MAXIMUM_LIFT_POSITION : LiftConstants.MINIMUM_LIFT_POSITION;
-    m_lift.setPos(targetPos);
+    double targetPos = isUp ? LiftConstants.MINIMUM_LIFT_POSITION : LiftConstants.MAXIMUM_LIFT_POSITION;
+    //m_lift.setPosition(targetPos); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.

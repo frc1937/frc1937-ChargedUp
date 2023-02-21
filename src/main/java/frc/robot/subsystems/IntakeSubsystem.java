@@ -11,11 +11,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Ports.Intake;
 
+/** The intake subsystem for controlling the intake angle and wheels */
 public class IntakeSubsystem extends SubsystemBase {
   final static TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
   final static TalonSRX m_leftMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
@@ -25,6 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
+    m_angleMotor.configFactoryDefault();
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
@@ -32,7 +33,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("asdasd", isUp);
     // This method will be called once per scheduler run
   }
   
