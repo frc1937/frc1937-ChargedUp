@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Ports.*;
@@ -21,6 +23,8 @@ import frc.robot.commands.OpenBeak;
 import frc.robot.commands.OpenIntake;
 import frc.robot.commands.OpenTrack;
 import frc.robot.commands.ResetIntakeAngle;
+import frc.robot.commands.ConeLeft;
+import frc.robot.commands.ConeRight;
 import frc.robot.commands.ToggleIntakePistons;
 import frc.robot.commands.ToggleLift;
 import frc.robot.commands.ToggleOpenIntake;
@@ -55,6 +59,12 @@ public class RobotContainer {
   private final Trigger lbButton = m_driverController.leftBumper();
   private final Trigger ltButton = m_driverController.leftTrigger();
 
+
+  private final CommandJoystick m_OPController = new CommandJoystick(1);
+  private final Trigger j3Button = m_OPController.button(3);
+  private final Trigger j4Button = m_OPController.button(4);
+
+
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
     new MoveBeak(m_beak));
@@ -81,6 +91,10 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
+
+
+    j3Button.onTrue(new ConeLeft(m_intake));
+    j4Button.onTrue(new ConeRight(m_intake));
   }
 
 
