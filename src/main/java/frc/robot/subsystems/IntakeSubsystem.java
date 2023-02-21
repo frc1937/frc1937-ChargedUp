@@ -62,6 +62,14 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
+   * @param speed - A value that represents the speed of the motors [-1 - 1]
+   */
+  public void setIntakeWheelSpeedOutside(double speed) {
+    m_leftMotor.set(ControlMode.PercentOutput, speed);
+    m_rightMotor.set(ControlMode.PercentOutput, speed);
+  }
+  
+  /**
    * Go to a position based on the slot of the PID like specified below
    * @param slotIDX - the PID slot needed (0 is for closing and 1 for opening)
    */
