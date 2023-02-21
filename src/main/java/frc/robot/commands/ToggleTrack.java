@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.PhysicalProperties.TrackConstants;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
-public class ToggleTrack extends InstantCommand {
+public class ToggleTrack extends CommandBase {
   private TrackSubsystem m_track;
-
+  /** Creates a new ToggleTrack. */
   public ToggleTrack(TrackSubsystem m_track) {
     this.m_track = m_track;
 
@@ -20,12 +20,22 @@ public class ToggleTrack extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_track.isOpen()) {
-      m_track.setPosition(TrackConstants.MAX_MOTOR_POS);
-      m_track.openPiston();
-    } else {
-      m_track.setPosition(TrackConstants.MIN_MOTOR_POS);
+    double speed = m_track.isOpen() ? -TrackConstants.TRACK_MOVEMENT_SPEED : TrackConstants.TRACK_MOVEMENT_SPEED;
+    m_track.setSpeed(speed);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    if (m_track.isOpen())
       m_track.closePiston();
-    }
+    else 
+      m_track.openPiston();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return (m_track.reachedMaxSwitch() && !m_track.isOpen()) || (m_track.reachedMinSwitch() && m_track.isOpen());
   }
 }

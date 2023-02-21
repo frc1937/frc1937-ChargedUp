@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LiftConstants;
 import frc.robot.subsystems.LiftSubsystem;
 
-/*
- * Raise the lift if it's lowered and lower it if it's raised
- */
-public class ToggleLift extends InstantCommand {
+public class ToggleLift extends CommandBase {
   private LiftSubsystem m_lift;
+  private boolean toTop;
   /** Creates a new ToggleLift. */
   public ToggleLift(LiftSubsystem m_lift) {
+    this.toTop = !m_lift.getLiftIsUp();
     this.m_lift = m_lift;
 
     addRequirements(m_lift);
@@ -23,7 +22,23 @@ public class ToggleLift extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double motorPosition = m_lift.getLiftIsUp() ? LiftConstants.MINIMUM_LIFT_POSITION : LiftConstants.MAXIMUM_LIFT_POSITION;
-    m_lift.setPosition(motorPosition);
+    double targetPos = toTop ? LiftConstants.MAXIMUM_LIFT_POSITION : LiftConstants.MINIMUM_LIFT_POSITION;
+    m_lift.setPos(targetPos);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    m_lift.stopMotor();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

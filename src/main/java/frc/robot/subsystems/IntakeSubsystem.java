@@ -17,7 +17,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Ports.Intake;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private final TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
+  final static TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
   final static TalonSRX m_leftMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
   private final TalonSRX m_rightMotor = new TalonSRX(Intake.RIGHT_INTAKE_MOTOR);
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
@@ -46,7 +46,9 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakePistons.set(Value.kReverse);
   }
 
-  // Close the intake pistons
+  /**
+   * Close the intake pistons
+   */
   public void openIntake() {
     m_intakePistons.set(Value.kForward);
   }

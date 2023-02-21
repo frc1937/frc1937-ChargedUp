@@ -20,8 +20,8 @@ public class OpenTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.closePiston();
-    m_track.setSpeed(TrackConstants.TRACK_MOVEMENT_SPEED);
+    m_track.togglePiston();
+    //m_track.setSpeed(TrackConstants.TRACK_MOVEMENT_SPEED);
   }
 
   // Called once the command ends or is interrupted.

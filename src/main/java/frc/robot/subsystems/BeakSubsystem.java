@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -19,6 +20,7 @@ import frc.robot.Constants.Ports;
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Ports.Beak.BEAK_MOTOR, MotorType.kBrushless);
   private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
+  private TalonSRX m_intakeAngleMotor = IntakeSubsystem.m_angleMotor; 
   
   private double k_p = Beak.K_P;
   private double k_i = Beak.K_I;
@@ -77,6 +79,10 @@ public class BeakSubsystem extends SubsystemBase {
    */
   public double getVelocity() {
     return m_encoder.getVelocity();
+  }
+
+  public boolean isBeakAble() {
+    return m_intakeAngleMotor.getSelectedSensorPosition() <= 200;
   }
   
 }

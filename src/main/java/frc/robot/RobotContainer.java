@@ -19,11 +19,15 @@ import frc.robot.commands.CloseIntake;
 import frc.robot.commands.MoveBeak;
 import frc.robot.commands.OpenBeak;
 import frc.robot.commands.OpenIntake;
+import frc.robot.commands.OpenTrack;
 import frc.robot.commands.ResetIntakeAngle;
 import frc.robot.commands.ToggleIntakePistons;
 import frc.robot.commands.ToggleLift;
+import frc.robot.commands.ToggleOpenIntake;
+import frc.robot.commands.ToggleTrack;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +40,7 @@ public class RobotContainer {
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
   private LiftSubsystem m_lift = new LiftSubsystem();
+  private TrackSubsystem m_track = new TrackSubsystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -53,6 +58,8 @@ public class RobotContainer {
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
     new MoveBeak(m_beak));
+  private final Command raiseIntake = new ParallelCommandGroup(new CloseIntake(m_intake), new OpenBeak(m_beak));
+  private final Command ToggleIntakePistons = new ParallelCommandGroup(new ToggleTrack(m_track), new ToggleLift(m_lift));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -72,11 +79,8 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
-    rtButton.whileTrue(new OpenIntake(m_intake));
+    rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-    lbButton.onTrue(autoBeakCloseCommand);
-    ltButton.onTrue(new OpenBeak(m_beak));
-    xButton.onTrue(new ToggleIntakePistons(m_intake));
   }
 
 

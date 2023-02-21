@@ -27,7 +27,8 @@ public class MoveBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.setVoltage(-0.7);
+    if (m_beak.isBeakAble())
+      m_beak.setVoltage(-0.7);
   }
 
   // Called every time the scheduler runs while tPhe command is scheduled.
@@ -37,9 +38,9 @@ public class MoveBeak extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION) {
+    if (m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION && m_beak.isBeakAble()) {
       m_beak.getController().setReference(Beak.BEAK_CONE_HOLD_POS, ControlType.kPosition);
-    } else {
+    } else if (m_beak.isBeakAble()) {
       m_beak.getController().setReference(Beak.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
     }
   }
@@ -47,6 +48,6 @@ public class MoveBeak extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5;
+    return m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5 || !m_beak.isBeakAble();
   }
 }

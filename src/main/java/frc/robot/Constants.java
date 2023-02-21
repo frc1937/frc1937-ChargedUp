@@ -34,7 +34,7 @@ public final class Constants {
 
       // The encoder value the beak needs to catch the object
       public static final double BEAK_CUBE_HOLD_POSITION = -135;
-      public static final double BEAK_CONE_HOLD_POS = -155;
+      public static final double BEAK_CONE_HOLD_POS = -160;
       
       // If the beak passes this value then the object is a cone
       public static final double BEAK_CUBE_MAX_POSITION = -140;
@@ -52,7 +52,8 @@ public final class Constants {
   public static class TrackConstants {
       // The velocity of the track retraction and opening. In range [-1, 1].
       public static final double TRACK_MOVEMENT_SPEED = 0.5;
-      public static final int MAX_MOTOR_POS = -1;
+      public static final int MAXIMUM_MOTOR_POS = -1;
+      public static final int MINIMUM_MOTOR_POS = 0;
   }
 
   public static class IntakeConstants {
@@ -65,8 +66,8 @@ public final class Constants {
     public static final double CONTROLLER_SENSETIVITY = 0.75;
   }
   public static class LiftConstants{
-    public static final double MAXIMUM_LIFT_POSITION = 100000;
-    public static final double MINIMUM_LIFT_POSITION = 25000;
+    public static final double MAXIMUM_LIFT_POSITION = 75000;
+    public static final double MINIMUM_LIFT_POSITION = 0;
   }
 
   public static class Ports {

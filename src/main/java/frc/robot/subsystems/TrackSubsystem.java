@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -21,37 +22,33 @@ public class TrackSubsystem extends SubsystemBase {
   private final DoubleSolenoid m_trackPiston = new DoubleSolenoid(
     PneumaticsModuleType.CTREPCM, Track.OPEN_TRACK_SOLENOID, Track.CLOSE_TRACK_SOLENOID);
   private boolean isOpen = false;
-
-  // Is the track closed or opened
-  private boolean trackActive = false;
   
   /** Creates a new TrackSubsystem. */
   public TrackSubsystem() {
-    m_trackMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    m_trackPiston.set(Value.kReverse);
-    m_trackMotor.setInverted(true);
+    m_trackMotor.configFactoryDefault();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Position : ", m_trackMotor.getSelectedSensorPosition());
   }
 
   // Toggle the track piston
   public void togglePiston() {
+    isOpen = !isOpen;
     m_trackPiston.toggle();
-    trackActive = !trackActive;
   }
 
   // Close the piston
   public void closePiston() {
     m_trackPiston.set(Value.kReverse);
+    isOpen = false;
   }
 
   // Open the piston
   public void openPiston() {
     m_trackPiston.set(Value.kForward);
+    isOpen = true;
   }
 
   // Start the movement of the track using @param speed which is the speed of the track [-1 - 1].
@@ -77,7 +74,7 @@ public class TrackSubsystem extends SubsystemBase {
   // Check if the motor has arrived in its maximum position
   // @return  true if the motor has passed the position and false if it has yet arrived.
   public boolean reachedMaxPos() {
-    return m_trackMotor.getSelectedSensorPosition() >= TrackConstants.MAX_MOTOR_POS;
+    return m_trackMotor.getSelectedSensorPosition() >= TrackConstants.MAXIMUM_MOTOR_POS;
   }
 
   /**
@@ -85,8 +82,7 @@ public class TrackSubsystem extends SubsystemBase {
    * @return true if the track is open
    */
   public boolean isOpen() {
-    isOpen = !isOpen;
-    return !isOpen;
+    return isOpen;
   }
 
   /**

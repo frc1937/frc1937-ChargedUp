@@ -22,16 +22,17 @@ public class CloseIntake extends CommandBase {
   public void initialize() {
     m_intake.stopIntakeWheel();
     m_intake.movePID(0);
-    m_intake.setIsUp(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intake.setIsUp(true);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_intake.getSwitch();
   }
 }

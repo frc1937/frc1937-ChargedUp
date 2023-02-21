@@ -26,7 +26,8 @@ public class CloseBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(Beak.BEAK_CUBE_START_POSITION, ControlType.kPosition);
+    if (m_beak.isBeakAble())
+      m_beak.getController().setReference(Beak.BEAK_CUBE_START_POSITION, ControlType.kPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +43,6 @@ public class CloseBeak extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_beak.getPosition() - Beak.BEAK_CUBE_START_POSITION) < 1;
+    return Math.abs(m_beak.getPosition() - Beak.BEAK_CUBE_START_POSITION) < 1 || !m_beak.isBeakAble();
   }
 }
