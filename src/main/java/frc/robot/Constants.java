@@ -13,16 +13,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class PhysicalProperties {
-    public static class Track {
-      /** The maximum position of the track */
-      public static final int MAX_MOTOR_POS = -1;
-
-      /* The minimum position of the track */
-      public static final int MIN_MOTOR_POS = -1;
-    }
-  }
-    
   /**
    * The values of the {@link frc.robot.subsystems.TrackSubsystem} data, 
    * such as positions, velocities, mathematical constants and more 
@@ -163,7 +153,7 @@ public final class Constants {
     /**
      * The catch position of the beak for the cone
      */
-    public static final double BEAK_CONE_HOLD_POS = -160;
+    public static final double BEAK_CONE_HOLD_POS = -155;
     
     /**
      * The max position the beak could arrive to whilst catching a cube

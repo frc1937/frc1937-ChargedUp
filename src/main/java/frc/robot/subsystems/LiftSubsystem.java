@@ -26,9 +26,6 @@ public class LiftSubsystem extends SubsystemBase {
     m_liftMotor.configFactoryDefault();
 
     /** Define the reverse limit switch for the talon */
-    m_liftMotor.configReverseLimitSwitchSource(
-      RemoteLimitSwitchSource.RemoteTalonSRX,
-      LimitSwitchNormal.NormallyOpen, 5, 0);
 
     /** Configure the maximum and minimum output of the motor */
     m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX);

@@ -21,6 +21,7 @@ public class CloseIntake extends CommandBase {
   @Override
   public void initialize() {
     m_intake.stopIntakeWheel();
+    m_intake.closeIntake();
     m_intake.movePID(0);
   }
 
@@ -28,7 +29,6 @@ public class CloseIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.setIsUp(true);
-    m_intake.closeIntake();
   }
 
   // Returns true when the command should end.

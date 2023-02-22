@@ -57,7 +57,7 @@ public class RobotContainer {
     new CloseBeak(m_beak),
     new MoveBeak(m_beak));
   private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(new OpenTrack(m_track)).alongWith(new ToggleIntakePistons(m_intake));
-  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(new CloseTrack(m_track));
+  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(new CloseTrack(m_track)).alongWith(new OpenIntakePistons(m_intake));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -76,8 +76,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    xButton.onTrue(OpenLiftTrack);
-    yButton.onTrue(CloseLiftTrack);
+    yButton.onTrue(OpenLiftTrack);
+    aButton.onTrue(CloseLiftTrack);
+    bButton.onTrue(new DispenseCone(m_intake));
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
     rbButton.onTrue(new CloseIntake(m_intake).andThen(autoBeakCloseCommand));
@@ -101,5 +102,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public void disabledInit() {
+    m_intake.stopIntakeWheel();
+    m_intake.stopAngle();
+    m_track.stopMotor();
+    m_lift.stopMotor();
   }
 }
