@@ -24,6 +24,8 @@ public class LiftSubsystem extends SubsystemBase {
     m_liftMotor.configFactoryDefault();
 
     /** Define the reverse limit switch for the talon */
+    if (m_lifLimitSwitch.isRevLimitSwitchClosed() == 1)
+      m_liftMotor.setSelectedSensorPosition(0);
 
     /** Configure the maximum and minimum output of the motor */
     m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX);
