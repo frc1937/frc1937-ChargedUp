@@ -39,7 +39,7 @@ public class MoveBeak extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POSITION && m_beak.isBeakAble()) {
-      m_beak.getController().setReference(BeakConstants.BEAK_CONE_HOLD_POS, ControlType.kPosition);
+      m_beak.getController().setReference(BeakConstants.BEAK_CONE_HOLD_POSITION, ControlType.kPosition);
     } else if (m_beak.isBeakAble()) {
       m_beak.getController().setReference(BeakConstants.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
     }
