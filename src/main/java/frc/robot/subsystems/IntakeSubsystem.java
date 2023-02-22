@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -25,10 +27,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    m_angleMotor.configFactoryDefault();
+    m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
+    
+    m_angleMotor.configPeakOutputForward(0.6);
+    m_angleMotor.configPeakOutputReverse(-0.6);
+    m_angleMotor.config_kF(0, 0.4);
+    m_angleMotor.config_kP(0, 0.3);
+
+    m_angleMotor.config_kF(1, 0.025);
+    m_angleMotor.config_kP(1, 0.05);
   }
 
   @Override

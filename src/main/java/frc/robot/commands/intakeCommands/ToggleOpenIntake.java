@@ -2,20 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Open the intake for consumption of object and activate the wheels,
+ * every time this command is called the pistons are toggled.
+ * This command CANT be activated when the lift is enabled.
+ */
 public class ToggleOpenIntake extends InstantCommand {
   private IntakeSubsystem m_intake;
+  private boolean liftUp;
   
-  public ToggleOpenIntake(IntakeSubsystem m_intake) {
+  public ToggleOpenIntake(IntakeSubsystem m_intake, boolean liftUp) {
     this.m_intake = m_intake;
+    this.liftUp = liftUp;
 
     addRequirements(m_intake);
   }
@@ -23,9 +27,11 @@ public class ToggleOpenIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.movePID(1);
-    m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
-    m_intake.setIsUp(false);
-    m_intake.togglePistons();
+    if (!liftUp) {
+      m_intake.movePID(1);
+      m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
+      m_intake.setIsUp(false);
+      m_intake.togglePistons();
+    }     
   }
 }

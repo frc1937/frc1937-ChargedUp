@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -17,24 +19,32 @@ import frc.robot.Constants.Ports.Lift;
 public class LiftSubsystem extends SubsystemBase {
   private TalonFX m_liftMotor = new TalonFX(Lift.LIFT_MOTOR);
   private TalonSRX m_lifLimitSwitch = IntakeSubsystem.m_leftMotor;
-  private boolean m_liftUp;
   
   /** Creates a new LiftSubsystem. */
   public LiftSubsystem() {
+    /** Configure the talon back to factory default settings */
     m_liftMotor.configFactoryDefault();
+
+    /** Define the reverse limit switch for the talon */
+    m_liftMotor.configReverseLimitSwitchSource(
+      RemoteLimitSwitchSource.RemoteTalonSRX,
+      LimitSwitchNormal.NormallyOpen, 5, 0);
+
+    /** Configure the maximum and minimum output of the motor */
+    m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX);
+    m_liftMotor.configPeakOutputReverse(-LiftConstants.K_MAX);
+
+    /** Configure the PIDF values for slot 0 */
     m_liftMotor.config_kP(0, LiftConstants.K_P_0);
     m_liftMotor.config_kI(0, LiftConstants.K_I_0);
     m_liftMotor.config_kD(0, LiftConstants.K_D_0);
     m_liftMotor.config_kF(0, LiftConstants.K_F_0);
-    m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX_0);
-    m_liftMotor.configPeakOutputReverse(-LiftConstants.K_MAX_0);
 
+    /** Configure the PIDF values for slot 1 */
     m_liftMotor.config_kP(1, LiftConstants.K_P_1);
     m_liftMotor.config_kI(1, LiftConstants.K_I_1);
     m_liftMotor.config_kD(1, LiftConstants.K_D_1);
     m_liftMotor.config_kF(1, LiftConstants.K_F_1);
-    m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX_1);
-    m_liftMotor.configPeakOutputReverse(-LiftConstants.K_MAX_1);
   }
 
   @Override
@@ -43,21 +53,38 @@ public class LiftSubsystem extends SubsystemBase {
       m_liftMotor.setSelectedSensorPosition(0);
   }
 
-  // Stop the lift Motor
+  /** Stop the lift motor movement */
   public void stopMotor(){
     m_liftMotor.set(ControlMode.Disabled, 0);
   }
 
-  // Set the motor position
+  /** Set the lift position and change PID values to the selected slot */
   public void setPosition(double targetPosition, int slot) {
     m_liftMotor.selectProfileSlot(slot, 0);
     m_liftMotor.set(TalonFXControlMode.Position, targetPosition);
   }
 
-  // @return true if the lift is up and false if it's down.
+  /**
+   * Get the lift position and whether it's up or down
+   * @return false if the lift is in range of the limit switch and true otherwise
+   */
   public boolean getLiftIsUp() {
     return Math.abs(m_liftMotor.getSelectedSensorPosition()) < 1000;
   }
 
+  /**
+   * Get the limit switch value
+   * @return true if the limit switch is pressed and false otherwise
+   */
+  public boolean getIsRevLimitSwitchPressed() {
+    return m_lifLimitSwitch.isRevLimitSwitchClosed() == 1;
+  }
 
+  /**
+   * Set the lift movement speed
+   * @param speed the value in precenteges [-1 <-> 1] of the lift motor
+   */
+  public void setSpeed(double speed) {
+    m_liftMotor.set(ControlMode.PercentOutput, speed);
+  }
 }

@@ -32,20 +32,28 @@ public final class Constants {
    * such as positions, velocities, mathematical constants and more 
    */
   public static class TrackConstants {
+    /** The track retraction and opening speed */
       public static final double TRACK_MOVEMENT_SPEED = 0.5;
 
-      public static final int MAXIMUM_MOTOR_POS = 20000;
+      /** The maximum position of the track */
+      public static final int MAXIMUM_MOTOR_POS = 21000;
 
+      /** The minimum position of the track */
       public static final int MINIMUM_MOTOR_POS = 500;
 
+      /** the K_p value of the tracks PID controller */
       public static final double K_P = 0.3;
 
+      /** the K_i value of the tracks PID controller */
       public static final double K_I = 0;
       
+      /** the K_d value of the tracks PID controller */
       public static final double K_D = 0;
       
-      public static final double K_FF = 0;
+      /** the K_f value of the tracks PID controller */
+      public static final double K_F = 0;
 
+      /** The maximum error allowed for the opening of the track */
       public static final int MAXIMUM_TOLERANCE = 500;
   }
 
@@ -107,25 +115,32 @@ public final class Constants {
     /**
      * The maximum lift position for dispensing cones and cubes
      */
-    public static final double MAXIMUM_LIFT_POSITION = 75000;
+    public static final double MAXIMUM_LIFT_POSITION = 80000;
 
     /**
      * The minimum lift position for transferring the game object from the intake to the beak
      */
     public static final double MINIMUM_LIFT_POSITION = 0;
 
-    /** The K_p value for the track motortrl */
+    /** The K_p value for the lift motor for the 0 pid slot (trl) */
     public static final double K_P_0 = 0.15;
+
+    /** The K_i value for the lift motor for the 0 pid slot (trl) */
     public static final double K_I_0 = 0;
+    
+    /** The K_d value for the lift motor for the 0 pid slot (trl) */
     public static final double K_D_0 = 1.2;
+    
+    /** The K_f value for the lift motor for the 0 pid slot (trl) */
     public static final double K_F_0 = 0;
-    public static final double K_MAX_0 = 0.3;
+    
+    /** The K_p value for the lift motor for the 0 pid slot (trl) */
+    public static final double K_MAX = 0.3;
 
     public static final double K_P_1 = 0.1;
     public static final double K_I_1 = 0;
     public static final double K_D_1 = 0;
     public static final double K_F_1 = 0.1;
-    public static final double K_MAX_1 = 0.3;
   }
 
   /**
