@@ -15,14 +15,10 @@ package frc.robot;
 public final class Constants {
   public static class PhysicalProperties {
     public static class Track {
-      /**
-       * The maximum position of the track
-       */
+      /** The maximum position of the track */
       public static final int MAX_MOTOR_POS = -1;
 
-      /*
-       * The minimum position of the track
-       */
+      /* The minimum position of the track */
       public static final int MIN_MOTOR_POS = -1;
     }
   }
@@ -93,9 +89,9 @@ public final class Constants {
     public static final double ANGLE_KD = 0;
 
     /**
-     * The k_p value of the angle's PIDFF
+     * The k_p value of the angle's PIDF controller
      */
-    public static final double ANGLE_KFF = 0;
+    public static final double ANGLE_KF = 0;
   }
 
   /**
@@ -134,12 +130,19 @@ public final class Constants {
     /** The K_f value for the lift motor for the 0 pid slot (trl) */
     public static final double K_F_0 = 0;
     
-    /** The K_p value for the lift motor for the 0 pid slot (trl) */
+    /** The max output value for the lift motor (trl) */
     public static final double K_MAX = 0.3;
 
+    /** The K_p value for the lift motor for the 1 pid slot (trl) */
     public static final double K_P_1 = 0.1;
+
+    /** The K_i value for the lift motor for the 1 pid slot (trl) */
     public static final double K_I_1 = 0;
+
+    /** The K_d value for the lift motor for the 1 pid slot (trl) */
     public static final double K_D_1 = 0;
+
+    /** The K_f value for the lift motor for the 1 pid slot (trl) */
     public static final double K_F_1 = 0.1;
   }
 

@@ -65,6 +65,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
+   * Move the wheels to center the object and capture it
    * @param speed - A value that represents the speed of the motors [-1 - 1]
    */
   public void setIntakeWheelSpeed(double speed) {
@@ -73,6 +74,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   /**
+   * Move the wheels in oposing directions for centering it.
    * @param speed - A value that represents the speed of the motors [-1 - 1]
    */
   public void setIntakeWheelSpeedOposing(double speed) {
@@ -91,18 +93,18 @@ public class IntakeSubsystem extends SubsystemBase {
     m_angleMotor.set(ControlMode.Position, targetPosition);
   }
 
-  // Stop angle motor
+  /** Stop the angle motor */
   public void stopAngle() {
     m_angleMotor.set(ControlMode.Disabled, 0);
   }
 
-  // Stop the intake wheel motors
+  /** Stop the wheels motors */
   public void stopIntakeWheel() {
     m_leftMotor.set(ControlMode.Disabled, 0);
     m_rightMotor.set(ControlMode.Disabled, 0);
   }
 
-   // Toggle the intake pistons
+  /** Toggle the pistons */
   public void togglePistons() {
     m_intakePistons.set(m_intakePistons.get() == Value.kForward ? Value.kReverse : Value.kForward);;
   }
@@ -125,8 +127,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /**
    * Get whether the lift limit switch is activated
-   * @return  true if the limit switch is pressed.
-   * @return  false if the limit switch is open
+   * @return  true if the limit switch is pressed and false otherwise
    */
   public boolean getLiftSwitch(){
     return m_angleMotor.isRevLimitSwitchClosed() == 1;
@@ -140,10 +141,15 @@ public class IntakeSubsystem extends SubsystemBase {
     return isUp;
   }
 
+  /** Reset the intake angle encoder */
   public void resetEncoder() {
     m_angleMotor.setSelectedSensorPosition(0);
   }
 
+  /**
+   * Set the calue of the intakes position
+   * @param isIntakeUp  the new value of the intake position
+   */
   public void setIsUp(boolean isIntakeUp) {
     isUp = isIntakeUp;
   }

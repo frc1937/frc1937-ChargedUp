@@ -21,7 +21,13 @@ public class TrackSubsystem extends SubsystemBase {
   private boolean isOpen = false;
   
   /** Creates a new TrackSubsystem. */
-  public TrackSubsystem() {}
+  public TrackSubsystem() {
+    m_trackMotor.config_kP(0, 0.3);
+    m_trackMotor.config_kD(0, 0);
+    m_trackMotor.config_kI(0, 0);
+    m_trackMotor.configPeakOutputForward(0.6);
+    m_trackMotor.configPeakOutputReverse(-0.6);
+  }
 
   @Override
   public void periodic() {

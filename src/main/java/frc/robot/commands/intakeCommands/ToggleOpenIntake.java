@@ -15,11 +15,11 @@ import frc.robot.subsystems.IntakeSubsystem;
  */
 public class ToggleOpenIntake extends InstantCommand {
   private IntakeSubsystem m_intake;
-  private boolean liftUp;
+  private boolean liftDown;
   
-  public ToggleOpenIntake(IntakeSubsystem m_intake, boolean liftUp) {
+  public ToggleOpenIntake(IntakeSubsystem m_intake, boolean liftDown) {
     this.m_intake = m_intake;
-    this.liftUp = liftUp;
+    this.liftDown = liftDown;
 
     addRequirements(m_intake);
   }
@@ -27,7 +27,7 @@ public class ToggleOpenIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (!liftUp) {
+    if (liftDown) {
       m_intake.movePID(1);
       m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
       m_intake.setIsUp(false);

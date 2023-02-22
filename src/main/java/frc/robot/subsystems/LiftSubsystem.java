@@ -66,9 +66,9 @@ public class LiftSubsystem extends SubsystemBase {
 
   /**
    * Get the lift position and whether it's up or down
-   * @return false if the lift is in range of the limit switch and true otherwise
+   * @return true if the lift is in range of the limit switch and false otherwise
    */
-  public boolean getLiftIsUp() {
+  public boolean getLiftIsDown() {
     return Math.abs(m_liftMotor.getSelectedSensorPosition()) < 1000;
   }
 

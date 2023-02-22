@@ -79,7 +79,7 @@ public class RobotContainer {
     xButton.onTrue(OpenLiftTrack);
     yButton.onTrue(CloseLiftTrack);
 
-    rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsUp()));
+    rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
     rbButton.onTrue(new CloseIntake(m_intake).andThen(autoBeakCloseCommand));
     lbButton.onTrue(autoBeakCloseCommand);
     ltButton.onTrue(new OpenBeak(m_beak));
@@ -91,9 +91,7 @@ public class RobotContainer {
 
 
   public void teleopInit() {
-    new ResetLift(m_lift).schedule();
-    new ResetTrack(m_track).schedule();
-    new ResetIntakeAngle(m_intake).schedule();
+    new ResetTrack(m_track).andThen(new ResetIntakeAngle(m_intake)).schedule();
   }
 
   /**

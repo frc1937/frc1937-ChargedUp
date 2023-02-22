@@ -23,7 +23,7 @@ public class ConeLeft extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setIntakeWheelSpeedOposing(0.3);
+    m_intake.setIntakeWheelSpeedOposing(IntakeConstants.INTAKE_WHEEL_SPEED);
 
   }
 }

@@ -7,6 +7,7 @@ package frc.robot.commands.liftCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LiftSubsystem;
 
+/** Reset the lift's encoder after lowering it to it's lowest position */
 public class ResetLift extends CommandBase {
   private LiftSubsystem m_lift;
   /** Creates a new ResetLift. */
