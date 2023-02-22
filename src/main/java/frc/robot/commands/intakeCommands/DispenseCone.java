@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/** Dispense the object currently in the intake */
 public class DispenseCone extends InstantCommand {
   private IntakeSubsystem m_intake;
 

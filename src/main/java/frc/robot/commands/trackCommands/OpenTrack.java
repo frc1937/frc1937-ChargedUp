@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
+/** Open the track first layer and then the sencond layers piston */
 public class OpenTrack extends CommandBase {
   private TrackSubsystem m_track;
   /** Creates a new OpenTrack. */

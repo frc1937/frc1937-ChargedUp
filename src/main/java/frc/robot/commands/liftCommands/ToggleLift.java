@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.LiftConstants;
 import frc.robot.subsystems.LiftSubsystem;
 
-/** 
- * Toggle the lift, meaning that if the lift is down then raise it and if it is raised then lower it
- * */
+/** Toggle the lift, meaning that if the lift is down then raise it and if it is raised then lower it */
 public class ToggleLift extends CommandBase {
   private LiftSubsystem m_lift;
   private boolean isDown; 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
+/** Close the track first layer and then the sencond layers piston */
 public class CloseTrack extends CommandBase {
   private final TrackSubsystem m_track;
   /** Creates a new CloseTrack. */

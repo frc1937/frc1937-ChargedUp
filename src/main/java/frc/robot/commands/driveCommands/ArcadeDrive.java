@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-// Enables drivers control the robot during teleop period with xbox controller
+/**  Enables drivers control the robot during teleop period with {@link CommandXboxController XboxController */
 public class ArcadeDrive extends CommandBase {
   private DriveSubsystem m_drive;
   private CommandXboxController xboxController;

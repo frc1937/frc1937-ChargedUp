@@ -7,6 +7,7 @@ package frc.robot.commands.intakeCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
+/** Reset the intake angle encoder when it reaches the limit switch */
 public class ResetIntakeAngle extends CommandBase {
   private IntakeSubsystem m_intake;
   /** Creates a new ResetIntakeAngle. */

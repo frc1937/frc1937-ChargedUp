@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/** Close the beak to the cones position */
 public class CloseCone extends InstantCommand {
   private BeakSubsystem m_beak;
   public CloseCone(BeakSubsystem m_beak) {

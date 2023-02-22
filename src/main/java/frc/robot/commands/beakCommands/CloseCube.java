@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-/** Close the beak to the cube position */
+/** Close the beak to the cubes position */
 public class CloseCube extends InstantCommand {
   private BeakSubsystem m_beak;
 

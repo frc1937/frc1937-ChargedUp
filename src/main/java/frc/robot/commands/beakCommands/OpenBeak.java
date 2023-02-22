@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-/*
- * Go to the start position of the beak
- */
+/** Go to the start position of the beak */
 public class OpenBeak extends InstantCommand {
   private BeakSubsystem m_beak;
   /** Creates a new OpenBeak. */

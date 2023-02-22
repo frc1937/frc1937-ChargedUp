@@ -6,9 +6,9 @@ package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
+/** Open the intake and it's angle also whilst opening the pistons and activating the wheels */
 public class OpenIntake extends CommandBase {
   private IntakeSubsystem m_intake;
   

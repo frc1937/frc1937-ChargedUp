@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
-/*
- * Set the beaks position to the position of starting the detection
- */
+/** Set the beaks position to the position of starting the detection */
 public class CloseBeak extends CommandBase {
   private BeakSubsystem m_beak;
   

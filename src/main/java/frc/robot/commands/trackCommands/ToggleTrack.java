@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
+/** Toggle the track and switch between its open and closed state */
 public class ToggleTrack extends CommandBase {
   private TrackSubsystem m_track;
   /** Creates a new ToggleTrack. */

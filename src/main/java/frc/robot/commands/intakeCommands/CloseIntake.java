@@ -7,6 +7,7 @@ package frc.robot.commands.intakeCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
+/** Close the intake angle and close the pistons whilst stoping the intake wheel motors */
 public class CloseIntake extends CommandBase {
   private IntakeSubsystem m_intake;
 

@@ -7,6 +7,7 @@ package frc.robot.commands.intakeCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
+/** Open the intakes pistons */
 public class OpenIntakePistons extends CommandBase {
   private IntakeSubsystem m_intake;
   /** Creates a new OpenIntakePistons. */

@@ -7,6 +7,7 @@ package frc.robot.commands.trackCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TrackSubsystem;
 
+/** Retract the track and then reset it's encoder */
 public class ResetTrack extends CommandBase {
   private final TrackSubsystem m_track;
   /** Creates a new ResetTrack. */

@@ -167,22 +167,22 @@ public final class Constants {
     public static final double BEAK_TOP_POSITION = 0;
 
     /**
-     * The k_p value of the PIDFF for the beak
+     * The k_p value of the PIDF for the beak
      */
     public static final double K_P = 3;
 
     /**
-     * The k_i value of the PIDFF for the beak
+     * The k_i value of the PIDF for the beak
      */
     public static final double K_I = 0;
 
     /**
-     * The k_d value of the PIDFF for the beak
+     * The k_d value of the PIDF for the beak
      */
     public static final double K_D = 0;
 
     /**
-     * The k_ff value of the PIDFF for the beak
+     * The k_ff value of the PIDF for the beak
      */
     public static final double K_FF = 0;
   }
