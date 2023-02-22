@@ -52,6 +52,7 @@ public class RobotContainer {
   private final Trigger j3Button = m_opController.button(3);
   private final Trigger j4Button = m_opController.button(4);
   private final Trigger j8Button = m_opController.button(8);
+  private final Trigger j7Button = m_opController.button(7);
 
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
@@ -86,8 +87,9 @@ public class RobotContainer {
     ltButton.onTrue(new OpenBeak(m_beak));
 
     j8Button.onTrue(new CloseCone(m_beak));
-    j3Button.onTrue(new ConeLeft(m_intake));
-    j4Button.onTrue(new ConeRight(m_intake));
+    j7Button.onTrue(new CloseCube(m_beak));
+    j4Button.onTrue(new ConeLeft(m_intake));
+    j3Button.onTrue(new ConeRight(m_intake));
   }
 
 
