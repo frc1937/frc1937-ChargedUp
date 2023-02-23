@@ -66,22 +66,42 @@ public final class Constants {
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KP = 0;
+    public static final double ANGLE_KP_0 = 0.3;
 
     /**
      * The k_i value of the angle's PIDFF
      */
-    public static final double ANGLE_KI = 0;
+    public static final double ANGLE_KI_0 = 0;
 
     /**
      * The k_d value of the angle's PIDFF
      */
-    public static final double ANGLE_KD = 0;
+    public static final double ANGLE_KD_0 = 0;
 
     /**
-     * The k_p value of the angle's PIDF controller
+     * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KF = 0;
+    public static final double ANGLE_KF_0 = 0.4;
+
+    /**
+     * The k_p value of the angle's PIDFF
+     */
+    public static final double ANGLE_KP_1 = 0.05;
+
+    /**
+     * The k_i value of the angle's PIDFF
+     */
+    public static final double ANGLE_KI_1 = 0;
+
+    /**
+     * The k_d value of the angle's PIDFF
+     */
+    public static final double ANGLE_KD_1 = 0;
+
+    /**
+     * The k_p value of the angle's PIDFF
+     */
+    public static final double ANGLE_KF_1 = 0.025;
   }
 
   /**
@@ -169,7 +189,7 @@ public final class Constants {
     /**
      * The k_p value of the PIDF for the beak
      */
-    public static final double K_P = 3;
+    public static final double K_P = 3.0;
 
     /**
      * The k_i value of the PIDF for the beak
