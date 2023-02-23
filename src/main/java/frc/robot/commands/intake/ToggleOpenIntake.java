@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.intakeCommands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.IntakeConstants;
@@ -28,9 +28,12 @@ public class ToggleOpenIntake extends InstantCommand {
   @Override
   public void initialize() {
     if (liftDown) {
-      m_intake.movePID(1);
-      m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
-      m_intake.setIsUp(false);
+      if (m_intake.currentlyUp()) {
+        m_intake.movePID(1);
+        m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
+        m_intake.setIsUp(false);
+        m_intake.openIntake();
+      }
       m_intake.togglePistons();
     }     
   }

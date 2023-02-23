@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.Ports.*;
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.beakCommands.*;
-import frc.robot.commands.trackCommands.*;
-import frc.robot.commands.liftCommands.*;
-import frc.robot.commands.driveCommands.*;
-import frc.robot.commands.intakeCommands.*;
+import frc.robot.Constants.Ports.*;
+import frc.robot.commands.beak.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.lift.*;
+import frc.robot.commands.track.*;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.TrackSubsystem;
@@ -58,8 +58,14 @@ public class RobotContainer {
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
     new CloseBeak(m_beak),
     new MoveBeak(m_beak));
-  private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(new OpenTrack(m_track)).alongWith(new ToggleIntakePistons(m_intake));
-  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(new CloseTrack(m_track)).alongWith(new OpenIntakePistons(m_intake));
+
+  /** Open the lift and track simultaneously */
+  private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
+    new OpenTrack(m_track)).alongWith(new ToggleIntakePistons(m_intake));
+
+  /** Close the lift and the track simultaneously */
+  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
+    new CloseTrack(m_track)).alongWith(new OpenIntakePistons(m_intake));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

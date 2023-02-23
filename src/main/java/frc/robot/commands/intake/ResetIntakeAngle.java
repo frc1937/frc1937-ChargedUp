@@ -2,26 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.trackCommands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.TrackConstants;
-import frc.robot.subsystems.TrackSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-/** Close the track first layer and then the sencond layers piston */
-public class CloseTrack extends CommandBase {
-  private final TrackSubsystem m_track;
-  /** Creates a new CloseTrack. */
-  public CloseTrack(TrackSubsystem m_track) {
-    this.m_track = m_track;
+/** Reset the intake angle encoder when it reaches the limit switch */
+public class ResetIntakeAngle extends CommandBase {
+  private IntakeSubsystem m_intake;
+  /** Creates a new ResetIntakeAngle. */
+  public ResetIntakeAngle(IntakeSubsystem m_intake) {
+    this.m_intake = m_intake;
 
-    addRequirements(m_track);
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
+    m_intake.stopIntakeWheel();
+    m_intake.setAngleSpeed(-0.4);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,12 +31,13 @@ public class CloseTrack extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_track.closePiston();
+    m_intake.resetEncoder();
+    m_intake.closeIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_track.getPosition() <= 1000;
+    return m_intake.getSwitch();
   }
 }

@@ -2,40 +2,39 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.intakeCommands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-/** Open the intake and it's angle also whilst opening the pistons and activating the wheels */
-public class OpenIntake extends CommandBase {
+/** Close the intake angle and close the pistons whilst stoping the intake wheel motors */
+public class CloseIntake extends CommandBase {
   private IntakeSubsystem m_intake;
-  
-  public OpenIntake(IntakeSubsystem m_intake) {
-    this.m_intake = m_intake;
 
+  /** Creates a new CloseIntkae. */
+  public CloseIntake(IntakeSubsystem m_intake) {
+    this.m_intake = m_intake;
+    
     addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.openIntake();
-    m_intake.movePID(1);
-    m_intake.setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
-    m_intake.setIsUp(false);
+    m_intake.stopIntakeWheel();
+    m_intake.closeIntake();
+    m_intake.movePID(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.closeIntake();
+    m_intake.setIsUp(true);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_intake.getSwitch();
   }
 }
