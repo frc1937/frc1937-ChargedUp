@@ -49,6 +49,8 @@ public class RobotContainer {
   private final Trigger lbButton = m_driverController.leftBumper();
   private final Trigger ltButton = m_driverController.leftTrigger();
 
+  private final Trigger J1Button =  m_opController.button(1);
+  private final Trigger J2Button = m_opController.button(2);
   private final Trigger j3Button = m_opController.button(3);
   private final Trigger j4Button = m_opController.button(4);
   private final Trigger j8Button = m_opController.button(8);
@@ -83,14 +85,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    yButton.onTrue(OpenLiftTrack);
-    aButton.onTrue(CloseLiftTrack);
     bButton.onTrue(new DispenseCone(m_intake));
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
 
+
+    J1Button.onTrue(OpenLiftTrack);
+    J2Button.onTrue(CloseLiftTrack);
     j8Button.onTrue(new CloseCone(m_beak));
     j7Button.onTrue(new CloseCube(m_beak));
     j4Button.onTrue(new ConeLeft(m_intake));
@@ -99,7 +102,7 @@ public class RobotContainer {
 
 
   public void teleopInit() {
-    new ResetTrack(m_track).andThen(new ResetIntakeAngle(m_intake)).schedule();
+    new ResetTrack(m_track).schedule();
   }
 
   /**
