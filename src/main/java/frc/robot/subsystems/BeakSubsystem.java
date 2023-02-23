@@ -4,23 +4,26 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.PhysicalProperties.Beak;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BeakConstants;
 import frc.robot.Constants.Ports;
 
+/** The beak subsystem for controlling the beaks angle */
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Ports.Beak.BEAK_MOTOR, MotorType.kBrushless);
   private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
+  private TalonSRX m_intakeAngleMotor = IntakeSubsystem.m_angleMotor; 
   
-  private double k_p = Beak.K_P;
-  private double k_i = Beak.K_I;
-  private double k_d = Beak.K_D;
+  private double k_p = BeakConstants.K_P;
+  private double k_i = BeakConstants.K_I;
+  private double k_d = BeakConstants.K_D;
 
   private SparkMaxPIDController m_controller = m_beakMotor.getPIDController();
   
@@ -76,4 +79,9 @@ public class BeakSubsystem extends SubsystemBase {
   public double getVelocity() {
     return m_encoder.getVelocity();
   }
+
+  public boolean isBeakAble() {
+    return m_intakeAngleMotor.getSelectedSensorPosition() <= 200;
+  }
+  
 }

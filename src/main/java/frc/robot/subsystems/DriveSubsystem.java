@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Ports.Drive;
 
+/** The drive subsystem for controlling the track */
 public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_frontLeftMotor = new CANSparkMax(Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
   private CANSparkMax m_rearLeftMotor = new CANSparkMax(Drive.REAR_LEFT_MOTOR, MotorType.kBrushless);
@@ -29,16 +30,19 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
     m_rearRightMotor.setIdleMode(IdleMode.kBrake);
     // Invert the direction of all the motors
-    m_frontRightMotor.setInverted(true);
-    m_rearRightMotor.setInverted(true);
-    m_rearLeftMotor.setInverted(false);
-    m_frontLeftMotor.setInverted(false);
+    m_frontRightMotor.setInverted(false);
+    m_rearRightMotor.setInverted(false);
+    m_rearLeftMotor.setInverted(true);
+    m_frontLeftMotor.setInverted(true);
+
+    m_drive.setSafetyEnabled(false);
+    m_drive.feed();
   }
 
   @Override
   public void periodic() {}
 
-  /*
+  /**
    * Drive the robot by controlling the speed and rotation
    * 
    * @param speed the speed of movement. In range [-1, 1], Positive values move the robot forwards,

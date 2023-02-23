@@ -2,13 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.trackCommands;
+package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
+/** Close the track first layer and then the sencond layers piston */
 public class CloseTrack extends CommandBase {
-  private TrackSubsystem m_track;
+  private final TrackSubsystem m_track;
   /** Creates a new CloseTrack. */
   public CloseTrack(TrackSubsystem m_track) {
     this.m_track = m_track;
@@ -19,20 +21,22 @@ public class CloseTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.openPiston();
-    //m_track.setSpeed(-TrackConstants.TRACK_MOVEMENT_SPEED);
+    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_track.stopMotor();
+    m_track.closePiston();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return m_track.reachedMinSwitch(); /* @return true if reached reverse limit switch */
-    return false;
+    return m_track.getPosition() <= 1000;
   }
 }

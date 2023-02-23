@@ -2,12 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.beak;
 
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.Beak;
+import frc.robot.Constants.BeakConstants;
 import frc.robot.subsystems.BeakSubsystem;
 
 /*
@@ -16,6 +16,7 @@ import frc.robot.subsystems.BeakSubsystem;
  */
 public class MoveBeak extends CommandBase {
   private BeakSubsystem m_beak;
+  
   /** Creates a new MoveBeak. */
   public MoveBeak(BeakSubsystem m_beak) {
     this.m_beak = m_beak;
@@ -26,7 +27,8 @@ public class MoveBeak extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.setVoltage(-0.7);
+    if (m_beak.isBeakAble())
+      m_beak.setVoltage(-0.7);
   }
 
   // Called every time the scheduler runs while tPhe command is scheduled.
@@ -36,16 +38,16 @@ public class MoveBeak extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION) {
-      m_beak.getController().setReference(Beak.BEAK_CONE_HOLD_POS, ControlType.kPosition);
-    } else {
-      m_beak.getController().setReference(Beak.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
+    if (m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POSITION && m_beak.isBeakAble()) {
+      m_beak.getController().setReference(BeakConstants.BEAK_CONE_HOLD_POSITION, ControlType.kPosition);
+    } else if (m_beak.isBeakAble()) {
+      m_beak.getController().setReference(BeakConstants.BEAK_CUBE_HOLD_POSITION, ControlType.kPosition);
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_beak.getPosition() <= Beak.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5;
+    return m_beak.getPosition() <= BeakConstants.BEAK_CUBE_MAX_POSITION || Math.abs(m_beak.getVelocity()) < 5 || !m_beak.isBeakAble();
   }
 }

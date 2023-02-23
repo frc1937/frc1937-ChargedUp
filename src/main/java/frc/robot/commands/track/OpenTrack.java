@@ -2,30 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
-
-import com.revrobotics.CANSparkMax.ControlType;
+package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.PhysicalProperties.Beak;
-import frc.robot.subsystems.BeakSubsystem;
+import frc.robot.Constants.TrackConstants;
+import frc.robot.subsystems.TrackSubsystem;
 
-/*
- * Set the beaks position to the position of starting the detection
- */
-public class CloseBeak extends CommandBase {
-  private BeakSubsystem m_beak;
-  /** Creates a new OpenBeak. */
-  public CloseBeak(BeakSubsystem m_beak) {
-    this.m_beak = m_beak;
+/** Open the track first layer and then the sencond layers piston */
+public class OpenTrack extends CommandBase {
+  private TrackSubsystem m_track;
+  /** Creates a new OpenTrack. */
+  public OpenTrack(TrackSubsystem m_track) {
+    this.m_track = m_track;
 
-    addRequirements(m_beak);
+    addRequirements(m_track);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_beak.getController().setReference(Beak.BEAK_CUBE_START_POSITION, ControlType.kPosition);
+    m_track.setPosition(TrackConstants.MAXIMUM_MOTOR_POS);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,12 +31,12 @@ public class CloseBeak extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_beak.stopMotor();
+    m_track.openPiston();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_beak.getPosition() - Beak.BEAK_CUBE_START_POSITION) < 1;
+    return m_track.getPosition() > TrackConstants.MAXIMUM_MOTOR_POS - TrackConstants.MAXIMUM_TOLERANCE;
   }
 }
