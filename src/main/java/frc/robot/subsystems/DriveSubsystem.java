@@ -67,6 +67,8 @@ public class DriveSubsystem extends SubsystemBase {
     // distance in metres
     m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42)); // TODO constants
     m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
+    m_frontLeftMotor.getEncoder().setPosition(0);
+    m_frontRightMotor.getEncoder().setPosition(0);
   }
 
   @Override
@@ -117,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   private double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 8.45;
+    return m_frontLeftMotor.getEncoder().getPosition() * 2.5;
   }
 
   /**
@@ -125,7 +127,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   private double getRightTravelDistanceMetres() {
-    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 8.45;
+    return - m_frontRightMotor.getEncoder().getPosition() * 2.5;
   }
 
   public DifferentialDriveWheelSpeeds getSpeeds() {
