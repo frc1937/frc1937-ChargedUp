@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Ports.Intake;
@@ -24,10 +25,19 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonSRX m_rightMotor = new TalonSRX(Intake.RIGHT_INTAKE_MOTOR);
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
   private boolean isUp = true;
+  public enum intakeWheelState {
+    Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Right");
+    String name;
+    private intakeWheelState(String name) {
+      this.name = name;
+    }
+  }
+  private intakeWheelState intakeState;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    m_angleMotor.configFactoryDefault();
+    this.intakeState = intakeWheelState.Stop;
+    
     m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
     m_leftMotor.setInverted(true);
@@ -46,9 +56,47 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setWheelMotorToState();
+  }
+
+  /**
+   * Get the current state of the inatke wheels
+   * @return  The current state of the intake wheels, Out, In, Right, Left, Stop.
+   */
+  public intakeWheelState getState() {
+    return intakeState;
   }
   
-  // Set the intake angle motor position to given value [revolutions].
+  /** Set the wheel speed according to the state the enunm states */
+  private void setWheelMotorToState() {
+    switch (intakeState) {
+      case Stop:
+        stopIntakeWheel();
+        break;
+      case In:
+        setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
+        break;
+      case Left:
+        setIntakeWheelSpeedOposing(IntakeConstants.INTAKE_WHEEL_SPEED);
+        break;
+      case Out:
+        setIntakeWheelSpeed(-IntakeConstants.INTAKE_WHEEL_SPEED);
+        break;
+      case Right:
+        setIntakeWheelSpeedOposing(-IntakeConstants.INTAKE_WHEEL_SPEED);
+        break;
+    }
+  }
+
+  /**
+   * Set the wheel state to the given one
+   * @param state The new state of the wheels
+   */
+  public void setWheelState(intakeWheelState state) {
+    intakeState = state;
+  }
+
+  /** Set the intake angle motor position to given value [revolutions]. */
   public void setIntakePosition(double position) {
     m_angleMotor.set(ControlMode.Position, position);
   }
@@ -58,9 +106,11 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakePistons.set(Value.kReverse);
   }
 
+
   /**
    * Close the intake pistons
    */
+
   public void openIntake() {
     m_intakePistons.set(Value.kForward);
   }
@@ -107,7 +157,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** Toggle the pistons */
   public void togglePistons() {
-    m_intakePistons.set(m_intakePistons.get() == Value.kForward ? Value.kReverse : Value.kForward);;
+    m_intakePistons.set(m_intakePistons.get() == Value.kForward ? Value.kReverse : Value.kForward);
   }
 
   /**

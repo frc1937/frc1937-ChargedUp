@@ -36,7 +36,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontLeftMotor.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
-    m_drive.feed();
   }
 
   @Override
