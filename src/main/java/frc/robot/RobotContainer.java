@@ -4,7 +4,22 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.BiConsumer;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+import com.pathplanner.lib.commands.PPRamseteCommand;
+
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -111,7 +126,27 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(1.5, 1));
+
+    HashMap<String, Command> eventMap = new HashMap<>();
+    
+    RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
+      m_drive::getPoseMetres,
+      m_drive::resetPoseMetres,
+      new RamseteController(),
+      DriveSubsystem.KINEMATICS,
+      new SimpleMotorFeedforward(1, 1),
+      m_drive::getSpeeds,
+      new PIDConstants(0.01, 0, 0),
+      m_drive::setVolts,
+      eventMap,
+      false, // TODO change me!
+      m_drive
+    );
+    
+    return autoBuilder.fullAuto(pathGroup);
+
+    // return new speedpid(m_drive);
   }
 
   public void disabledInit() {

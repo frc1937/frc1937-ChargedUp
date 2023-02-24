@@ -4,57 +4,154 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.Ports.Drive;
+import frc.robot.Constants.Ports;
 
 /** The drive subsystem for controlling the track */
 public class DriveSubsystem extends SubsystemBase {
-  private CANSparkMax m_frontLeftMotor = new CANSparkMax(Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
-  private CANSparkMax m_rearLeftMotor = new CANSparkMax(Drive.REAR_LEFT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_frontLeftMotor = new CANSparkMax(Ports.Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_rearLeftMotor = new CANSparkMax(Ports.Drive.REAR_LEFT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_frontRightMotor = new CANSparkMax(Ports.Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
+  private CANSparkMax m_rearRightMotor = new CANSparkMax(Ports.Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_left = new MotorControllerGroup(m_frontLeftMotor, m_rearLeftMotor);
-  private CANSparkMax m_frontRightMotor = new CANSparkMax(Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
-  private CANSparkMax m_rearRightMotor = new CANSparkMax(Drive.REAR_RIGHT_MOTOR, MotorType.kBrushless);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  
+
+  private WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(Ports.Drive.PIGEON_IMU);
+
+  private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
+    m_gyro.getRotation2d(),
+    getLeftTravelDistanceMetres(),
+    getRightTravelDistanceMetres()
+  );
+
+  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(Units.inchesToMeters(21)); // TODO 21" is estimate
 
   public DriveSubsystem() {
+    m_frontLeftMotor.restoreFactoryDefaults();
+    m_frontRightMotor.restoreFactoryDefaults();
+    m_rearLeftMotor.restoreFactoryDefaults();
+    m_rearRightMotor.restoreFactoryDefaults();
+
     m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
     m_frontRightMotor.setIdleMode(IdleMode.kBrake);
     m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
     m_rearRightMotor.setIdleMode(IdleMode.kBrake);
-    // Invert the direction of all the motors
-    m_frontRightMotor.setInverted(false);
-    m_rearRightMotor.setInverted(false);
-    m_rearLeftMotor.setInverted(true);
-    m_frontLeftMotor.setInverted(true);
+
+    m_frontRightMotor.setInverted(true);
+    m_rearRightMotor.setInverted(true);
+    // m_left.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
-    m_drive.feed();
+
+    // Configure the motor encoders so that their position corresponds to the wheels' travel
+    // distance in metres
+    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42)); // TODO constants
+    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("orientation", m_gyro.getAngle());
+
+    m_odometry.update(
+      m_gyro.getRotation2d(),
+      getLeftTravelDistanceMetres(),
+      getRightTravelDistanceMetres()
+    );
+  }
 
   /**
    * Drive the robot by controlling the speed and rotation
    * 
-   * @param speed the speed of movement. In range [-1, 1], Positive values move the robot forwards,
-   * negative values move it backwards. @param rotation - rotation of the movement (-180 - 180) positive 
-   * turns the robot right whilst negetive left.
+   * @param speed the speed of movement. In range [-1, 1]. Positive values move the robot forwards
+   * and negative values move it backwards.
+   * @param rotation the value, according to which the robot will turn. In range [-1, 1]. Positive
+   * values mean clockwise rotation.
    */
-  public void arcadeDrive(double speed, double rotatiion) {
-    m_drive.arcadeDrive(speed, rotatiion);
+  public void arcadeDrive(double speed, double rotation) {
+    m_drive.arcadeDrive(speed, rotation);
   }
 
-  // Stop the motors on the robot
   public void stopMotor() {
     m_drive.stopMotor();
   }
+
+  /**
+   * Reset the odometry to a known pose.
+   * 
+   * This is highly relevant at the start of a match.
+   * 
+   * @param poseMetres the new pose estimate of the robot.
+   */
+  public void resetPoseMetres(Pose2d poseMetres) {
+    m_odometry.resetPosition(
+      m_gyro.getRotation2d(),
+      getRightTravelDistanceMetres(),
+      getLeftTravelDistanceMetres(),
+      poseMetres
+    );
+  }
+
+  /**
+   * @return the total distance in metres the left side of the robot traveled since the last
+   * encoder reset
+   */
+  private double getLeftTravelDistanceMetres() {
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 8.45;
+  }
+
+  /**
+   * @return the total distance in metres the right side of the robot traveled since the last
+   * encoder reset
+   */
+  private double getRightTravelDistanceMetres() {
+    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 8.45;
+  }
+
+  public DifferentialDriveWheelSpeeds getSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftTravelDistanceMetres(), getRightTravelDistanceMetres());
+  }
+
+  public void setVolts(double left, double right) {
+    m_frontLeftMotor.setVoltage(left);
+    m_rearLeftMotor.setVoltage(left);
+    m_frontRightMotor.setVoltage(right);
+    m_rearRightMotor.setVoltage(right);
+  }
+
+  /**
+   * @return the current pose estimate of the robot in metres, in field coordinate.
+   */
+  public Pose2d getPoseMetres() {
+    return m_odometry.getPoseMeters();
+  }
+
+  // public void setSpeedsMetresPerSecond(double left, double right) {
+  //   double leftRPM = 60 * left / Units.inchesToMeters(6) / 8.45 / Math.PI;
+  //   double rightRPM = 60 * right / Units.inchesToMeters(6) / 8.45 / Math.PI;
+  //   m_frontLeftMotor.getPIDController().setReference(leftRPM, ControlType.kVelocity);
+  //   // m_rearLeftMotor.getPIDController().setReference(leftRPM, ControlType.kVelocity);
+  //   // m_frontRightMotor.getPIDController().setReference(rightRPM, ControlType.kVelocity);
+  //   // m_rearRightMotor.getPIDController().setReference(rightRPM, ControlType.kVelocity);
+  // }
 }
