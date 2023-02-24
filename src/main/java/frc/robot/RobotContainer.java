@@ -9,6 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -119,9 +125,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    /*List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(0.4, 0.3));
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(0.4, 0.3));
 
     HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("Boop", new ToggleIntakePistons(m_intake));
     
     RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
       m_drive::getPoseMetres,
@@ -135,7 +142,7 @@ public class RobotContainer {
       eventMap,
       false, // TODO change me!
       m_drive
-    );*/
+    );
     
     //return autoBuilder.fullAuto(pathGroup);
     return new AmitHot(m_drive);

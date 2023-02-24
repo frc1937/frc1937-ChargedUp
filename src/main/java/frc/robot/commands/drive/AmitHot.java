@@ -18,7 +18,7 @@ public class AmitHot extends PIDCommand {
         // The controller that the command will use
         new PIDController(0.14 ,0, 0.02),
         // This should return the measurement
-        () -> m_drive.getSpeeds().leftMetersPerSecond,
+        () -> m_drive.getLeftTravelDistanceMetres(),
         // This should return the setpoint (can also be a constant)
         () -> 2,
         // This uses the output

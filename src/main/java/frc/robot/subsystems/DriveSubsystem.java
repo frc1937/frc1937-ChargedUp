@@ -118,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the total distance in metres the left side of the robot traveled since the last
    * encoder reset
    */
-  private double getLeftTravelDistanceMetres() {
+  public double getLeftTravelDistanceMetres() {
     return m_frontLeftMotor.getEncoder().getPosition() * 2.5;
   }
 
@@ -126,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the total distance in metres the right side of the robot traveled since the last
    * encoder reset
    */
-  private double getRightTravelDistanceMetres() {
+  public double getRightTravelDistanceMetres() {
     return - m_frontRightMotor.getEncoder().getPosition() * 2.5;
   }
 
