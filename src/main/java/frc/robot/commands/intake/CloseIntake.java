@@ -6,6 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
 /** Close the intake angle and close the pistons whilst stoping the intake wheel motors */
 public class CloseIntake extends CommandBase {
@@ -21,7 +22,7 @@ public class CloseIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.stopIntakeWheel();
+    m_intake.setWheelState(intakeWheelState.Stop);
     m_intake.closeIntake();
     m_intake.movePID(0);
   }

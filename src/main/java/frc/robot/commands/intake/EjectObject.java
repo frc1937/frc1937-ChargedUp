@@ -8,21 +8,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-public class ConeLeft extends CommandBase {
+public class EjectObject extends CommandBase {
+  /** Creates a new EjectObject. */
   private IntakeSubsystem m_intake;
   private intakeWheelState old_state;
 
-  public ConeLeft(IntakeSubsystem m_intake) {
+  public EjectObject(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
 
     addRequirements(m_intake);
-    }
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     old_state = m_intake.getState();
-    m_intake.setWheelState(intakeWheelState.Left);
+    m_intake.setWheelState(intakeWheelState.Out);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -102,6 +102,8 @@ public final class Constants {
      * The k_p value of the angle's PIDFF
      */
     public static final double ANGLE_KF_1 = 0.025;
+
+    public static final double MIDDLE_POSITION = 0;
   }
 
   /**

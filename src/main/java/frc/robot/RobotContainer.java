@@ -69,6 +69,8 @@ public class RobotContainer {
   private final Trigger j4Button = m_opController.button(4);
   private final Trigger j8Button = m_opController.button(8);
   private final Trigger j7Button = m_opController.button(7);
+  private final Trigger j9Button = m_opController.button(9);
+  private final Trigger j10Button = m_opController.button(10);
 
 
   private final Command autoBeakCloseCommand = new SequentialCommandGroup(
@@ -99,7 +101,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    bButton.onTrue(new DispenseCone(m_intake));
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
     rbButton.onTrue(new CloseIntake(m_intake));
@@ -110,8 +111,10 @@ public class RobotContainer {
     J2Button.onTrue(CloseLiftTrack);
     j8Button.onTrue(new CloseCone(m_beak));
     j7Button.onTrue(new CloseCube(m_beak));
-    j4Button.onTrue(new ConeLeft(m_intake));
-    j3Button.onTrue(new ConeRight(m_intake));
+    j4Button.whileTrue(new ConeLeft(m_intake));
+    j3Button.whileTrue(new ConeRight(m_intake));
+    j9Button.onTrue(new OpenBeak(m_beak));
+    j10Button.whileTrue(new EjectObject(m_intake));
   }
 
 
@@ -155,4 +158,6 @@ public class RobotContainer {
     m_track.stopMotor();
     m_lift.stopMotor();
   }
+
+  
 }

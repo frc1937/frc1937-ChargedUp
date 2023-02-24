@@ -62,13 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
     // m_left.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
-
-    // Configure the motor encoders so that their position corresponds to the wheels' travel
-    // distance in metres
-    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42)); // TODO constants
-    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
-    m_frontLeftMotor.getEncoder().setPosition(0);
-    m_frontRightMotor.getEncoder().setPosition(0);
+    m_drive.feed();
   }
 
   @Override
