@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Ports.Intake;
@@ -141,6 +140,15 @@ public class IntakeSubsystem extends SubsystemBase {
     m_angleMotor.selectProfileSlot(slotIDX, 0);
     double targetPosition = slotIDX == 1 ? IntakeConstants.MAXIMUM_POSITION : IntakeConstants.MINIMUM_POSITION;
     isUp = !isUp;
+    m_angleMotor.set(ControlMode.Position, targetPosition);
+  }
+  public void movePID(int slotIDX, boolean toMiddle) {
+    m_angleMotor.selectProfileSlot(slotIDX, 0);
+    double targetPosition = slotIDX == 1 ? IntakeConstants.MAXIMUM_POSITION : IntakeConstants.MINIMUM_POSITION;
+    if (toMiddle) 
+      targetPosition = IntakeConstants.MIDDLE_POSITION;
+    else
+      isUp = !isUp;
     m_angleMotor.set(ControlMode.Position, targetPosition);
   }
 
