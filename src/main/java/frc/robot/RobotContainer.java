@@ -100,7 +100,7 @@ public class RobotContainer {
     j4Button.whileTrue(new ConeLeft(m_intake));
     j3Button.whileTrue(new ConeRight(m_intake));
     j9Button.onTrue(new OpenBeak(m_beak));
-    j10Button.whileTrue(new EjectObject(m_intake));
+    xButton.whileTrue(new EjectObject(m_intake));
   }
 
 
