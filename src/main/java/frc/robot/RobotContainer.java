@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -18,7 +16,6 @@ import com.pathplanner.lib.auto.RamseteAutoBuilder;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -147,8 +144,7 @@ public class RobotContainer {
       m_drive
     );
     
-    //return autoBuilder.fullAuto(pathGroup);
-    return new AmitHot(m_drive);
+    return autoBuilder.fullAuto(pathGroup);
     // return new speedpid(m_drive);
   }
 

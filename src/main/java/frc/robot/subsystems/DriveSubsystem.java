@@ -4,13 +4,8 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -68,6 +63,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("orientation", m_gyro.getAngle());
+    SmartDashboard.putNumber("Pose2dX", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Pose2dY", m_odometry.getPoseMeters().getY());
 
     m_odometry.update(
       m_gyro.getRotation2d(),
@@ -113,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * 2.5;
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 5.355;
   }
 
   /**
@@ -121,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getRightTravelDistanceMetres() {
-    return - m_frontRightMotor.getEncoder().getPosition() * 2.5;
+    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 5.355;
   }
 
   public DifferentialDriveWheelSpeeds getSpeeds() {
@@ -129,10 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setVolts(double left, double right) {
-    m_frontLeftMotor.setVoltage(left);
-    m_rearLeftMotor.setVoltage(left);
-    m_frontRightMotor.setVoltage(right);
-    m_rearRightMotor.setVoltage(right);
+    m_drive.tankDrive(left / 20, right / 20);
   }
 
   /**
@@ -141,13 +135,4 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPoseMetres() {
     return m_odometry.getPoseMeters();
   }
-
-  // public void setSpeedsMetresPerSecond(double left, double right) {
-  //   double leftRPM = 60 * left / Units.inchesToMeters(6) / 8.45 / Math.PI;
-  //   double rightRPM = 60 * right / Units.inchesToMeters(6) / 8.45 / Math.PI;
-  //   m_frontLeftMotor.getPIDController().setReference(leftRPM, ControlType.kVelocity);
-  //   // m_rearLeftMotor.getPIDController().setReference(leftRPM, ControlType.kVelocity);
-  //   // m_frontRightMotor.getPIDController().setReference(rightRPM, ControlType.kVelocity);
-  //   // m_rearRightMotor.getPIDController().setReference(rightRPM, ControlType.kVelocity);
-  // }
 }
