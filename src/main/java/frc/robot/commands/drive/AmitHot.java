@@ -23,7 +23,7 @@ public class AmitHot extends PIDCommand {
         () -> 2,
         // This uses the output
         output -> {
-          m_drive.setVolts(output, output);
+          m_drive.setVoltage(output, output);
           // Use the output here
         });
       addRequirements(m_drive);

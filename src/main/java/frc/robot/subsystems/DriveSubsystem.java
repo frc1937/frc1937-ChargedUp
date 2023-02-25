@@ -39,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
     getRightTravelDistanceMetres()
   );
 
-  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(Units.inchesToMeters(21)); // TODO 21" is estimate
+  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(0.44); // TODO 21" is estimate
 
   public DriveSubsystem() {
     m_frontLeftMotor.restoreFactoryDefaults();
@@ -52,8 +52,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
     m_rearRightMotor.setIdleMode(IdleMode.kBrake);
 
-    m_frontRightMotor.setInverted(true);
-    m_rearRightMotor.setInverted(true);
+    m_right.setInverted(true);
+
+    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
+    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
+    m_frontLeftMotor.getEncoder().setVelocityConversionFactor((1.0 / 42));
+    m_frontRightMotor.getEncoder().setVelocityConversionFactor((1.0 / 42));
+
+    m_frontLeftMotor.getEncoder().setPosition(0);
+    m_frontRightMotor.getEncoder().setPosition(0);
     // m_left.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
@@ -62,9 +69,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("orientation", m_gyro.getAngle());
+    SmartDashboard.putNumber("orientation", m_gyro.getAngle() % 360);
     SmartDashboard.putNumber("Pose2dX", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose2dY", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("left [m]", getLeftTravelDistanceMetres());
+    SmartDashboard.putNumber("right [m]", getRightTravelDistanceMetres());
 
     m_odometry.update(
       m_gyro.getRotation2d(),
@@ -110,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 5.355;
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
   /**
@@ -118,15 +127,32 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getRightTravelDistanceMetres() {
-    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 5.355;
+    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+  }
+
+  /**
+   * @return the total distance in metres the left side of the robot traveled since the last
+   * encoder reset
+   */
+  public double getLeftTravelVelocityMetresPerSecond() {
+    return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+  }
+
+  /**
+   * @return the total distance in metres the right side of the robot traveled since the last
+   * encoder reset
+   */
+  public double getRightTravelVelocityMetresPerSecond() {
+    return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
   public DifferentialDriveWheelSpeeds getSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftTravelDistanceMetres(), getRightTravelDistanceMetres());
+    return new DifferentialDriveWheelSpeeds(getLeftTravelVelocityMetresPerSecond(), getRightTravelVelocityMetresPerSecond());
   }
 
-  public void setVolts(double left, double right) {
-    m_drive.tankDrive(left / 20, right / 20);
+  public void setVoltage(double left, double right) {
+    m_left.setVoltage(left);
+    m_right.setVoltage(right);
   }
 
   /**

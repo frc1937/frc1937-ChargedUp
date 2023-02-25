@@ -116,7 +116,7 @@ public class RobotContainer {
 
 
   public void teleopInit() {
-    new ResetTrack(m_track).schedule();
+    // new ResetTrack(m_track).schedule();
   }
 
   /**
@@ -125,20 +125,20 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(0.4, 0.3));
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(3, 3));
 
     HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("Boop", new ToggleIntakePistons(m_intake));
+    //eventMap.put("Boop", new ToggleIntakePistons(m_intake));
     
     RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
       m_drive::getPoseMetres,
       m_drive::resetPoseMetres,
       new RamseteController(),
       DriveSubsystem.KINEMATICS,
-      new SimpleMotorFeedforward(0.23732, 2.2121, 0.38652),
+      new SimpleMotorFeedforward(0.30226, 2.7173, 0.20779),
       m_drive::getSpeeds,
-      new PIDConstants(0.035579, 0, 0),
-      m_drive::setVolts,
+      new PIDConstants(3.0355, 0, 0),
+      m_drive::setVoltage,
       eventMap,
       false, // TODO change me!
       m_drive
