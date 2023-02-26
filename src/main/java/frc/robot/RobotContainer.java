@@ -125,19 +125,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(3, 3));
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(3.25, 1.75));
 
     HashMap<String, Command> eventMap = new HashMap<>();
-    //eventMap.put("Boop", new ToggleIntakePistons(m_intake));
     
     RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
       m_drive::getPoseMetres,
       m_drive::resetPoseMetres,
       new RamseteController(),
       DriveSubsystem.KINEMATICS,
-      new SimpleMotorFeedforward(0.30226, 2.7173, 0.20779),
+      new SimpleMotorFeedforward(0.30226, 2.6, 0.20779),
       m_drive::getSpeeds,
-      new PIDConstants(3.0355, 0, 0),
+      new PIDConstants(3, 0, 0),
       m_drive::setVoltage,
       eventMap,
       false, // TODO change me!
@@ -145,7 +144,6 @@ public class RobotContainer {
     );
     
     return autoBuilder.fullAuto(pathGroup);
-    // return new speedpid(m_drive);
   }
 
   public void disabledInit() {

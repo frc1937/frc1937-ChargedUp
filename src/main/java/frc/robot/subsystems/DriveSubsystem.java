@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -65,15 +66,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_drive.setSafetyEnabled(false);
     m_drive.feed();
+    m_gyro.reset();
+    m_gyro.setYaw(0);
+    
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("orientation", m_gyro.getAngle() % 360);
-    SmartDashboard.putNumber("Pose2dX", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Pose2dY", m_odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("left [m]", getLeftTravelDistanceMetres());
-    SmartDashboard.putNumber("right [m]", getRightTravelDistanceMetres());
 
     m_odometry.update(
       m_gyro.getRotation2d(),
@@ -151,8 +151,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setVoltage(double left, double right) {
-    m_left.setVoltage(left);
-    m_right.setVoltage(right);
+    m_left.setVoltage(left / 12);
+    m_right.setVoltage(right / 12);
   }
 
   /**
