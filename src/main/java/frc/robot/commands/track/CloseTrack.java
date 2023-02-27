@@ -5,6 +5,7 @@
 package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
@@ -21,6 +22,8 @@ public class CloseTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_track.closePiston();
+    new WaitCommand(0.5);
     m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
   }
 
@@ -30,9 +33,7 @@ public class CloseTrack extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_track.closePiston();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

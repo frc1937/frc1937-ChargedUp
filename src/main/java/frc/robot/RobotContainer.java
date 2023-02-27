@@ -15,8 +15,10 @@ import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -44,20 +46,21 @@ public class RobotContainer {
   private DriveSubsystem m_drive = new DriveSubsystem();
   private LiftSubsystem m_lift = new LiftSubsystem();
   private TrackSubsystem m_track = new TrackSubsystem();
-  // The robot's subsystems and commands are defined here...
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
   private final CommandJoystick m_opController = new CommandJoystick(1);
 
-  private final Trigger xButton = m_driverController.x();
-  private final Trigger bButton = m_driverController.b();
-  private final Trigger yButton = m_driverController.y();
-  private final Trigger aButton = m_driverController.a();
+  /** All options for autonomus */
+  private SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final String m_defaultRoute = "Leave community route";
+  private final String m_itemDefaultRoute = "Game item and leave community";
+  private final String m_itemComplexRoute = "Game item and ramp";
+  private String m_selected;
+
+  /** All needed buttons on the robot */
   private final Trigger rbButton = m_driverController.rightBumper();
   private final Trigger rtButton = m_driverController.rightTrigger();
-  private final Trigger lbButton = m_driverController.leftBumper();
   private final Trigger ltButton = m_driverController.leftTrigger();
 
   private final Trigger J1Button =  m_opController.button(1);
@@ -68,11 +71,6 @@ public class RobotContainer {
   private final Trigger j7Button = m_opController.button(7);
   private final Trigger j9Button = m_opController.button(9);
   private final Trigger j10Button = m_opController.button(10);
-
-
-  private final Command autoBeakCloseCommand = new SequentialCommandGroup(
-    new CloseBeak(m_beak),
-    new MoveBeak(m_beak));
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
@@ -100,9 +98,9 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
-    rbButton.onTrue(new CloseIntake(m_intake));
-    ltButton.onTrue(new OpenBeak(m_beak));
-
+    rbButton.onTrue(new CloseTrack(m_track));
+    ltButton.onTrue(new OpenTrack(m_track));
+    
 
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
@@ -116,7 +114,7 @@ public class RobotContainer {
 
 
   public void teleopInit() {
-    // new ResetTrack(m_track).schedule();
+    //new ToggleTrack(m_track);
   }
 
   /**
@@ -125,10 +123,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Cheeky Path", new PathConstraints(3.25, 1.75));
+    m_selected = m_chooser.getSelected();
+    Command autonomusCommand = null;
 
+    /** The paths we wish to follow */
     HashMap<String, Command> eventMap = new HashMap<>();
     
+    /** The path following program */
     RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
       m_drive::getPoseMetres,
       m_drive::resetPoseMetres,
@@ -139,13 +140,32 @@ public class RobotContainer {
       new PIDConstants(3, 0, 0),
       m_drive::setVoltage,
       eventMap,
-      false, // TODO change me!
+      true, 
       m_drive
     );
+
+    /** The autonomus route according to the selected on in the smartdashboard */
+    switch (m_selected) {
+      case m_defaultRoute :
+        autonomusCommand = defaultRoute(eventMap, autoBuilder);
+        break;
+      case m_itemComplexRoute:
+      autonomusCommand = OpenLiftTrack.andThen(
+        new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
+          new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
+            new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
+        break;
+      case m_itemDefaultRoute:
+        autonomusCommand = OpenLiftTrack.andThen(
+          new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
+            new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder));
+        break;
+    }
     
-    return autoBuilder.fullAuto(pathGroup);
+    return autonomusCommand;
   }
 
+  /** Happens once uppon the robot being disabled */
   public void disabledInit() {
     m_intake.stopIntakeWheel();
     m_intake.stopAngle();
@@ -153,5 +173,36 @@ public class RobotContainer {
     m_lift.stopMotor();
   }
 
+  /**
+   * Make command to move autonomuslly from the community to the ramp.
+   * @param eventMap      the event map that includes all events.
+   * @param autoBuilder   the auto builder to make the command accorrding to the path.
+   * @return              the command that needs to be run to complete the stated path.
+   */
+  public Command commToRamp(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
+      "CommToRamp", new PathConstraints(3.25, 1.75));
+    return autoBuilder.fullAuto(pathGroup);
+  }
+
+  /**
+   * Make command to move autonomuslly from the grid to the Community.
+   * @param eventMap      the event map that includes all events.
+   * @param autoBuilder   the auto builder to make the command accorrding to the path.
+   * @return              the command that needs to be run to complete the stated path.
+   */
+  public Command defaultRoute(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
+      "DefaultRoute", new PathConstraints(3.25, 1.75));
+    return autoBuilder.fullAuto(pathGroup);
+  }
+
+  /** Happens once upon the codes being deployed */
+  public void robotInit() {
+    m_chooser.setDefaultOption(m_defaultRoute, m_defaultRoute);
+    m_chooser.addOption(m_itemDefaultRoute, m_itemDefaultRoute);
+    m_chooser.addOption(m_itemComplexRoute, m_itemComplexRoute);
+    SmartDashboard.putData("Autonomus options", m_chooser);
+  }
   
 }

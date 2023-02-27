@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -40,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
     getRightTravelDistanceMetres()
   );
 
-  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(0.44); // TODO 21" is estimate
+  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(0.44);
 
   public DriveSubsystem() {
     m_frontLeftMotor.restoreFactoryDefaults();
@@ -48,10 +47,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeftMotor.restoreFactoryDefaults();
     m_rearRightMotor.restoreFactoryDefaults();
 
-    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
-    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
-    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
-    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
+    m_frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    m_frontRightMotor.setIdleMode(IdleMode.kCoast);
+    m_rearLeftMotor.setIdleMode(IdleMode.kCoast);
+    m_rearRightMotor.setIdleMode(IdleMode.kCoast);
 
     m_right.setInverted(true);
 
@@ -62,7 +61,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_frontLeftMotor.getEncoder().setPosition(0);
     m_frontRightMotor.getEncoder().setPosition(0);
-    // m_left.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
     m_drive.feed();
@@ -131,25 +129,33 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * @return the total distance in metres the left side of the robot traveled since the last
-   * encoder reset
+   * @return the total velocity in metres per second the left side of the robot traveled since the
+   * last encoder reset
    */
   public double getLeftTravelVelocityMetresPerSecond() {
     return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
   /**
-   * @return the total distance in metres the right side of the robot traveled since the last
-   * encoder reset
+   * @return the total velocity in metres per second the right side of the robot traveled since the
+   * last encoder reset
    */
   public double getRightTravelVelocityMetresPerSecond() {
     return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
+  /**
+   * @return the speed in each side represented by differential drive
+   */  
   public DifferentialDriveWheelSpeeds getSpeeds() {
     return new DifferentialDriveWheelSpeeds(getLeftTravelVelocityMetresPerSecond(), getRightTravelVelocityMetresPerSecond());
   }
 
+  /**
+   * Set the speed of the of the motors according to the voltage
+   * @param left    the voltage in the left side
+   * @param right   the voltage in the right side
+   */
   public void setVoltage(double left, double right) {
     m_left.setVoltage(left / 12);
     m_right.setVoltage(right / 12);
@@ -160,5 +166,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Pose2d getPoseMetres() {
     return m_odometry.getPoseMeters();
+  }
+
+  public void resetYaw() {
+    m_gyro.setYaw(0);
+  }
+
+  public double getYaw() {
+    return m_gyro.getYaw();
   }
 }
