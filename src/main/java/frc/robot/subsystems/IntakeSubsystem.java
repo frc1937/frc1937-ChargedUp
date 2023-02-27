@@ -37,8 +37,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     this.intakeState = intakeWheelState.Stop;
     
-    m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);

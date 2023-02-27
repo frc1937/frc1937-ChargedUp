@@ -86,7 +86,7 @@ public final class Constants {
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KP_1 = 0.05;
+    public static final double ANGLE_KP_1 = 0.075;
 
     /**
      * The k_i value of the angle's PIDFF
