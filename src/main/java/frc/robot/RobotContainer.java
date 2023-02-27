@@ -104,7 +104,7 @@ public class RobotContainer {
   }
 
 
-  public void teleopInit() {
+  public void teleopPeriodic() {
     new CloseIntake(m_intake);
   }
 
