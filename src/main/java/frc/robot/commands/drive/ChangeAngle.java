@@ -23,7 +23,7 @@ public class ChangeAngle extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetYaw();
-    m_drive.arcadeDrive(0, 0.2);
+    m_drive.arcadeDrive(0, 0.4);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +39,6 @@ public class ChangeAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(targetAngle - m_drive.getYaw()) <= 1;
+    return Math.abs(targetAngle - m_drive.getYaw()) <= 15;
   }
 }

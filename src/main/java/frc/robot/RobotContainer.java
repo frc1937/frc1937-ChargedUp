@@ -53,10 +53,15 @@ public class RobotContainer {
 
   /** All options for autonomus */
   private SendableChooser<String> m_chooser = new SendableChooser<>();
-  private final String m_defaultRoute = "Leave community route";
-  private final String m_itemDefaultRoute = "Game item and leave community";
-  private final String m_itemComplexRoute = "Game item and ramp";
+  private final String m_defaultRoute = "Line";
+  private final String m_itemDefaultRoute = "Grid Line";
+  private final String m_itemComplexRoute = "Ramp Grid Line";
   private String m_selected;
+
+  private SendableChooser<String> m_itemChooser = new SendableChooser<>();
+  private final String m_cone = "Cone";
+  private final String m_cube = "Cube";
+  private  String m_selectedItem;
 
   /** All needed buttons on the robot */
   private final Trigger rbButton = m_driverController.rightBumper();
@@ -147,18 +152,20 @@ public class RobotContainer {
     /** The autonomus route according to the selected on in the smartdashboard */
     switch (m_selected) {
       case m_defaultRoute :
-        autonomusCommand = defaultRoute(eventMap, autoBuilder);
+        autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
         break;
       case m_itemComplexRoute:
-      autonomusCommand = OpenLiftTrack.andThen(
+        autonomusCommand = OpenLiftTrack.andThen(
         new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
           new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
             new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
+        autonomusCommand = addBeak(autonomusCommand);
         break;
       case m_itemDefaultRoute:
         autonomusCommand = OpenLiftTrack.andThen(
           new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
             new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder));
+        autonomusCommand = addBeak(autonomusCommand);
         break;
     }
     
@@ -197,12 +204,20 @@ public class RobotContainer {
     return autoBuilder.fullAuto(pathGroup);
   }
 
+  public Command addBeak(Command m_nextCommand) {
+    return (m_selectedItem == "Cube" ? new CloseCube(m_beak) : new CloseCone(m_beak)).andThen(m_nextCommand);
+  }
+
   /** Happens once upon the codes being deployed */
   public void robotInit() {
     m_chooser.setDefaultOption(m_defaultRoute, m_defaultRoute);
     m_chooser.addOption(m_itemDefaultRoute, m_itemDefaultRoute);
     m_chooser.addOption(m_itemComplexRoute, m_itemComplexRoute);
     SmartDashboard.putData("Autonomus options", m_chooser);
+
+    m_itemChooser.setDefaultOption(m_cone, m_cone);
+    m_itemChooser.addOption(m_cube, m_cube);
+    SmartDashboard.putData("Item", m_itemChooser);
   }
   
 }
