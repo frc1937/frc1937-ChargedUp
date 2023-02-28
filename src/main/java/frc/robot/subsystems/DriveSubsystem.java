@@ -181,4 +181,8 @@ public class DriveSubsystem extends SubsystemBase {
   public double getYaw() {
     return m_gyro.getYaw();
   }
+
+public WPI_PigeonIMU getGyro() {
+    return m_gyro;
+}
 }

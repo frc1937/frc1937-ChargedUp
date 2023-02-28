@@ -76,6 +76,7 @@ public class RobotContainer {
   private final Trigger j7Button = m_opController.button(7);
   private final Trigger j9Button = m_opController.button(9);
   private final Trigger j10Button = m_opController.button(10);
+  private final Trigger j11Button = m_opController.button(11);
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
@@ -113,6 +114,8 @@ public class RobotContainer {
     j4Button.whileTrue(new ConeLeft(m_intake));
     j3Button.whileTrue(new ConeRight(m_intake));
     j9Button.onTrue(new OpenBeak(m_beak));
+    j10Button.onTrue(new RampBalance(m_drive));
+    j11Button.onTrue(new AlignToPole(m_drive));
   }
 
   public void teleopInit() {}
