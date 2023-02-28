@@ -4,12 +4,12 @@
 
 package frc.robot.commands.track;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
 /** Close the track first layer and then the sencond layers piston */
-public class CloseTrack extends CommandBase {
+public class CloseTrack extends InstantCommand {
   private final TrackSubsystem m_track;
   /** Creates a new CloseTrack. */
   public CloseTrack(TrackSubsystem m_track) {
@@ -21,22 +21,7 @@ public class CloseTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
     m_track.closePiston();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return m_track.getPosition() <= 1000;
+    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
   }
 }

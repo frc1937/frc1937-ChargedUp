@@ -5,8 +5,8 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
 /**
@@ -27,7 +27,7 @@ public class ToggleOpenIntake extends InstantCommand {
   @Override
   public void initialize() {
       if (m_intake.currentlyUp()) {
-        m_intake.movePID(1);
+        m_intake.setAngleState(IntakeAngleState.Up);
         m_intake.setWheelState(intakeWheelState.In);
         m_intake.setIsUp(false);
         m_intake.openIntake();

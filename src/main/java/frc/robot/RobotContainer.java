@@ -58,18 +58,13 @@ public class RobotContainer {
   private final Trigger j9Button = m_opController.button(9);
   private final Trigger j10Button = m_opController.button(10);
 
-
-  private final Command autoBeakCloseCommand = new SequentialCommandGroup(
-    new CloseBeak(m_beak),
-    new MoveBeak(m_beak));
-
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
-    new OpenTrack(m_track)).alongWith(new ToggleIntakePistons(m_intake));
+    new OpenTrack(m_track));//.alongWith(new ToggleIntakePistons(m_intake));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
-    new CloseTrack(m_track)).alongWith(new OpenIntakePistons(m_intake));
+    new CloseTrack(m_track));//.alongWith(new OpenIntakePistons(m_intake));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -104,9 +99,7 @@ public class RobotContainer {
   }
 
 
-  public void teleopInit() {
-    new CloseIntake(m_intake);
-  }
+  public void teleopInit() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

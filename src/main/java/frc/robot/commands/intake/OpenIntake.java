@@ -5,8 +5,8 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
 /** Open the intake and it's angle also whilst opening the pistons and activating the wheels */
@@ -22,7 +22,7 @@ public class OpenIntake extends CommandBase {
   @Override
   public void initialize() {
     m_intake.openIntake();
-    m_intake.movePID(1);
+    m_intake.setAngleState(IntakeAngleState.Down);
     m_intake.setWheelState(intakeWheelState.In);
     m_intake.setIsUp(false);
   }

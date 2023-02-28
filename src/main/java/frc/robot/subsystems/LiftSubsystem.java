@@ -20,9 +20,6 @@ public class LiftSubsystem extends SubsystemBase {
   
   /** Creates a new LiftSubsystem. */
   public LiftSubsystem() {
-    /** Configure the talon back to factory default settings */
-    m_liftMotor.configFactoryDefault();
-
     /** Define the reverse limit switch for the talon */
     if (m_lifLimitSwitch.isRevLimitSwitchClosed() == 1)
       m_liftMotor.setSelectedSensorPosition(0);

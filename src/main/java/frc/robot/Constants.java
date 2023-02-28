@@ -22,13 +22,13 @@ public final class Constants {
       public static final double TRACK_MOVEMENT_SPEED = 0.5;
 
       /** The maximum position of the track */
-      public static final int MAXIMUM_MOTOR_POS = 21000;
+      public static final int MAXIMUM_MOTOR_POS = 20000;
 
       /** The minimum position of the track */
       public static final int MINIMUM_MOTOR_POS = 500;
 
       /** the K_p value of the tracks PID controller */
-      public static final double K_P = 0.3;
+      public static final double K_P = 0.5;
 
       /** the K_i value of the tracks PID controller */
       public static final double K_I = 0;
@@ -37,7 +37,7 @@ public final class Constants {
       public static final double K_D = 0;
       
       /** the K_f value of the tracks PID controller */
-      public static final double K_F = 0;
+      public static final double K_F = 0.1;
 
       /** The maximum error allowed for the opening of the track */
       public static final int MAXIMUM_TOLERANCE = 500;
@@ -61,7 +61,10 @@ public final class Constants {
     /**
      * The intake angle's maximum position
      */
-    public static final double MAXIMUM_POSITION = 4000;
+    public static final double MAXIMUM_POSITION = 8000;
+
+    /** The middle positon of the encoder */
+    public static final double MIDDLE_POSITION = 4000;
 
     /**
      * The k_p value of the angle's PIDFF
@@ -102,8 +105,6 @@ public final class Constants {
      * The k_p value of the angle's PIDFF
      */
     public static final double ANGLE_KF_1 = 0.025;
-
-    public static final double MIDDLE_POSITION = 0;
   }
 
   /**
@@ -131,13 +132,13 @@ public final class Constants {
     public static final double MINIMUM_LIFT_POSITION = 0;
 
     /** The K_p value for the lift motor for the 0 pid slot (trl) */
-    public static final double K_P_0 = 0.15;
+    public static final double K_P_0 = 0.2;
 
     /** The K_i value for the lift motor for the 0 pid slot (trl) */
     public static final double K_I_0 = 0;
     
     /** The K_d value for the lift motor for the 0 pid slot (trl) */
-    public static final double K_D_0 = 1.2;
+    public static final double K_D_0 = 0;
     
     /** The K_f value for the lift motor for the 0 pid slot (trl) */
     public static final double K_F_0 = 0;
