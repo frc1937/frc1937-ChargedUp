@@ -6,37 +6,40 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-/** Close the intake angle and close the pistons whilst stoping the intake wheel motors */
-public class CloseIntake extends CommandBase {
+public class EjectObject extends CommandBase {
+  /** Creates a new EjectObject. */
   private IntakeSubsystem m_intake;
+  private intakeWheelState old_state;
 
-  /** Creates a new CloseIntkae. */
-  public CloseIntake(IntakeSubsystem m_intake) {
+  public EjectObject(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
-    
+
     addRequirements(m_intake);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setWheelState(intakeWheelState.Stop);
-    m_intake.closeIntake();
-    m_intake.setAngleState(IntakeAngleState.Up);
+    old_state = m_intake.getState();
+    m_intake.setWheelState(intakeWheelState.Out);
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.setIsUp(true);
+    m_intake.setWheelState(old_state);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intake.getSwitch();
+    return false;
   }
 }

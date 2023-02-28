@@ -55,19 +55,16 @@ public class RobotContainer {
   private final Trigger j4Button = m_opController.button(4);
   private final Trigger j8Button = m_opController.button(8);
   private final Trigger j7Button = m_opController.button(7);
-
-
-  private final Command autoBeakCloseCommand = new SequentialCommandGroup(
-    new CloseBeak(m_beak),
-    new MoveBeak(m_beak));
+  private final Trigger j9Button = m_opController.button(9);
+  private final Trigger j10Button = m_opController.button(10);
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
-    new OpenTrack(m_track)).alongWith(new ToggleIntakePistons(m_intake));
+    new OpenTrack(m_track));//.alongWith(new ToggleIntakePistons(m_intake));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
-    new CloseTrack(m_track)).alongWith(new OpenIntakePistons(m_intake));
+    new CloseTrack(m_track));//.alongWith(new OpenIntakePistons(m_intake));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -85,9 +82,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
-    bButton.onTrue(new DispenseCone(m_intake));
 
-    rtButton.onTrue(new ToggleOpenIntake(m_intake,m_lift.getLiftIsDown()));
+    rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
 
@@ -96,14 +92,14 @@ public class RobotContainer {
     J2Button.onTrue(CloseLiftTrack);
     j8Button.onTrue(new CloseCone(m_beak));
     j7Button.onTrue(new CloseCube(m_beak));
-    j4Button.onTrue(new ConeLeft(m_intake));
-    j3Button.onTrue(new ConeRight(m_intake));
+    j4Button.whileTrue(new ConeLeft(m_intake));
+    j3Button.whileTrue(new ConeRight(m_intake));
+    j9Button.onTrue(new OpenBeak(m_beak));
+    xButton.whileTrue(new EjectObject(m_intake));
   }
 
 
-  public void teleopInit() {
-    new ResetTrack(m_track).schedule();
-  }
+  public void teleopInit() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -120,4 +116,6 @@ public class RobotContainer {
     m_track.stopMotor();
     m_lift.stopMotor();
   }
+
+  
 }

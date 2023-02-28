@@ -4,13 +4,13 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-/** Center the cone when it leans twards the left */
-public class ConeLeft extends InstantCommand {
+public class ConeLeft extends CommandBase {
   private IntakeSubsystem m_intake;
+  private intakeWheelState old_state;
 
   public ConeLeft(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
@@ -21,7 +21,23 @@ public class ConeLeft extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setIntakeWheelSpeedOposing(IntakeConstants.INTAKE_WHEEL_SPEED);
+    old_state = m_intake.getState();
+    m_intake.setWheelState(intakeWheelState.Left);
+  }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    m_intake.setWheelState(old_state);
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }

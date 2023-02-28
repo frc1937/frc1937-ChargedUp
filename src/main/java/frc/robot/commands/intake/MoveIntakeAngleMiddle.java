@@ -5,23 +5,22 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 
-/** Dispense the object currently in the intake */
-public class DispenseCone extends InstantCommand {
+/** Set the intake angle to 45 degrees*/
+public class MoveIntakeAngleMiddle extends InstantCommand {
   private IntakeSubsystem m_intake;
 
-  public DispenseCone(IntakeSubsystem m_intake) {
+  public MoveIntakeAngleMiddle(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
-
+    
     addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setIntakeWheelSpeed(-IntakeConstants.INTAKE_WHEEL_SPEED);
+    m_intake.setAngleState(IntakeAngleState.Middle);
   }
 }

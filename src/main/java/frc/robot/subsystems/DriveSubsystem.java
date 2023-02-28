@@ -25,10 +25,10 @@ public class DriveSubsystem extends SubsystemBase {
   
 
   public DriveSubsystem() {
-    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
-    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
-    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
-    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
+    m_frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    m_frontRightMotor.setIdleMode(IdleMode.kCoast);
+    m_rearLeftMotor.setIdleMode(IdleMode.kCoast);
+    m_rearRightMotor.setIdleMode(IdleMode.kCoast);
     // Invert the direction of all the motors
     m_frontRightMotor.setInverted(false);
     m_rearRightMotor.setInverted(false);
@@ -36,7 +36,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontLeftMotor.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
-    m_drive.feed();
   }
 
   @Override
