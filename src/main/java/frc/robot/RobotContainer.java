@@ -13,6 +13,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -216,6 +217,7 @@ public class RobotContainer {
     m_itemChooser.setDefaultOption(m_cone, m_cone);
     m_itemChooser.addOption(m_cube, m_cube);
     SmartDashboard.putData("Item", m_itemChooser);
+    
+    CameraServer.startAutomaticCapture();
   }
-  
 }
