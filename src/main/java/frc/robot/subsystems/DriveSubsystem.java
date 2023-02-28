@@ -61,6 +61,12 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_frontLeftMotor.getEncoder().setPosition(0);
     m_frontRightMotor.getEncoder().setPosition(0);
+    
+    // Invert the direction of all the motors
+    m_frontRightMotor.setInverted(false);
+    m_rearRightMotor.setInverted(false);
+    m_rearLeftMotor.setInverted(true);
+    m_frontLeftMotor.setInverted(true);
 
     m_drive.setSafetyEnabled(false);
     m_drive.feed();

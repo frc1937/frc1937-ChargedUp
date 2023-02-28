@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -27,6 +25,7 @@ public class TrackSubsystem extends SubsystemBase {
     m_trackMotor.config_kP(0, TrackConstants.K_P);
     m_trackMotor.config_kD(0, 0);
     m_trackMotor.config_kI(0, 0);
+    m_trackMotor.config_kF(0, TrackConstants.K_F);
     m_trackMotor.configPeakOutputForward(0.6);
     m_trackMotor.configPeakOutputReverse(-0.6);
   }

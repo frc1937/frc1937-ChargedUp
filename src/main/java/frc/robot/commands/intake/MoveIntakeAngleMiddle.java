@@ -6,6 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 
 /** Set the intake angle to 45 degrees*/
 public class MoveIntakeAngleMiddle extends InstantCommand {
@@ -20,6 +21,6 @@ public class MoveIntakeAngleMiddle extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.movePID(0, true);
+    m_intake.setAngleState(IntakeAngleState.Middle);
   }
 }

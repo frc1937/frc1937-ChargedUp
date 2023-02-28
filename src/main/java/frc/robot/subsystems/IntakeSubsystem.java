@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -25,20 +23,27 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
   private boolean isUp = true;
   public enum intakeWheelState {
-    Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Right");
+    Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left");
     String name;
     private intakeWheelState(String name) {
       this.name = name;
     }
   }
+  public enum IntakeAngleState {
+    Up("Up"), Down("Down"), Middle("Middle");
+    String name;
+    private IntakeAngleState(String name) {
+      this.name = name;
+    }
+  }
   private intakeWheelState intakeState;
+  private IntakeAngleState intakeAngleState;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
     this.intakeState = intakeWheelState.Stop;
+    this.intakeAngleState = IntakeAngleState.Up;
     
-    m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
@@ -56,6 +61,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setWheelMotorToState();
+    setAngleMotorToState();
   }
 
   /**
@@ -83,6 +89,28 @@ public class IntakeSubsystem extends SubsystemBase {
         break;
       case Right:
         setIntakeWheelSpeedOposing(-IntakeConstants.INTAKE_WHEEL_SPEED);
+        break;
+    }
+  }
+   
+  /** Set the intake angle state according to the current one */
+  private void setAngleMotorToState() {
+    Double targetPosition;
+    switch (intakeAngleState) {
+      case Up:
+        targetPosition = IntakeConstants.MINIMUM_POSITION;
+        m_angleMotor.selectProfileSlot(0, 0);
+        m_angleMotor.set(ControlMode.Position, targetPosition);
+        break;
+      case Down:
+        targetPosition = IntakeConstants.MAXIMUM_POSITION;
+        m_angleMotor.selectProfileSlot(1, 0);
+        m_angleMotor.set(ControlMode.Position, targetPosition);
+        break;
+      case Middle:
+        targetPosition = IntakeConstants.MIDDLE_POSITION;
+        m_angleMotor.selectProfileSlot(0, 0);
+        m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
     }
   }
@@ -133,23 +161,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   
   /**
-   * Go to a position based on the slot of the PID like specified below
-   * @param slotIDX - the PID slot needed (0 is for closing and 1 for opening)
+   * Set the intake angle state
+   * @param state   The new desired state.
    */
-  public void movePID(int slotIDX) {
-    m_angleMotor.selectProfileSlot(slotIDX, 0);
-    double targetPosition = slotIDX == 1 ? IntakeConstants.MAXIMUM_POSITION : IntakeConstants.MINIMUM_POSITION;
-    isUp = !isUp;
-    m_angleMotor.set(ControlMode.Position, targetPosition);
-  }
-  public void movePID(int slotIDX, boolean toMiddle) {
-    m_angleMotor.selectProfileSlot(slotIDX, 0);
-    double targetPosition = slotIDX == 1 ? IntakeConstants.MAXIMUM_POSITION : IntakeConstants.MINIMUM_POSITION;
-    if (toMiddle) 
-      targetPosition = IntakeConstants.MIDDLE_POSITION;
-    else
-      isUp = !isUp;
-    m_angleMotor.set(ControlMode.Position, targetPosition);
+  public void setAngleState(IntakeAngleState state) {
+    intakeAngleState = state;
   }
 
   /** Stop the angle motor */

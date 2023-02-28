@@ -6,6 +6,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
 /**
@@ -15,11 +16,9 @@ import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
  */
 public class ToggleOpenIntake extends InstantCommand {
   private IntakeSubsystem m_intake;
-  private boolean liftDown;
   
-  public ToggleOpenIntake(IntakeSubsystem m_intake, boolean liftDown) {
+  public ToggleOpenIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
-    this.liftDown = liftDown;
 
     addRequirements(m_intake);
   }
@@ -27,14 +26,12 @@ public class ToggleOpenIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (liftDown) {
       if (m_intake.currentlyUp()) {
-        m_intake.movePID(1);
+        m_intake.setAngleState(IntakeAngleState.Up);
         m_intake.setWheelState(intakeWheelState.In);
         m_intake.setIsUp(false);
         m_intake.openIntake();
       }
       m_intake.togglePistons();
-    }     
   }
 }
