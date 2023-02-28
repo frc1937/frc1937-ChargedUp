@@ -219,6 +219,7 @@ public final class Constants {
       public static final int REAR_LEFT_MOTOR = 9;
       public static final int FRONT_RIGHT_MOTOR = 1;
       public static final int REAR_RIGHT_MOTOR = 2;
+      public static final int PIGEON_IMU = 11;
     }
 
     public static class Intake {
@@ -250,5 +251,4 @@ public final class Constants {
       public static final int OPERATOR_CONTROLLER  = 1;
     }
   }
-
 }

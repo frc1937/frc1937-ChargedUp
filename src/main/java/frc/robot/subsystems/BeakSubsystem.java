@@ -29,8 +29,6 @@ public class BeakSubsystem extends SubsystemBase {
   
   /** Creates a new BeakSubsystem. */
   public BeakSubsystem() {
-    m_beakMotor.restoreFactoryDefaults();
-
     m_beakMotor.setIdleMode(IdleMode.kCoast);
     m_beakMotor.getEncoder().setPosition(0);
     m_controller.setD(k_d);
