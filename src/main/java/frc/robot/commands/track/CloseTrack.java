@@ -5,7 +5,6 @@
 package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
 /** Close the track first layer and then the sencond layers piston */
@@ -22,6 +21,8 @@ public class CloseTrack extends InstantCommand {
   @Override
   public void initialize() {
     m_track.closePiston();
-    m_track.setPosition(TrackConstants.MINIMUM_MOTOR_POS);
   }
 }
+
+
+

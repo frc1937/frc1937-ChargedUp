@@ -5,6 +5,7 @@
 package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
@@ -21,7 +22,8 @@ public class OpenTrack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.setPosition(TrackConstants.MAXIMUM_MOTOR_POS);
+  //opens the two pistons of the track
+  m_track.openPiston();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,12 +33,11 @@ public class OpenTrack extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_track.openPiston();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_track.getPosition() > TrackConstants.MAXIMUM_MOTOR_POS - TrackConstants.MAXIMUM_TOLERANCE;
+    return m_track.isOpen();
   }
 }

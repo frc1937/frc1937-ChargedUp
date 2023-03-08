@@ -244,8 +244,8 @@ public final class Constants {
       
     public static class Track {
       public static final int TRACK_MOTOR = 7;
-      public static final int OPEN_TRACK_SOLENOID = 1;
-      public static final int CLOSE_TRACK_SOLENOID = 4;
+      public static final int OPEN_TRACK_SOLENOID = 4;
+      public static final int CLOSE_TRACK_SOLENOID = 1;
     }
 
     public static class Controllers {
