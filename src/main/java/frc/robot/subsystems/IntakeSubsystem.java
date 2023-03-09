@@ -130,7 +130,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Open the intake pistons
   public void closeIntake() {
-    m_intakePistons.set(Value.kReverse);
+    m_intakePistons.set(Value.kForward);
   }
 
 
@@ -139,7 +139,7 @@ public class IntakeSubsystem extends SubsystemBase {
    */
 
   public void openIntake() {
-    m_intakePistons.set(Value.kForward);
+    m_intakePistons.set(Value.kReverse);
   }
 
   /**

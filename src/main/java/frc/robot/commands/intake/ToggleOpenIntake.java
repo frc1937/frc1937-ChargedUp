@@ -27,7 +27,7 @@ public class ToggleOpenIntake extends InstantCommand {
   @Override
   public void initialize() {
       if (m_intake.currentlyUp()) {
-        m_intake.setAngleState(IntakeAngleState.Up);
+        m_intake.setAngleState(IntakeAngleState.Down);
         m_intake.setWheelState(intakeWheelState.In);
         m_intake.setIsUp(false);
         m_intake.openIntake();
