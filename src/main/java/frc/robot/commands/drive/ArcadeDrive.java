@@ -4,7 +4,9 @@
 
 package frc.robot.commands.drive;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -12,13 +14,13 @@ import frc.robot.subsystems.DriveSubsystem;
 /**  Enables drivers control the robot during teleop period with {@link CommandXboxController XboxController */
 public class ArcadeDrive extends CommandBase {
   private DriveSubsystem m_drive;
-  private CommandXboxController xboxController;
+  private CommandJoystick joystickController;
 
-  public ArcadeDrive(CommandXboxController xboxController, DriveSubsystem m_drive) {
+  public ArcadeDrive(Command m_driverController, DriveSubsystem m_drive) {
     addRequirements(m_drive);
 
     this.m_drive = m_drive;
-    this.xboxController = xboxController;
+    this.joystickController =  m_driverController;
   }
 
   // Called when the command is initially scheduled.
