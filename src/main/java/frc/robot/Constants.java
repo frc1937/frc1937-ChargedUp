@@ -61,15 +61,15 @@ public final class Constants {
     /**
      * The intake angle's maximum position
      */
-    public static final double MAXIMUM_POSITION = 8000;
+    public static final double MAXIMUM_POSITION = 2000;
 
     /** The middle positon of the encoder */
-    public static final double MIDDLE_POSITION = 4000;
+    public static final double MIDDLE_POSITION = 1000;
 
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KP_0 = 0.3;
+    public static final double ANGLE_KP_0 = 0.65;
 
     /**
      * The k_i value of the angle's PIDFF
@@ -89,7 +89,7 @@ public final class Constants {
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KP_1 = 0.075;
+    public static final double ANGLE_KP_1 = 0.05;
 
     /**
      * The k_i value of the angle's PIDFF
@@ -104,7 +104,7 @@ public final class Constants {
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KF_1 = 0.025;
+    public static final double ANGLE_KF_1 = 0.04;
   }
 
   /**
