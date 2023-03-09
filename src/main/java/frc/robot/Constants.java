@@ -126,7 +126,7 @@ public final class Constants {
     /**
      * The maximum lift position for dispensing cones and cubes
      */
-    public static final double MAXIMUM_LIFT_POSITION = 80000;
+    public static final double MAXIMUM_LIFT_POSITION = 78903;
 
     /**
      * The minimum lift position for transferring the game object from the intake to the beak
