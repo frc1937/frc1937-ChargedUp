@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Ports;
 
 /** The drive subsystem for controlling the track */
@@ -81,6 +81,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("orientation", m_gyro.getAngle() % 360);
+    SmartDashboard.putNumber("speed angle", m_gyro.getRoll()/ (DriveConstants.MAX_RAMP_ANGLE * 2));
+    SmartDashboard.putNumber("Angle", m_gyro.getRoll());
 
     m_odometry.update(
       m_gyro.getRotation2d(),

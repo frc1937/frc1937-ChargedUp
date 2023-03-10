@@ -30,15 +30,14 @@ public class RampBalance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_drive.arcadeDrive(0.3, 0);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angleRoll = gyro.getRoll();
-    speed = angleRoll / DriveConstants.MAX_RAMP_ANGLE * -2;
+    angleRoll = -gyro.getRoll();
+    speed = angleRoll / (DriveConstants.MAX_RAMP_ANGLE * 2.4);
+    SmartDashboard.putNumber("speed angle", speed);
     m_drive.arcadeDrive(speed , 0);
   }
 
