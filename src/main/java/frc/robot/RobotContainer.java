@@ -69,6 +69,7 @@ public class RobotContainer {
   private final Trigger rtButton = m_driverController.rightTrigger();
   private final Trigger ltButton = m_driverController.leftTrigger();
   private final Trigger aButton = m_driverController.a();
+  private final Trigger bButton = m_driverController.b();
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -85,8 +86,7 @@ public class RobotContainer {
     new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
   
 
-  //private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
-   // new OpenTrack(m_track).alongWith(new ToggleIntakePistons(m_intake)));
+  private final Command closeCubeCommand = new CloseCube(m_beak).alongWith(new RaiseCube(m_intake).withTimeout(1));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
@@ -113,17 +113,16 @@ public class RobotContainer {
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
     aButton.whileTrue(new EjectObject(m_intake));
+    bButton.whileTrue(new SucCone(m_intake));
 
-   // J1Button.onTrue(new CloseTrack (m_track));
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
     j3Button.whileTrue(new ConeRight(m_intake));
     j4Button.whileTrue(new ConeLeft(m_intake));
-    j7Button.onTrue(new CloseCube(m_beak));
+    j7Button.onTrue(closeCubeCommand);
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
     j10Button.onTrue(new RampBalance(m_drive));
-   // j11Button.onTrue(new AlignToPole(m_drive));
   }
 
   public void teleopInit() {}

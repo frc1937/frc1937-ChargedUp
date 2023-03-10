@@ -23,7 +23,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
   private boolean isUp = true;
   public enum intakeWheelState {
-    Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left");
+    Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left"),
+    Inly("Inly"), Outly("Outly");
     String name;
     private intakeWheelState(String name) {
       this.name = name;
@@ -90,6 +91,11 @@ public class IntakeSubsystem extends SubsystemBase {
       case Right:
         setIntakeWheelSpeedOposing(-IntakeConstants.INTAKE_WHEEL_SPEED);
         break;
+      case Inly:
+        setIntakeWheelSpeed(0.2);
+        break;  
+      case Outly:
+        setIntakeWheelSpeed(-0.2);
     }
   }
    
