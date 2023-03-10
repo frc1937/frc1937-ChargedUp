@@ -121,6 +121,10 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void resetpos() {
+    m_frontLeftMotor.getEncoder().setPosition(0);
+  }
+
   /**
    * @return the total distance in metres the left side of the robot traveled since the last
    * encoder reset
