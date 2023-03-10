@@ -14,7 +14,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RampBalance extends CommandBase {
   /** Creates a new RampBalance. */
   private DriveSubsystem m_drive;
-  double anglePitch;
+  double angleRoll;
   double speed;
   WPI_PigeonIMU gyro; // Pigeon is on CAN Bus with device ID 0
 
@@ -30,14 +30,15 @@ public class RampBalance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_drive.arcadeDrive(0.3, 0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    anglePitch = gyro.getPitch();
-    SmartDashboard.putNumber("pitch angle", anglePitch);
-    speed = anglePitch / DriveConstants.MAX_RAMP_ANGLE * 2;
+    angleRoll = gyro.getRoll();
+    speed = angleRoll / DriveConstants.MAX_RAMP_ANGLE * -2;
     m_drive.arcadeDrive(speed , 0);
   }
 

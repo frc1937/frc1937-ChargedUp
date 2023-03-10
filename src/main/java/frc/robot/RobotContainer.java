@@ -122,7 +122,7 @@ public class RobotContainer {
     j7Button.onTrue(new CloseCube(m_beak));
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
-  //  j10Button.onTrue(new RampBalance(m_drive));
+    j10Button.onTrue(new RampBalance(m_drive));
    // j11Button.onTrue(new AlignToPole(m_drive));
   }
 

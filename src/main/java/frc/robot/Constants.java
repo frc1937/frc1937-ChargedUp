@@ -173,18 +173,18 @@ public final class Constants {
     /**
      * The catch position of the beak for the cube
      */
-    public static final double BEAK_CUBE_HOLD_POSITION = -135;
+    public static final double BEAK_CUBE_HOLD_POSITION = -140;
 
     /**
      * The catch position of the beak for the cone
      */
-    public static final double BEAK_CONE_HOLD_POSITION = -185;
+    public static final double BEAK_CONE_HOLD_POSITION = -180;
     
     /**
      * The max position the beak could arrive to whilst catching a cube
      * if the beak passses this location then the object is a cone
      */
-    public static final double BEAK_CUBE_MAX_POSITION = -140;
+    public static final double BEAK_CUBE_MAX_POSITION = -145;
 
     /**
      * The top position of the Beak
