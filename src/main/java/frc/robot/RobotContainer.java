@@ -69,11 +69,7 @@ public class RobotContainer {
   private final Trigger rtButton = m_driverController.rightTrigger();
   private final Trigger ltButton = m_driverController.leftTrigger();
   private final Trigger aButton = m_driverController.a();
-<<<<<<< HEAD
-  private Trigger bButton = m_driverController.b();
-=======
   private final Trigger bButton = m_driverController.b();
->>>>>>> fa7f9c30d5936991c21e4246a2c6c81757d9e829
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
