@@ -104,7 +104,7 @@ public final class Constants {
     /**
      * The k_p value of the angle's PIDFF
      */
-    public static final double ANGLE_KF_1 = 0.04;
+    public static final double ANGLE_KF_1 = 0.05;
   }
 
   /**
@@ -178,7 +178,7 @@ public final class Constants {
     /**
      * The catch position of the beak for the cone
      */
-    public static final double BEAK_CONE_HOLD_POSITION = -160;
+    public static final double BEAK_CONE_HOLD_POSITION = -185;
     
     /**
      * The max position the beak could arrive to whilst catching a cube

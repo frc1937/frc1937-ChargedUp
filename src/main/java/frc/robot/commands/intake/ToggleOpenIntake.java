@@ -32,6 +32,8 @@ public class ToggleOpenIntake extends InstantCommand {
         m_intake.setIsUp(false);
         m_intake.openIntake();
       }
-      m_intake.togglePistons();
+      else{
+        m_intake.togglePistons();
+      }
   }
 }

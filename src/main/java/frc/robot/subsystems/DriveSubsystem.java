@@ -47,12 +47,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeftMotor.restoreFactoryDefaults();
     m_rearRightMotor.restoreFactoryDefaults();
 
-    m_frontLeftMotor.setIdleMode(IdleMode.kCoast);
-    m_frontRightMotor.setIdleMode(IdleMode.kCoast);
-    m_rearLeftMotor.setIdleMode(IdleMode.kCoast);
-    m_rearRightMotor.setIdleMode(IdleMode.kCoast);
+    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
+    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
+    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
 
     m_right.setInverted(true);
+    m_left.setInverted(true);
+
+
 
     m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
     m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));

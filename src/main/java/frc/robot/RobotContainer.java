@@ -68,6 +68,7 @@ public class RobotContainer {
   private final Trigger rbButton = m_driverController.rightBumper();
   private final Trigger rtButton = m_driverController.rightTrigger();
   private final Trigger ltButton = m_driverController.leftTrigger();
+  private final Trigger aButton = m_driverController.a();
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -80,12 +81,16 @@ public class RobotContainer {
   private final Trigger j11Button = m_opController.button(11);
 
   /** Open the lift and track simultaneously */
-  private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
-    new OpenTrack(m_track));//.alongWith(new ToggleIntakePistons(m_intake));
+  private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
+    new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
+  
+
+  //private final Command OpenLiftTrack = new OpenLift(m_lift).alongWith(
+   // new OpenTrack(m_track).alongWith(new ToggleIntakePistons(m_intake)));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
-    new CloseTrack(m_track));//.alongWith(new OpenIntakePistons(m_intake));
+    new CloseTrack(m_track).alongWith(new OpenIntakePistons(m_intake)));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -107,16 +112,18 @@ public class RobotContainer {
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
+    aButton.whileTrue(new EjectObject(m_intake));
 
+   // J1Button.onTrue(new CloseTrack (m_track));
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
-    j8Button.onTrue(new CloseCone(m_beak));
-    j7Button.onTrue(new CloseCube(m_beak));
-    j4Button.whileTrue(new ConeLeft(m_intake));
     j3Button.whileTrue(new ConeRight(m_intake));
+    j4Button.whileTrue(new ConeLeft(m_intake));
+    j7Button.onTrue(new CloseCube(m_beak));
+    j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
-    j10Button.onTrue(new RampBalance(m_drive));
-    j11Button.onTrue(new AlignToPole(m_drive));
+  //  j10Button.onTrue(new RampBalance(m_drive));
+   // j11Button.onTrue(new AlignToPole(m_drive));
   }
 
   public void teleopInit() {}
@@ -175,7 +182,6 @@ public class RobotContainer {
   public void disabledInit() {
     m_intake.stopIntakeWheel();
     m_intake.stopAngle();
-    m_track.stopMotor();
     m_lift.stopMotor();
   }
 
