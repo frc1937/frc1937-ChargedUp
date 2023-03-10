@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-public class SucCone extends CommandBase {
+public class CubeIntake extends CommandBase {
   IntakeSubsystem m_intake;
-  intakeWheelState priorState;
   /** Creates a new SucCone. */
-  public SucCone(IntakeSubsystem m_intake) {
+  public CubeIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
     addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,9 +20,7 @@ public class SucCone extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    priorState = m_intake.getState();
     m_intake.setWheelState(intakeWheelState.Slow);
-    m_intake.openIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,8 +30,7 @@ public class SucCone extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.setWheelState(priorState);
-    m_intake.closeIntake();
+    m_intake.setWheelState(intakeWheelState.Stop);
   }
 
   // Returns true when the command should end.

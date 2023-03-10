@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -80,13 +81,14 @@ public class RobotContainer {
   private final Trigger j9Button = m_opController.button(9);
   private final Trigger j10Button = m_opController.button(10);
   private final Trigger j11Button = m_opController.button(11);
+  private final Trigger POVdown = m_opController.povDown();
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
     new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
   
 
-  private final Command closeCubeCommand = new CloseCube(m_beak).alongWith(new RaiseCube(m_intake).withTimeout(1));
+  private final Command closeCubeCommand = new CloseCube(m_beak).alongWith(new RaiseCube(m_intake).withTimeout(0.5));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
@@ -123,6 +125,7 @@ public class RobotContainer {
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
     j10Button.onTrue(new RampBalance(m_drive));
+    POVdown.whileTrue(new CubeIntake(m_intake));
   }
 
   public void teleopInit() {}
