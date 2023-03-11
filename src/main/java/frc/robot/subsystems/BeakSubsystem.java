@@ -19,7 +19,6 @@ import frc.robot.Constants.Ports;
 public class BeakSubsystem extends SubsystemBase {
   private CANSparkMax m_beakMotor = new CANSparkMax(Ports.Beak.BEAK_MOTOR, MotorType.kBrushless);
   private RelativeEncoder m_encoder = m_beakMotor.getEncoder();
-  private TalonSRX m_intakeAngleMotor = IntakeSubsystem.m_angleMotor; 
   
   private double k_p = BeakConstants.K_P;
   private double k_i = BeakConstants.K_I;
@@ -78,8 +77,11 @@ public class BeakSubsystem extends SubsystemBase {
     return m_encoder.getVelocity();
   }
 
-  public boolean isBeakAble() {
-    return m_intakeAngleMotor.getSelectedSensorPosition() <= 200;
+  public void setBrake() {
+    m_beakMotor.setIdleMode(IdleMode.kBrake);
   }
-  
+
+  public void setCoast() {
+    m_beakMotor.setIdleMode(IdleMode.kCoast);
+  }
 }

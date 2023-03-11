@@ -17,8 +17,8 @@ import frc.robot.Constants.Ports.Intake;
 
 /** The intake subsystem for controlling the intake angle and wheels */
 public class IntakeSubsystem extends SubsystemBase {
-  final static TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
-  final static TalonSRX m_leftMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
+  private final TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
+  private final TalonSRX m_leftMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
   private final TalonSRX m_rightMotor = new TalonSRX(Intake.RIGHT_INTAKE_MOTOR);
   private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
   private boolean isUp = true;
@@ -128,6 +128,10 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
+  public double getPosition() {
+    return m_angleMotor.getSelectedSensorPosition();
+  }
+
   /**
    * Set the wheel state to the given one
    * @param state The new state of the wheels
@@ -218,7 +222,7 @@ public class IntakeSubsystem extends SubsystemBase {
    * @return  true if the limit switch is pressed and false otherwise
    */
   public boolean getLiftSwitch(){
-    return m_angleMotor.isRevLimitSwitchClosed() == 1;
+    return m_leftMotor.isRevLimitSwitchClosed() == 1;
   }
 
   /**

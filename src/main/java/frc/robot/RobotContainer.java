@@ -20,6 +20,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,7 +32,7 @@ import frc.robot.commands.beak.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.lift.*;
-import frc.robot.commands.track.*;
+import frc.robot.commands.lift.track.*;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.TrackSubsystem;
@@ -46,7 +47,7 @@ public class RobotContainer {
   private BeakSubsystem m_beak = new BeakSubsystem();
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
-  private LiftSubsystem m_lift = new LiftSubsystem();
+  private LiftSubsystem m_lift = new LiftSubsystem(m_intake);
   private TrackSubsystem m_track = new TrackSubsystem();
 
   private final CommandXboxController m_driverController =
@@ -113,7 +114,7 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-    ltButton.onTrue(new OpenBeak(m_beak));
+   ` ltButton.onTrue(new OpenBeak(m_beak));
     aButton.whileTrue(new ShootCube(m_intake));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
 
@@ -163,10 +164,11 @@ public class RobotContainer {
         autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
         break;
       case m_itemComplexRoute:
-        autonomusCommand = OpenLiftTrack.andThen(
-        new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
-          new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
-            new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
+        autonomusCommand = new SequentialCommandGroup(
+          new CloseCone(m_beak), OpenLiftTrack.andThen(new WaitCommand(0.5)), new OpenBeak(m_beak),
+          CloseLiftTrack.andThen(new WaitCommand(0.5)), new DriveM(m_drive, -4).andThen(new WaitCommand(0.5)), new DriveM(m_drive, 2),
+          new RampBalance(m_drive)
+        );
         autonomusCommand = addBeak(autonomusCommand);
         break;
       case m_itemDefaultRoute:
@@ -227,5 +229,6 @@ public class RobotContainer {
     SmartDashboard.putData("Item", m_itemChooser);
     
     CameraServer.startAutomaticCapture();
+    
   }
 }

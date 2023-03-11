@@ -71,6 +71,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeftMotor.setInverted(true);
     m_frontLeftMotor.setInverted(true);
 
+    m_frontLeftMotor.setClosedLoopRampRate(0.25);
+    m_rearLeftMotor.setClosedLoopRampRate(0.25);
+    m_frontRightMotor.setClosedLoopRampRate(0.25);
+    m_rearRightMotor.setClosedLoopRampRate(0.25);
+
     m_drive.setSafetyEnabled(false);
     m_drive.feed();
     m_gyro.reset();

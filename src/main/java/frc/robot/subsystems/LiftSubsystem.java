@@ -16,13 +16,12 @@ import frc.robot.Constants.Ports.Lift;
 /** The lift subsystem for controlling the lift */
 public class LiftSubsystem extends SubsystemBase {
   private TalonFX m_liftMotor = new TalonFX(Lift.LIFT_MOTOR);
-  private TalonSRX m_lifLimitSwitch = IntakeSubsystem.m_leftMotor;
+  private IntakeSubsystem m_intake;
   
   /** Creates a new LiftSubsystem. */
-  public LiftSubsystem() {
+  public LiftSubsystem(IntakeSubsystem m_intake) {
     /** Define the reverse limit switch for the talon */
-    if (m_lifLimitSwitch.isRevLimitSwitchClosed() == 1)
-      m_liftMotor.setSelectedSensorPosition(0);
+    this.m_intake = m_intake;
 
     /** Configure the maximum and minimum output of the motor */
     m_liftMotor.configPeakOutputForward(LiftConstants.K_MAX);
@@ -43,7 +42,7 @@ public class LiftSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_lifLimitSwitch.isRevLimitSwitchClosed() == 1)
+    if (m_intake.getLiftSwitch())
       m_liftMotor.setSelectedSensorPosition(0);
   }
 
@@ -71,7 +70,7 @@ public class LiftSubsystem extends SubsystemBase {
    * @return true if the limit switch is pressed and false otherwise
    */
   public boolean getIsRevLimitSwitchPressed() {
-    return m_lifLimitSwitch.isRevLimitSwitchClosed() == 1;
+    return m_intake.getLiftSwitch();
   }
 
   /**

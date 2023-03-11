@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
@@ -32,7 +33,10 @@ public class ShootCube extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putNumber("Pos Intake", m_intake.getPosition());
     m_intake.setWheelState(intakeWheelState.Spit);
+    m_intake.setAngleState(IntakeAngleState.Up);
+    
   }
 
   // Returns true when the command should end.
