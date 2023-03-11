@@ -75,8 +75,6 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.closeIntake();
-    // TODO: add some delay
-    //m_intake.setAngleState(IntakeAngleState.Down);
   }
 
   @Override
