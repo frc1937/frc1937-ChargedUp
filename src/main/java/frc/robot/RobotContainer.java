@@ -114,7 +114,7 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-   ` ltButton.onTrue(new OpenBeak(m_beak));
+    ltButton.onTrue(new OpenBeak(m_beak));
     aButton.whileTrue(new ShootCube(m_intake));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
 
