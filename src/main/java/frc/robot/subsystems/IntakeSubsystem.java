@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean isUp = true;
   public enum intakeWheelState {
     Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left"),
-    Slow("Inly"), Outly("Outly");
+    Slow("Inly"), Outly("Outly"), Spit("Spit");
     String name;
     private intakeWheelState(String name) {
       this.name = name;
@@ -56,6 +56,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     m_angleMotor.config_kF(1, IntakeConstants.ANGLE_KF_1);
     m_angleMotor.config_kP(1, IntakeConstants.ANGLE_KP_1);
+
+    m_angleMotor.config_kP(2, 0.02);
+    m_angleMotor.config_kF(2, 0.04);
   }
 
   @Override
@@ -96,6 +99,10 @@ public class IntakeSubsystem extends SubsystemBase {
         break;  
       case Outly:
         setIntakeWheelSpeed(-0.1);
+        break;
+      case Spit:
+        setIntakeWheelSpeed(-0.9);
+        break;
     }
   }
    
@@ -114,8 +121,8 @@ public class IntakeSubsystem extends SubsystemBase {
         m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
       case Middle:
-        targetPosition = IntakeConstants.MIDDLE_POSITION;
-        m_angleMotor.selectProfileSlot(0, 0);
+        targetPosition = IntakeConstants.MAXIMUM_POSITION;
+        m_angleMotor.selectProfileSlot(2, 0);
         m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
     }

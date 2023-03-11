@@ -114,8 +114,8 @@ public class RobotContainer {
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
-    aButton.whileTrue(new EjectObject(m_intake));
-    bButton.whileTrue(new SucCone(m_intake));
+    aButton.whileTrue(new ShootCube(m_intake));
+    bButton.whileTrue(new SucCone(m_intake, m_lift));
 
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
