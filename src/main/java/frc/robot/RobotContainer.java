@@ -32,7 +32,7 @@ import frc.robot.commands.beak.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.lift.*;
-import frc.robot.commands.lift.track.*;
+import frc.robot.commands.track.*;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.TrackSubsystem;
