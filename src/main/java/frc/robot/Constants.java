@@ -66,6 +66,9 @@ public final class Constants {
     /** The middle positon of the encoder */
     public static final double MIDDLE_POSITION = 1000;
 
+    /** The middle positon of the encoder */
+    public static final double SHOOT_POSITION = 615;
+
     /**
      * The k_p value of the angle's PIDFF
      */

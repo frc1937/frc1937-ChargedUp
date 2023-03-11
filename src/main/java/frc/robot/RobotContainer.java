@@ -15,12 +15,12 @@ import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -72,6 +72,7 @@ public class RobotContainer {
   private final Trigger ltButton = m_driverController.leftTrigger();
   private final Trigger aButton = m_driverController.a();
   private final Trigger bButton = m_driverController.b();
+  private final Trigger yButton = m_driverController.y();
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -83,6 +84,10 @@ public class RobotContainer {
   private final Trigger j10Button = m_opController.button(10);
   private final Trigger j11Button = m_opController.button(11);
   private final Trigger POVdown = m_opController.povDown();
+
+  UsbCamera intakeCam;
+  UsbCamera headCam;
+  VideoSink server;
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
@@ -114,9 +119,10 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-   ` ltButton.onTrue(new OpenBeak(m_beak));
-    aButton.whileTrue(new ShootCube(m_intake));
+    ltButton.onTrue(new OpenBeak(m_beak));
+    aButton.onTrue(new ShootCubeMiddle(m_intake));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
+    yButton.onTrue(new ShootCubeTop(m_intake));
 
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
@@ -164,11 +170,10 @@ public class RobotContainer {
         autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
         break;
       case m_itemComplexRoute:
-        autonomusCommand = new SequentialCommandGroup(
-          new CloseCone(m_beak), OpenLiftTrack.andThen(new WaitCommand(0.5)), new OpenBeak(m_beak),
-          CloseLiftTrack.andThen(new WaitCommand(0.5)), new DriveM(m_drive, -4).andThen(new WaitCommand(0.5)), new DriveM(m_drive, 2),
-          new RampBalance(m_drive)
-        );
+        autonomusCommand = OpenLiftTrack.andThen(
+        new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
+          new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
+            new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
         autonomusCommand = addBeak(autonomusCommand);
         break;
       case m_itemDefaultRoute:
@@ -228,7 +233,14 @@ public class RobotContainer {
     m_itemChooser.addOption(m_cube, m_cube);
     SmartDashboard.putData("Item", m_itemChooser);
     
-    CameraServer.startAutomaticCapture();
+    headCam = CameraServer.startAutomaticCapture(0);
+    headCam.setResolution(320, 240);
+    headCam.setFPS(30);
     
+    // intakeCam = CameraServer.startAutomaticCapture(1);
+    // intakeCam.setResolution(160, 120);
+    // intakeCam.setFPS(15);
+
+    server = CameraServer.getServer();
   }
 }

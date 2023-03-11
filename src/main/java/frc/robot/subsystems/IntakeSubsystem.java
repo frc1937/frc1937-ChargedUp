@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean isUp = true;
   public enum intakeWheelState {
     Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left"),
-    Slow("Inly"), Outly("Outly"), Spit("Spit");
+    Slow("Inly"), Outly("Outly"), ShootTop("ShootTop"), ShootMiddle("ShootMiddle");
     String name;
     private intakeWheelState(String name) {
       this.name = name;
@@ -100,8 +100,11 @@ public class IntakeSubsystem extends SubsystemBase {
       case Outly:
         setIntakeWheelSpeed(-0.1);
         break;
-      case Spit:
-        setIntakeWheelSpeed(-0.9);
+      case ShootTop:
+        setIntakeWheelSpeed(-1);
+        break;
+      case ShootMiddle:
+        setIntakeWheelSpeed(-0.65);
         break;
     }
   }
@@ -183,6 +186,10 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public void setAngleState(IntakeAngleState state) {
     intakeAngleState = state;
+  }
+
+  public IntakeAngleState getAngleState() {
+    return intakeAngleState;
   }
 
   /** Stop the angle motor */
