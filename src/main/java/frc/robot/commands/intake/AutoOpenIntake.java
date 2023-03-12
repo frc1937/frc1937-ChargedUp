@@ -73,7 +73,7 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.closeIntake();
-    
+    m_intake.setAngleState(IntakeAngleState.Up);
 
   }
 

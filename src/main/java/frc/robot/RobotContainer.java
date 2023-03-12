@@ -123,7 +123,8 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
-    rtButton.onTrue(new ToggleOpenIntake(m_intake));
+    //rtButton.onTrue(new ToggleOpenIntake(m_intake));
+    rtButton.whileTrue(new AutoOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
