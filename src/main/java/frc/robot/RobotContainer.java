@@ -62,6 +62,7 @@ public class RobotContainer {
   private final String m_cube3OutStable = "Cube3 Out Stable";
   private final String m_coneOut = "cone 2 Out";
   private final String m_cubeOut = "cube 2 Out";
+  private final String m_allAll = "cube and cube";
 
   private String m_selected;
 
@@ -203,7 +204,7 @@ public class RobotContainer {
         autonomusCommand = addBeak(autonomusCommand);
         break;
 
-        case m_coneOut:
+      case m_coneOut:
         autonomusCommand = new CloseCone(m_beak)
         .andThen(new WaitCommand(1.5))
         .andThen(OpenLiftTrack).withTimeout(3)
@@ -216,12 +217,25 @@ public class RobotContainer {
         .andThen(new DriveM(m_drive, -3));
         break;
 
-        case m_cubeOut:
+      case m_cubeOut:
         autonomusCommand = new ShootCubeMiddle(m_intake)
         .andThen(new WaitCommand(0.8))
         .andThen(new DriveM(m_drive, -4));
         break;
 
+        case m_allAll:
+          autonomusCommand = new ShootCubeTop(m_intake)
+          .andThen(new WaitCommand(0.8))
+          .andThen(new DriveM(m_drive, -1))
+          .andThen(new ChangeAngle(m_drive, 180))
+          .andThen(new DriveM(m_drive, 4))
+          .andThen(new DriveM(m_drive, 1))
+          .alongWith(new OpenIntake(m_intake))
+          .andThen(new ToggleIntakePistons(m_intake))
+          .andThen(new WaitCommand(0.5))
+          .andThen(new CloseIntake(m_intake))
+          .andThen(new DriveM(m_drive, -5));
+          break;
 
     }
     
@@ -271,6 +285,7 @@ public class RobotContainer {
     m_chooser.addOption(m_cube3OutStable, m_cube3OutStable);
     m_chooser.addOption(m_coneOut, m_coneOut);
     m_chooser.addOption(m_cubeOut, m_cubeOut);
+    m_chooser.addOption(m_allAll, m_allAll);
 
 
 

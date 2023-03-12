@@ -23,7 +23,7 @@ public class OpenIntake extends CommandBase {
   public void initialize() {
     m_intake.openIntake();
     m_intake.setAngleState(IntakeAngleState.Down);
-    m_intake.setWheelState(intakeWheelState.In);
+    m_intake.setWheelState(intakeWheelState.Slow);
     m_intake.setIsUp(false);
   }
 
