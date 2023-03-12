@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.PneumaticPorts;
 import frc.robot.Constants.Ports.Intake;
 
 /** The intake subsystem for controlling the intake angle and wheels */
@@ -20,8 +21,13 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonSRX m_angleMotor = new TalonSRX(Intake.INTAKE_ANGLE_MOTOR);
   private final TalonSRX m_leftMotor = new TalonSRX(Intake.LEFT_INTAKE_MOTOR);
   private final TalonSRX m_rightMotor = new TalonSRX(Intake.RIGHT_INTAKE_MOTOR);
-  private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Intake.OPEN_PISTONS, Intake.CLOSE_PISTONS);
+  private final DoubleSolenoid m_intakePistons = new DoubleSolenoid(
+    PneumaticsModuleType.CTREPCM,
+    PneumaticPorts.Intake.OPEN_PISTONS,
+    PneumaticPorts.Intake.CLOSE_PISTONS);
   private boolean isUp = true;
+
+  /** All the intake wheels's states */
   public enum intakeWheelState {
     Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left"),
     Slow("Inly"), Outly("Outly"), 
@@ -31,6 +37,8 @@ public class IntakeSubsystem extends SubsystemBase {
       this.name = name;
     }
   }
+
+  /** All the intake angle's states */
   public enum IntakeAngleState {
     Up("Up"), Down("Down"), Middle("Middle");
     String name;
@@ -38,6 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
       this.name = name;
     }
   }
+
   private intakeWheelState intakeState;
   private IntakeAngleState intakeAngleState;
 
@@ -149,16 +158,14 @@ public class IntakeSubsystem extends SubsystemBase {
     m_angleMotor.set(ControlMode.Position, position);
   }
 
-  // Open the intake pistons
+  /** Open the intake pistons */
   public void closeIntake() {
     m_intakePistons.set(Value.kForward);
   }
 
-
   /**
    * Close the intake pistons
    */
-
   public void openIntake() {
     m_intakePistons.set(Value.kReverse);
   }
@@ -254,6 +261,10 @@ public class IntakeSubsystem extends SubsystemBase {
     isUp = isIntakeUp;
   }
 
+  /**
+   * Get the state of the intake angle
+   * @return true if the intake angle is up and false otherwise
+   */
   public boolean getIsUp() {
     return isUp;
   }

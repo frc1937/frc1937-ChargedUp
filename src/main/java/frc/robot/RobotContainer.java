@@ -4,20 +4,9 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.Ports.*;
@@ -56,20 +46,13 @@ public class RobotContainer {
 
   /** All options for autonomus */
   private SendableChooser<String> m_chooser = new SendableChooser<>();
-  private final String m_defaultRoute = "Line";
-  private final String m_itemDefaultRoute = "Grid Line";
-  private final String m_itemComplexRoute = "Ramp Grid Line";
-  private final String m_cube3OutStable = "Cube3 Out Stable";
+  private final String m_defaultRoute = "Exit line";
+  private final String m_itemComplexRoute = "Stabilize ramp and put in grid and exit Line";
+  private final String m_cube3OutStable = "Put cube in 3 level and stabilize ramp";
   private final String m_coneOut = "cone 2 Out";
   private final String m_cubeOut = "cube 2 Out";
-  private final String m_allAll = "cube and cube";
 
   private String m_selected;
-
-  private SendableChooser<String> m_itemChooser = new SendableChooser<>();
-  private final String m_cone = "Cone";
-  private final String m_cube = "Cube";
-  private  String m_selectedItem;
 
   /** All needed buttons on the robot */
   private final Trigger rbButton = m_driverController.rightBumper();
@@ -87,8 +70,6 @@ public class RobotContainer {
   private final Trigger j8Button = m_opController.button(8);
   private final Trigger j7Button = m_opController.button(7);
   private final Trigger j9Button = m_opController.button(9);
-  private final Trigger j10Button = m_opController.button(10);
-  private final Trigger j11Button = m_opController.button(11);
   private final Trigger POVdown = m_opController.povDown();
 
   UsbCamera intakeCam;
@@ -123,7 +104,6 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
-    //rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rtButton.whileTrue(new AutoOpenIntake(m_intake));
     rtButton.onFalse(new WaitCommand(0.35).andThen(new CloseIntake(m_intake)));
     rbButton.onTrue(new CloseIntake(m_intake));
@@ -140,7 +120,6 @@ public class RobotContainer {
     j7Button.onTrue(closeCubeCommand);
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
-    j10Button.onTrue(new RampBalance(m_drive));
     POVdown.whileTrue(new CubeIntake(m_intake));
   }
 
@@ -155,28 +134,13 @@ public class RobotContainer {
     m_selected = m_chooser.getSelected();
     Command autonomusCommand = null;
 
-    /** The paths we wish to follow */
-    HashMap<String, Command> eventMap = new HashMap<>();
-    
-    /** The path following program */
-    RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
-      m_drive::getPoseMetres,
-      m_drive::resetPoseMetres,
-      new RamseteController(),
-      DriveSubsystem.KINEMATICS,
-      new SimpleMotorFeedforward(0.30226, 2.6, 0.20779),
-      m_drive::getSpeeds,
-      new PIDConstants(3, 0, 0),
-      m_drive::setVoltage,
-      eventMap,
-      true, 
-      m_drive
-    );
+    //new SimpleMotorFeedforward(0.30226, 2.6, 0.20779),
+    //new PIDConstants(3, 0, 0),
 
     /** The autonomus route according to the selected on in the smartdashboard */
     switch (m_selected) {
       case m_defaultRoute :
-        autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
+        autonomusCommand = new DriveM(m_drive, 4);
         break;
       case m_itemComplexRoute:
         autonomusCommand = new CloseCone(m_beak)
@@ -199,13 +163,6 @@ public class RobotContainer {
         .andThen(new DriveM(m_drive, 1))
         .andThen(new RampBalance(m_drive));
         break;
-      case m_itemDefaultRoute:
-        autonomusCommand = OpenLiftTrack.andThen(
-          new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
-            new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder));
-        autonomusCommand = addBeak(autonomusCommand);
-        break;
-
       case m_coneOut:
         autonomusCommand = new CloseCone(m_beak)
         .andThen(new WaitCommand(1.5))
@@ -224,21 +181,6 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.8))
         .andThen(new DriveM(m_drive, -4));
         break;
-
-        // case m_allAll:
-        //   autonomusCommand = new ShootCubeTop(m_intake)
-        //   .andThen(new WaitCommand(0.8))
-        //   .andThen(new DriveM(m_drive, -1))
-        //   .andThen(new ChangeAngle(m_drive, 180))
-        //   .andThen(new DriveM(m_drive, 4))
-        //   .andThen(new DriveM(m_drive, 1))
-        //   .alongWith(new OpenIntake(m_intake))
-        //   .andThen(new ToggleIntakePistons(m_intake))
-        //   .andThen(new WaitCommand(0.5))
-        //   .andThen(new CloseIntake(m_intake))
-        //   .andThen(new DriveM(m_drive, -5));
-        //   break;
-
     }
     
     return autonomusCommand;
@@ -251,59 +193,19 @@ public class RobotContainer {
     m_lift.stopMotor();
   }
 
-  /**
-   * Make command to move autonomuslly from the community to the ramp.
-   * @param eventMap      the event map that includes all events.
-   * @param autoBuilder   the auto builder to make the command accorrding to the path.
-   * @return              the command that needs to be run to complete the stated path.
-   */
-  public Command commToRamp(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
-      "CommToRamp", new PathConstraints(3.25, 1.75));
-    return autoBuilder.fullAuto(pathGroup);
-  }
-
-  /**
-   * Make command to move autonomuslly from the grid to the Community.
-   * @param eventMap      the event map that includes all events.
-   * @param autoBuilder   the auto builder to make the command accorrding to the path.
-   * @return              the command that needs to be run to complete the stated path.
-   */
-  public Command defaultRoute(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
-      "DefaultRoute", new PathConstraints(3.25, 1.75));
-    return autoBuilder.fullAuto(pathGroup);
-  }
-
-  public Command addBeak(Command m_nextCommand) {
-    return (m_selectedItem == "Cube" ? new CloseCube(m_beak) : new CloseCone(m_beak)).andThen(m_nextCommand);
-  }
-
   /** Happens once upon the codes being deployed */
   public void robotInit() {
     m_chooser.setDefaultOption(m_defaultRoute, m_defaultRoute);
-    m_chooser.addOption(m_itemDefaultRoute, m_itemDefaultRoute);
     m_chooser.addOption(m_itemComplexRoute, m_itemComplexRoute);
     m_chooser.addOption(m_cube3OutStable, m_cube3OutStable);
     m_chooser.addOption(m_coneOut, m_coneOut);
     m_chooser.addOption(m_cubeOut, m_cubeOut);
-    m_chooser.addOption(m_allAll, m_allAll);
-
-
 
     SmartDashboard.putData("Autonomus options", m_chooser);
-
-    m_itemChooser.setDefaultOption(m_cone, m_cone);
-    m_itemChooser.addOption(m_cube, m_cube);
-    SmartDashboard.putData("Item", m_itemChooser);
     
     headCam = CameraServer.startAutomaticCapture(0);
     headCam.setResolution(320, 240);
     headCam.setFPS(30);
-    
-    // intakeCam = CameraServer.startAutomaticCapture(1);
-    // intakeCam.setResolution(160, 120);
-    // intakeCam.setFPS(15);
 
     server = CameraServer.getServer();
   }

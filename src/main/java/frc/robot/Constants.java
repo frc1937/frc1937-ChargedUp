@@ -169,25 +169,15 @@ public final class Constants {
    */
   public static class BeakConstants {
     /**
-     * The start position of checking whether the object is a cone or a cube
-     */
-    public static final double BEAK_CUBE_START_POSITION = -120;
-
-    /**
      * The catch position of the beak for the cube
      */
-    public static final double BEAK_CUBE_HOLD_POSITION = -140;
+    public static final double BEAK_CUBE_HOLD_POSITION = -110;
 
     /**
      * The catch position of the beak for the cone
      */
     public static final double BEAK_CONE_HOLD_POSITION = -130;
     
-    /**
-     * The max position the beak could arrive to whilst catching a cube
-     * if the beak passses this location then the object is a cone
-     */
-    public static final double BEAK_CUBE_MAX_POSITION = -145;
 
     /**
      * The top position of the Beak
@@ -231,9 +221,6 @@ public final class Constants {
       public static final int INTAKE_ANGLE_MOTOR = 6;
       public static final int RIGHT_INTAKE_MOTOR = 4;
       public static final int LEFT_INTAKE_MOTOR = 5;
-
-      public static final int OPEN_PISTONS = 7;
-      public static final int CLOSE_PISTONS = 0; 
     }
 
     public static class Lift {
@@ -247,13 +234,24 @@ public final class Constants {
       
     public static class Track {
       public static final int TRACK_MOTOR = 7;
-      public static final int OPEN_TRACK_SOLENOID = 4;
-      public static final int CLOSE_TRACK_SOLENOID = 1;
     }
 
     public static class Controllers {
       public static final int DRIVER_CONTROLLER = 0;
       public static final int OPERATOR_CONTROLLER  = 1;
+    }
+  }
+
+  /** All ports for the pneumatics */
+  public static class PneumaticPorts {
+    public static class Intake {
+      public static final int OPEN_PISTONS = 7;
+      public static final int CLOSE_PISTONS = 0; 
+    }
+
+    public static class Track {
+      public static final int OPEN_TRACK_SOLENOID = 4;
+      public static final int CLOSE_TRACK_SOLENOID = 1;
     }
   }
 }

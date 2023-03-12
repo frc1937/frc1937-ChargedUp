@@ -4,15 +4,14 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.BeakConstants;
 import frc.robot.Constants.Ports;
 
@@ -41,49 +40,41 @@ public class BeakSubsystem extends SubsystemBase {
   @Override
   public void periodic() {SmartDashboard.putNumber("Position", getPosition());}
 
-  // Stop the beaks movement
+  /** Stop the beak motor */
   public void stopMotor() {
     m_beakMotor.stopMotor();
   }
  
-  /*
-   * @return  PIDController of the beak motor
+  /**
+   * @return  {@link com.revrobotics.SparkMaxPIDController PIDcontroller} of the beak motor
    */
   public SparkMaxPIDController getController() {
     return m_controller;
   } 
 
-  // Reset the beak encoder 
+  /** Reset the beak encoder */
   public void ResetBeakEncoder() {
     m_beakMotor.getEncoder().setPosition(0);
   }
 
-  /*
+  /**
    * @return  The motors current position
    */
   public double getPosition() {
     return m_encoder.getPosition();
   }
 
-  /*
+  /**
    * @param voltage the motor will get
    */
   public void setVoltage(double voltage) {
     m_beakMotor.setVoltage(voltage);
   }
 
-  /*
+  /**
    * @return  The velocity of the motor
    */
   public double getVelocity() {
     return m_encoder.getVelocity();
-  }
-
-  public void setBrake() {
-    m_beakMotor.setIdleMode(IdleMode.kBrake);
-  }
-
-  public void setCoast() {
-    m_beakMotor.setIdleMode(IdleMode.kCoast);
   }
 }

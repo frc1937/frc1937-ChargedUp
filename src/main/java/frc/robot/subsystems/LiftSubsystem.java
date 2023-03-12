@@ -7,9 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.LiftConstants;
 import frc.robot.Constants.Ports.Lift;
 
@@ -42,7 +41,7 @@ public class LiftSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_intake.getLiftSwitch())
+    if (limitSwitchPressed())
       m_liftMotor.setSelectedSensorPosition(0);
   }
 
@@ -69,7 +68,7 @@ public class LiftSubsystem extends SubsystemBase {
    * Get the limit switch value
    * @return true if the limit switch is pressed and false otherwise
    */
-  public boolean getIsRevLimitSwitchPressed() {
+  public boolean limitSwitchPressed() {
     return m_intake.getLiftSwitch();
   }
 

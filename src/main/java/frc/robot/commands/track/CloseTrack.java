@@ -20,7 +20,7 @@ public class CloseTrack extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_track.closePiston();
+    m_track.closeTrack();
   }
 }
 

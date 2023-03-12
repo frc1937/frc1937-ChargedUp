@@ -5,8 +5,6 @@
 package frc.robot.commands.track;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.TrackConstants;
 import frc.robot.subsystems.TrackSubsystem;
 
 /** Open the track first layer and then the sencond layers piston */
@@ -23,7 +21,7 @@ public class OpenTrack extends CommandBase {
   @Override
   public void initialize() {
   //opens the two pistons of the track
-  m_track.openPiston();
+  m_track.openTrack();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
