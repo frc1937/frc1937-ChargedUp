@@ -24,7 +24,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private boolean isUp = true;
   public enum intakeWheelState {
     Stop("Stop"), In("In"), Out("Out"), Right("Right"), Left("Left"),
-    Slow("Inly"), Outly("Outly"), ShootTop("ShootTop"), ShootMiddle("ShootMiddle");
+    Slow("Inly"), Outly("Outly"), 
+    ShootTop("ShootTop"), ShootMiddle("ShootMiddle");
     String name;
     private intakeWheelState(String name) {
       this.name = name;
@@ -101,7 +102,7 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeed(-0.1);
         break;
       case ShootTop:
-        setIntakeWheelSpeed(-1);
+        setIntakeWheelSpeed(-0.81679);
         break;
       case ShootMiddle:
         setIntakeWheelSpeed(-0.65);

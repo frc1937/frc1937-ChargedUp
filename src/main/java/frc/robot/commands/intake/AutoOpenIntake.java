@@ -34,7 +34,7 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void initialize() {
     m_intake.openIntake();
-    //m_intake.setAngleState(IntakeAngleState.Down);
+    m_intake.setAngleState(IntakeAngleState.Down);
     m_intake.setWheelState(intakeWheelState.In);
     m_intake.setIsUp(false);
   }
@@ -45,8 +45,6 @@ public class AutoOpenIntake extends CommandBase {
     coneStatus = tstatus.getDouble(0);
     area = tarea.getDouble(0);
     x = tx.getDouble(0);
-    
-    SmartDashboard.putNumber("Cone Status", coneStatus);
 
     // Change the wheel speed and direction based on the detected target
     if(gamePiece == 1){
@@ -75,6 +73,8 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.closeIntake();
+    
+
   }
 
   @Override

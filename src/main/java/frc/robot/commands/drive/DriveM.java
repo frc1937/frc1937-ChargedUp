@@ -22,7 +22,7 @@ public class DriveM extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.resetPoseMetres(null);
+    m_drive.resetpos();
     double speed = targetPosition > 0 ? 0.4 : -0.4;
     m_drive.arcadeDrive(speed, 0);
   }
@@ -33,7 +33,9 @@ public class DriveM extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.stopMotor();
+  }
 
   // Returns true when the command should end.
   @Override

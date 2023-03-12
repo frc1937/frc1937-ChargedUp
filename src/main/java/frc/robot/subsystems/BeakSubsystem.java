@@ -11,6 +11,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BeakConstants;
 import frc.robot.Constants.Ports;
@@ -33,11 +34,12 @@ public class BeakSubsystem extends SubsystemBase {
     m_controller.setD(k_d);
     m_controller.setP(k_p);
     m_controller.setI(k_i);
+    m_controller.setFF(0.8);
     m_controller.setOutputRange(-0.6, 0.6);
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {SmartDashboard.putNumber("Position", getPosition());}
 
   // Stop the beaks movement
   public void stopMotor() {

@@ -137,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return -m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
   /**

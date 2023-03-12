@@ -59,6 +59,10 @@ public class RobotContainer {
   private final String m_defaultRoute = "Line";
   private final String m_itemDefaultRoute = "Grid Line";
   private final String m_itemComplexRoute = "Ramp Grid Line";
+  private final String m_cube3OutStable = "Cube3 Out Stable";
+  private final String m_coneOut = "cone 2 Out";
+  private final String m_cubeOut = "cube 2 Out";
+
   private String m_selected;
 
   private SendableChooser<String> m_itemChooser = new SendableChooser<>();
@@ -70,6 +74,7 @@ public class RobotContainer {
   private final Trigger rbButton = m_driverController.rightBumper();
   private final Trigger rtButton = m_driverController.rightTrigger();
   private final Trigger ltButton = m_driverController.leftTrigger();
+  private final Trigger lbButton = m_driverController.leftBumper();
   private final Trigger aButton = m_driverController.a();
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
@@ -117,9 +122,10 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
-    rtButton.onTrue(new AutoOpenIntake(m_intake).andThen(new CloseIntake(m_intake)));
+    rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
+    lbButton.onTrue(new CloseCube(m_beak));
     aButton.onTrue(new ShootCubeMiddle(m_intake));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
     yButton.onTrue(new ShootCubeTop(m_intake));
@@ -170,11 +176,25 @@ public class RobotContainer {
         autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
         break;
       case m_itemComplexRoute:
-        autonomusCommand = OpenLiftTrack.andThen(
-        new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
-          new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
-            new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
-        autonomusCommand = addBeak(autonomusCommand);
+        autonomusCommand = new CloseCone(m_beak)
+        .andThen(new WaitCommand(1.5))
+        .andThen(OpenLiftTrack).withTimeout(3)
+        .andThen(new WaitCommand(0.8))
+        .andThen(new OpenBeak(m_beak))
+        .andThen(new WaitCommand(0.8))
+        .andThen(new DriveM(m_drive, -0.5))
+        .andThen(CloseLiftTrack)
+        .withTimeout(7.5)
+        .andThen(new DriveM(m_drive, -3))
+        .andThen(new DriveM(m_drive, 1))
+        .andThen(new RampBalance(m_drive));
+        break;
+      case m_cube3OutStable:
+        autonomusCommand = new ShootCubeTop(m_intake)
+        .andThen(new WaitCommand(1))
+        .andThen(new DriveM(m_drive, -3))
+        .andThen(new DriveM(m_drive, 1))
+        .andThen(new RampBalance(m_drive));
         break;
       case m_itemDefaultRoute:
         autonomusCommand = OpenLiftTrack.andThen(
@@ -182,6 +202,27 @@ public class RobotContainer {
             new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder));
         autonomusCommand = addBeak(autonomusCommand);
         break;
+
+        case m_coneOut:
+        autonomusCommand = new CloseCone(m_beak)
+        .andThen(new WaitCommand(1.5))
+        .andThen(OpenLiftTrack).withTimeout(3)
+        .andThen(new WaitCommand(0.8))
+        .andThen(new OpenBeak(m_beak))
+        .andThen(new WaitCommand(0.8))
+        .andThen(new DriveM(m_drive, -0.5))
+        .andThen(CloseLiftTrack)
+        .withTimeout(7.5)
+        .andThen(new DriveM(m_drive, -3));
+        break;
+
+        case m_cubeOut:
+        autonomusCommand = new ShootCubeMiddle(m_intake)
+        .andThen(new WaitCommand(0.8))
+        .andThen(new DriveM(m_drive, -4));
+        break;
+
+
     }
     
     return autonomusCommand;
@@ -227,6 +268,12 @@ public class RobotContainer {
     m_chooser.setDefaultOption(m_defaultRoute, m_defaultRoute);
     m_chooser.addOption(m_itemDefaultRoute, m_itemDefaultRoute);
     m_chooser.addOption(m_itemComplexRoute, m_itemComplexRoute);
+    m_chooser.addOption(m_cube3OutStable, m_cube3OutStable);
+    m_chooser.addOption(m_coneOut, m_coneOut);
+    m_chooser.addOption(m_cubeOut, m_cubeOut);
+
+
+
     SmartDashboard.putData("Autonomus options", m_chooser);
 
     m_itemChooser.setDefaultOption(m_cone, m_cone);

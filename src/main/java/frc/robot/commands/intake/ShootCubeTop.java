@@ -46,6 +46,6 @@ public class ShootCubeTop extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intake.getAngleState() == IntakeAngleState.Up && m_intake.getPosition() < 400;
+    return m_intake.getAngleState() == IntakeAngleState.Up && m_intake.getPosition() < 374.8745;
   }
 }
