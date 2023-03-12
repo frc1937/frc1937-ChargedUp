@@ -48,7 +48,7 @@ public class AutoOpenIntake extends CommandBase {
 
     // Change the wheel speed and direction based on the detected target
     if(gamePiece == 1){
-      m_intake.setWheelState(intakeWheelState.Stop);
+      m_intake.setWheelState(intakeWheelState.Slow);
     }
     else if(coneStatus == 2){
       m_intake.setWheelState(intakeWheelState.Right);
@@ -73,7 +73,7 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.closeIntake();
-    m_intake.setAngleState(IntakeAngleState.Up);
+    m_intake.setWheelState(intakeWheelState.Stop);
 
   }
 

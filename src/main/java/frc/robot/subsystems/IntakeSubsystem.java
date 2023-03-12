@@ -87,13 +87,13 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
         break;
       case Left:
-        setIntakeWheelSpeedOposing(IntakeConstants.INTAKE_WHEEL_SPEED);
+        setIntakeWheelSpeedOposing(-0.3);
         break;
       case Out:
         setIntakeWheelSpeed(-IntakeConstants.INTAKE_WHEEL_SPEED);
         break;
       case Right:
-        setIntakeWheelSpeedOposing(-IntakeConstants.INTAKE_WHEEL_SPEED);
+        setIntakeWheelSpeedOposing(0.3);
         break;
       case Slow:
         setIntakeWheelSpeed(0.2);
@@ -102,7 +102,7 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeed(-0.1);
         break;
       case ShootTop:
-        setIntakeWheelSpeed(-0.81679);
+        setIntakeWheelSpeed(-1);
         break;
       case ShootMiddle:
         setIntakeWheelSpeed(-0.65);

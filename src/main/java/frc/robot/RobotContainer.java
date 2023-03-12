@@ -125,12 +125,13 @@ public class RobotContainer {
 
     //rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rtButton.whileTrue(new AutoOpenIntake(m_intake));
+    rtButton.onFalse(new WaitCommand(0.35).andThen(new CloseIntake(m_intake)));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
-    aButton.onTrue(new ShootCubeMiddle(m_intake));
+    aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
-    yButton.onTrue(new ShootCubeTop(m_intake));
+    yButton.onTrue(new ShootCubeTop(m_intake,m_lift));
 
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
@@ -192,7 +193,7 @@ public class RobotContainer {
         .andThen(new RampBalance(m_drive));
         break;
       case m_cube3OutStable:
-        autonomusCommand = new ShootCubeTop(m_intake)
+        autonomusCommand = new ShootCubeTop(m_intake, m_lift)
         .andThen(new WaitCommand(1))
         .andThen(new DriveM(m_drive, -3))
         .andThen(new DriveM(m_drive, 1))
@@ -219,24 +220,24 @@ public class RobotContainer {
         break;
 
       case m_cubeOut:
-        autonomusCommand = new ShootCubeMiddle(m_intake)
+        autonomusCommand = new ShootCubeMiddle(m_intake, m_lift)
         .andThen(new WaitCommand(0.8))
         .andThen(new DriveM(m_drive, -4));
         break;
 
-        case m_allAll:
-          autonomusCommand = new ShootCubeTop(m_intake)
-          .andThen(new WaitCommand(0.8))
-          .andThen(new DriveM(m_drive, -1))
-          .andThen(new ChangeAngle(m_drive, 180))
-          .andThen(new DriveM(m_drive, 4))
-          .andThen(new DriveM(m_drive, 1))
-          .alongWith(new OpenIntake(m_intake))
-          .andThen(new ToggleIntakePistons(m_intake))
-          .andThen(new WaitCommand(0.5))
-          .andThen(new CloseIntake(m_intake))
-          .andThen(new DriveM(m_drive, -5));
-          break;
+        // case m_allAll:
+        //   autonomusCommand = new ShootCubeTop(m_intake)
+        //   .andThen(new WaitCommand(0.8))
+        //   .andThen(new DriveM(m_drive, -1))
+        //   .andThen(new ChangeAngle(m_drive, 180))
+        //   .andThen(new DriveM(m_drive, 4))
+        //   .andThen(new DriveM(m_drive, 1))
+        //   .alongWith(new OpenIntake(m_intake))
+        //   .andThen(new ToggleIntakePistons(m_intake))
+        //   .andThen(new WaitCommand(0.5))
+        //   .andThen(new CloseIntake(m_intake))
+        //   .andThen(new DriveM(m_drive, -5));
+        //   break;
 
     }
     
