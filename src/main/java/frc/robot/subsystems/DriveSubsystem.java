@@ -8,6 +8,8 @@ import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -32,6 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
   private WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(Ports.Drive.PIGEON_IMU);
+  private SlewRateLimiter m_filter = new SlewRateLimiter(0.75);
 
   private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
     m_gyro.getRotation2d(),
@@ -105,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
    * values mean clockwise rotation.
    */
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(speed, rotation);
+    m_drive.arcadeDrive(m_filter.calculate(speed), rotation);
   }
 
   public void stopMotor() {
