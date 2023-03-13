@@ -225,15 +225,10 @@ public final class Constants {
 
     public static class Lift {
       public static final int LIFT_MOTOR = 10;
-      public static final int LIFT_SWITCH = 6;
     }
   
     public static class Beak {
       public static final int BEAK_MOTOR = 3;
-    }
-      
-    public static class Track {
-      public static final int TRACK_MOTOR = 7;
     }
 
     public static class Controllers {
