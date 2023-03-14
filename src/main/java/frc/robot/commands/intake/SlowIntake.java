@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-public class CubeIntake extends CommandBase {
+public class SlowIntake extends CommandBase {
   IntakeSubsystem m_intake;
   /** Creates a new SucCone. */
-  public CubeIntake(IntakeSubsystem m_intake) {
+  public SlowIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
     addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.

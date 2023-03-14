@@ -5,6 +5,8 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
@@ -17,13 +19,10 @@ public class AutoOpenIntake extends CommandBase {
   NetworkTableEntry tgamePiece = table.getEntry("game_piece");
   NetworkTableEntry tstatus = table.getEntry("cone_state");
   NetworkTableEntry tarea = table.getEntry("target_area");
-  NetworkTableEntry tx = table.getEntry("target_x");
-
-  double gamePiece;
+  
+  double gamePiece = -1;
   double coneStatus;
   double area;
-  double x;
-  double y;
 
   public AutoOpenIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
@@ -40,10 +39,11 @@ public class AutoOpenIntake extends CommandBase {
 
   @Override
   public void execute() {
-    gamePiece = tgamePiece.getDouble(0);
+    if(tgamePiece.getDouble(0) != -1){
+      gamePiece = tgamePiece.getDouble(0);
+    }
     coneStatus = tstatus.getDouble(0);
     area = tarea.getDouble(0);
-    x = tx.getDouble(0);
 
     // Change the wheel speed and direction based on the detected target
     if(gamePiece == 1){
@@ -59,6 +59,8 @@ public class AutoOpenIntake extends CommandBase {
       m_intake.setWheelState(intakeWheelState.In);
     }
 
+    // Display if the detected cone is OK fir normal intake - Base facing the robot
+    SmartDashboard.putBoolean("Ok Cone", coneStatus == 0);
 
     // if((area > 55 && coneStatus == 0) || area > 80){
     //   m_intake.closeIntake();
@@ -72,8 +74,7 @@ public class AutoOpenIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_intake.closeIntake();
-    m_intake.setWheelState(intakeWheelState.Stop);
-
+    m_intake.setWheelState(intakeWheelState.Slow);
   }
 
   @Override

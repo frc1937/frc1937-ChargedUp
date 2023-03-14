@@ -104,9 +104,11 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
+    //rtButton.onTrue(new ToggleOpenIntake(m_intake)); //Button for without vision
+    //rbButton.onTrue(new CloseIntake(m_intake)); //Button for without vision
     rtButton.whileTrue(new AutoOpenIntake(m_intake));
-    rtButton.onFalse(new WaitCommand(0.35).andThen(new CloseIntake(m_intake)));
-    rbButton.onTrue(new CloseIntake(m_intake));
+    rtButton.onFalse(new WaitCommand(0.4).andThen(new CloseIntake(m_intake)));
+    rbButton.whileTrue(new AlignToGamePiece(m_drive));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
     aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
@@ -120,7 +122,7 @@ public class RobotContainer {
     j7Button.onTrue(closeCubeCommand);
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
-    POVdown.whileTrue(new CubeIntake(m_intake));
+    POVdown.whileTrue(new SlowIntake(m_intake));
   }
 
   public void teleopInit() {}
