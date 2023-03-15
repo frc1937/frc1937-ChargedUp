@@ -51,6 +51,7 @@ public class RobotContainer {
   private final String m_cube3OutStable = "Put cube in 3 level and stabilize ramp";
   private final String m_coneOut = "cone 2 Out";
   private final String m_cubeOut = "cube 2 Out";
+  private final String m_cubeOut3 = "cube 3 Out";
 
   private String m_selected;
 
@@ -104,8 +105,8 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
-    rtButton.whileTrue(new AutoOpenIntake(m_intake));
-    rtButton.onFalse(new WaitCommand(0.35).andThen(new CloseIntake(m_intake)));
+    //rtButton.whileTrue(new AutoOpenIntake(m_intake));
+    //rtButton.onFalse(new WaitCommand(0.35).andThen(new CloseIntake(m_intake)));
     rbButton.onTrue(new CloseIntake(m_intake));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
@@ -152,15 +153,13 @@ public class RobotContainer {
         .andThen(new DriveM(m_drive, -0.5))
         .andThen(CloseLiftTrack)
         .withTimeout(7.5)
-        .andThen(new DriveM(m_drive, -3))
-        .andThen(new DriveM(m_drive, 1))
+        .andThen(new DriveM(m_drive, -1.5))
         .andThen(new RampBalance(m_drive));
         break;
       case m_cube3OutStable:
         autonomusCommand = new ShootCubeTop(m_intake, m_lift)
         .andThen(new WaitCommand(1))
-        .andThen(new DriveM(m_drive, -3))
-        .andThen(new DriveM(m_drive, 1))
+        .andThen(new DriveM(m_drive, -1.3))
         .andThen(new RampBalance(m_drive));
         break;
       case m_coneOut:
@@ -179,7 +178,12 @@ public class RobotContainer {
       case m_cubeOut:
         autonomusCommand = new ShootCubeMiddle(m_intake, m_lift)
         .andThen(new WaitCommand(0.8))
-        .andThen(new DriveM(m_drive, -4));
+        .andThen(new DriveM(m_drive, -3.75));
+        break;
+      case m_cubeOut3:
+      autonomusCommand = new ShootCubeTop(m_intake, m_lift)
+        .andThen(new WaitCommand(1))
+        .andThen(new DriveM(m_drive, -3.75));
         break;
     }
     
@@ -200,6 +204,7 @@ public class RobotContainer {
     m_chooser.addOption(m_cube3OutStable, m_cube3OutStable);
     m_chooser.addOption(m_coneOut, m_coneOut);
     m_chooser.addOption(m_cubeOut, m_cubeOut);
+    m_chooser.addOption(m_cubeOut3, m_cubeOut3);
 
     SmartDashboard.putData("Autonomus options", m_chooser);
     
