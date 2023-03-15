@@ -23,7 +23,7 @@ public class DriveM extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetpos();
-    double speed = targetPosition > 0 ? 0.4 : -0.4;
+    double speed = targetPosition > 0 ? 0.35 : -0.35;
     m_drive.arcadeDrive(speed, 0);
   }
 
@@ -40,7 +40,7 @@ public class DriveM extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (targetPosition > 0 && m_drive.getLeftTravelDistanceMetres() >= targetPosition) ||
-           (targetPosition < 0 && m_drive.getLeftTravelDistanceMetres() <= targetPosition);
+    return (targetPosition > 0 && m_drive.getRightTravelDistanceMetres() >= targetPosition) ||
+           (targetPosition < 0 && m_drive.getRightTravelDistanceMetres() <= targetPosition);
   }
 }

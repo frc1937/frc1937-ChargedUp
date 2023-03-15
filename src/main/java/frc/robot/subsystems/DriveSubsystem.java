@@ -34,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
   private WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(Ports.Drive.PIGEON_IMU);
-  private SlewRateLimiter m_filter = new SlewRateLimiter(0.75);
+  //private SlewRateLimiter m_filter = new SlewRateLimiter(0.25);
 
   private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
     m_gyro.getRotation2d(),
@@ -56,7 +56,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRightMotor.setIdleMode(IdleMode.kBrake);
 
     m_right.setInverted(true);
-    m_left.setInverted(true);
+    m_left.setInverted(false);
 
 
 
@@ -67,12 +67,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_frontLeftMotor.getEncoder().setPosition(0);
     m_frontRightMotor.getEncoder().setPosition(0);
-    
-    // Invert the direction of all the motors
-    m_frontRightMotor.setInverted(false);
-    m_rearRightMotor.setInverted(false);
-    m_rearLeftMotor.setInverted(true);
-    m_frontLeftMotor.setInverted(true);
 
     m_frontLeftMotor.setClosedLoopRampRate(0.5);
     m_rearLeftMotor.setClosedLoopRampRate(0.5);
@@ -89,8 +83,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("orientation", m_gyro.getAngle() % 360);
-    SmartDashboard.putNumber("speed angle", m_gyro.getRoll()/ (DriveConstants.MAX_RAMP_ANGLE * 2));
-    SmartDashboard.putNumber("Angle", m_gyro.getRoll());
+    SmartDashboard.putNumber("speed angle", getLeftTravelDistanceMetres());
+    SmartDashboard.putNumber("Angle", getRightTravelDistanceMetres());
 
     m_odometry.update(
       m_gyro.getRotation2d(),
@@ -108,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
    * values mean clockwise rotation.
    */
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(m_filter.calculate(speed), rotation);
+    m_drive.arcadeDrive(speed, rotation);
   }
 
   public void stopMotor() {
@@ -140,7 +134,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return -m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
   }
 
   /**

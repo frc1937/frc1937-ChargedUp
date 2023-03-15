@@ -36,7 +36,7 @@ public class RampBalance extends CommandBase {
   @Override
   public void execute() {
     angleRoll = -gyro.getRoll();
-    speed = angleRoll / (DriveConstants.MAX_RAMP_ANGLE * 2.4);
+    speed = angleRoll / (DriveConstants.MAX_RAMP_ANGLE * 2.8);
     SmartDashboard.putNumber("speed angle", speed);
     m_drive.arcadeDrive(speed , 0);
   }
