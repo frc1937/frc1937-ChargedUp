@@ -23,7 +23,7 @@ public class DriveM extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetpos();
-    double speed = targetPosition > 0 ? 0.35 : -0.35;
+    double speed = targetPosition > 0 ? 0.55 : -0.55;
     m_drive.arcadeDrive(speed, 0);
   }
 
