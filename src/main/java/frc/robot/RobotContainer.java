@@ -63,6 +63,7 @@ public class RobotContainer {
   private final Trigger aButton = m_driverController.a();
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
+  private final Trigger xButton = m_driverController.x();
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -71,6 +72,7 @@ public class RobotContainer {
   private final Trigger j8Button = m_opController.button(8);
   private final Trigger j7Button = m_opController.button(7);
   private final Trigger j9Button = m_opController.button(9);
+  private final Trigger j11Button = m_opController.button(11);
   private final Trigger POVdown = m_opController.povDown();
 
   UsbCamera intakeCam;
@@ -115,6 +117,8 @@ public class RobotContainer {
     aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
     yButton.onTrue(new ShootCubeTop(m_intake,m_lift));
+    xButton.whileTrue(new LowerIntake(m_intake));
+    xButton.onFalse(new CloseIntake(m_intake));
 
     J1Button.onTrue(OpenLiftTrack);
     J2Button.onTrue(CloseLiftTrack);
@@ -124,6 +128,7 @@ public class RobotContainer {
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
     POVdown.whileTrue(new SlowIntake(m_intake));
+    j11Button.onTrue(new ToggleSwitchActive(m_intake));
   }
 
   public void teleopInit() {}
@@ -161,7 +166,7 @@ public class RobotContainer {
       case m_cube3OutStable:
         autonomusCommand = new ShootCubeTop(m_intake, m_lift)
         .andThen(new WaitCommand(1))
-        .andThen(new DriveM(m_drive, -1.3))
+        .andThen(new DriveM(m_drive, -1.35))
         .andThen(new RampBalance(m_drive));
         break;
       case m_coneOut:
