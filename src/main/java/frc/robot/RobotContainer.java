@@ -4,9 +4,22 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -142,8 +155,27 @@ public class RobotContainer {
     m_selected = m_chooser.getSelected();
     Command autonomusCommand = null;
 
+    RamseteController m_controller = new RamseteController();
+
+    /** Define all autonomus drive paths */
+    List<PathPlannerTrajectory> m_doubleCubePath = PathPlanner.loadPathGroup(m_coneOut, new PathConstraints(0, 0));
+    
+    HashMap<String, Command> eventMap = new HashMap<>();
+
+    RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
+      m_drive::getPoseMetres, 
+      m_drive::resetPoseMetres, 
+      m_controller, 
+      m_drive.kinematics, 
+      new SimpleMotorFeedforward(0, 0), 
+      m_drive::getSpeeds, 
+      new PIDConstants(3, 0, 0), 
+      m_drive::setVoltage, 
+      eventMap, 
+      true, 
+      m_drive);
+    
     //new SimpleMotorFeedforward(0.30226, 2.6, 0.20779),
-    //new PIDConstants(3, 0, 0),
 
     /** The autonomus route according to the selected on in the smartdashboard */
     switch (m_selected) {
@@ -202,6 +234,29 @@ public class RobotContainer {
     m_intake.stopIntakeWheel();
     m_intake.stopAngle();
     m_lift.stopMotor();
+  }
+
+  /**
+   * The path that needs to be taken to get the item
+   * @param m_builder The {@link com.pathplanner.lib.auto.RamseteAutoBuilder AutoBuilder} needed 
+   * to take a path and make it into a command
+   * @param m_map The {@link java.util.HashMap HashMap} that will contain the path and the 
+   * commands to run in said path
+   * @return The path from the grid to the item including the item capturing
+   */
+  private Command getPathToItem(RamseteAutoBuilder m_builder, HashMap m_map) {
+    Command firstCommand = new ShootCubeTop(m_intake, m_lift);
+    List<PathPlannerTrajectory> pathToItem = PathPlanner.loadPathGroup(
+      "PathToItem", 
+      new PathConstraints(3.5, 2), 
+      new PathConstraints(3.5, 1.5),
+      new PathConstraints(2, 1));
+    m_map.put("OpenIntake", new AutoOpenIntake(m_intake).withTimeout(1.5));
+    m_map.put("CloseIntake", new CloseIntake(m_intake));
+    
+    Command secondCommand = m_builder.fullAuto(pathToItem);
+
+    return firstCommand.andThen(secondCommand);
   }
 
   /** Happens once upon the codes being deployed */

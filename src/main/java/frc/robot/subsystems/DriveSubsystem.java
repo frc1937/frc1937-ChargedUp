@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -34,15 +35,13 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
   private WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(Ports.Drive.PIGEON_IMU);
-  //private SlewRateLimiter m_filter = new SlewRateLimiter(0.25);
 
   private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
     m_gyro.getRotation2d(),
     getLeftTravelDistanceMetres(),
     getRightTravelDistanceMetres()
   );
-
-  public static final DifferentialDriveKinematics KINEMATICS = new DifferentialDriveKinematics(0.44);
+  public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.5567299);
 
   public DriveSubsystem() {
     m_frontLeftMotor.restoreFactoryDefaults();
@@ -58,15 +57,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_right.setInverted(true);
     m_left.setInverted(false);
 
-
-
-    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
-    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
-    m_frontLeftMotor.getEncoder().setVelocityConversionFactor((1.0 / 42));
-    m_frontRightMotor.getEncoder().setVelocityConversionFactor((1.0 / 42));
+    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 84));
+    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 84));
+    m_frontLeftMotor.getEncoder().setVelocityConversionFactor((1.0 / 84));
+    m_frontRightMotor.getEncoder().setVelocityConversionFactor((1.0 / 84));
 
     m_frontLeftMotor.getEncoder().setPosition(0);
+    m_rearLeftMotor.getEncoder().setPosition(0);
     m_frontRightMotor.getEncoder().setPosition(0);
+    m_rearRightMotor.getEncoder().setPosition(0);
 
     m_frontLeftMotor.setClosedLoopRampRate(0.5);
     m_rearLeftMotor.setClosedLoopRampRate(0.5);
@@ -82,10 +81,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("orientation", m_gyro.getAngle() % 360);
-    SmartDashboard.putNumber("speed angle", getLeftTravelDistanceMetres());
-    SmartDashboard.putNumber("Angle", getRightTravelDistanceMetres());
-
     m_odometry.update(
       m_gyro.getRotation2d(),
       getLeftTravelDistanceMetres(),
@@ -134,7 +129,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71;
   }
 
   /**
@@ -142,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getRightTravelDistanceMetres() {
-    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71;
   }
 
   /**
@@ -150,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
    * last encoder reset
    */
   public double getLeftTravelVelocityMetresPerSecond() {
-    return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71;
   }
 
   /**
@@ -158,7 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
    * last encoder reset
    */
   public double getRightTravelVelocityMetresPerSecond() {
-    return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 2;
+    return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71;
   }
 
   /**
@@ -174,8 +169,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param right   the voltage in the right side
    */
   public void setVoltage(double left, double right) {
-    m_left.setVoltage(left / 12);
-    m_right.setVoltage(right / 12);
+    m_drive.tankDrive(left / 12, right / 12);
   }
 
   /**
@@ -185,15 +179,15 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-  public void resetYaw() {
-    m_gyro.setYaw(0);
-  }
-
   public double getYaw() {
     return m_gyro.getYaw();
   }
 
-public WPI_PigeonIMU getGyro() {
+  public WPI_PigeonIMU getGyro() {
     return m_gyro;
-}
+  }
+
+  public void resetYaw() {
+    m_gyro.setYaw(0);
+  }
 }
