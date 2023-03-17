@@ -9,36 +9,35 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-/** Close the intake angle and close the pistons whilst stoping the intake wheel motors */
-public class CloseIntake extends CommandBase {
+public class LowerIntake extends CommandBase {
   private IntakeSubsystem m_intake;
-
-  /** Creates a new CloseIntkae. */
-  public CloseIntake(IntakeSubsystem m_intake) {
+  /** Creates a new LowerIntake. */
+  public LowerIntake(IntakeSubsystem m_intake) {
     this.m_intake = m_intake;
-    
+
     addRequirements(m_intake);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_intake.setAngleState(IntakeAngleState.Down);
     m_intake.setWheelState(intakeWheelState.Stop);
-    m_intake.setAngleSensorPosition(2000);
-    m_intake.setAngleState(IntakeAngleState.Up);
+    m_intake.openIntake();
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intake.setIsUp(true);
-    m_intake.setAngleSensorPosition(0);
-    m_intake.closeIntake();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_intake.getSwitch() && m_intake.getSwitchActive()) || (!m_intake.getSwitchActive() && m_intake.getVelocity() <= 0);
+    return false;
   }
 }

@@ -4,13 +4,18 @@
 
 package frc.robot.subsystems;
 
+import java.lang.annotation.Retention;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.PneumaticPorts;
@@ -26,6 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
     PneumaticPorts.Intake.OPEN_PISTONS,
     PneumaticPorts.Intake.CLOSE_PISTONS);
   private boolean isUp = true;
+  private boolean m_microSWitchActive = true;
 
   /** All the intake wheels's states */
   public enum intakeWheelState {
@@ -57,6 +63,7 @@ public class IntakeSubsystem extends SubsystemBase {
     
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
+    m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
     
     m_angleMotor.configPeakOutputForward(0.6);
@@ -76,6 +83,14 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     setWheelMotorToState();
     setAngleMotorToState();
+    SmartDashboard.putBoolean("Micro-Switch activated", m_microSWitchActive);
+    SmartDashboard.putBoolean("Micro-Switch pressed", getSwitch());
+    SmartDashboard.putNumber("Intake velcoity", getVelocity());
+    SmartDashboard.putNumber("Intake poiwion", getPosition());
+
+    if (m_angleMotor.isRevLimitSwitchClosed() == 1 && m_microSWitchActive) {
+      m_angleMotor.setSelectedSensorPosition(0);
+    }
   }
 
   /**
@@ -93,19 +108,19 @@ public class IntakeSubsystem extends SubsystemBase {
         stopIntakeWheel();
         break;
       case In:
-        setIntakeWheelSpeed(IntakeConstants.INTAKE_WHEEL_SPEED);
+        setIntakeWheelSpeed(0.3);
         break;
       case Left:
-        setIntakeWheelSpeedOposing(-0.3);
+        setIntakeWheelSpeedOposing(-0.2);
         break;
       case Out:
         setIntakeWheelSpeed(-IntakeConstants.INTAKE_WHEEL_SPEED);
         break;
       case Right:
-        setIntakeWheelSpeedOposing(0.3);
+        setIntakeWheelSpeedOposing(0.2);
         break;
       case Slow:
-        setIntakeWheelSpeed(0.2);
+        setIntakeWheelSpeed(0.15);
         break;  
       case Outly:
         setIntakeWheelSpeed(-0.1);
@@ -268,4 +283,21 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean getIsUp() {
     return isUp;
   }
+
+  /** Disable the microSwitch usage in the code */
+  public void toggleSwitchActive() {
+    m_microSWitchActive = !m_microSWitchActive;
+  }
+
+  public boolean getSwitchActive() {
+    return m_microSWitchActive;
+  }
+
+public double getVelocity() {
+    return m_angleMotor.getSelectedSensorVelocity();
+}
+
+public void setAngleSensorPosition(int pos) {
+  m_angleMotor.setSelectedSensorPosition(pos);
+} 
 }
