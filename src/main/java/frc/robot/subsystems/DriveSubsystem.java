@@ -86,6 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
       getLeftTravelDistanceMetres(),
       getRightTravelDistanceMetres()
     );
+
+    SmartDashboard.putNumber("Left Position", getLeftTravelDistanceMetres());
   }
 
   /**
@@ -169,7 +171,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param right   the voltage in the right side
    */
   public void setVoltage(double left, double right) {
-    m_drive.tankDrive(left / 12, right / 12);
+    SmartDashboard.putNumber("ASDASD", right);
+    m_drive.tankDrive(left / 16, right / 16);
   }
 
   /**

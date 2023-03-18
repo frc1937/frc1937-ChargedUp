@@ -13,6 +13,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -152,6 +153,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+    PathPlannerServer.startServer(5811);
+
     m_selected = m_chooser.getSelected();
     Command autonomusCommand = null;
 
@@ -167,15 +171,13 @@ public class RobotContainer {
       m_drive::resetPoseMetres, 
       m_controller, 
       m_drive.kinematics, 
-      new SimpleMotorFeedforward(0, 0), 
+      new SimpleMotorFeedforward(2, 3, 1.5), 
       m_drive::getSpeeds, 
-      new PIDConstants(3, 0, 0), 
+      new PIDConstants(20, 0, 0), 
       m_drive::setVoltage, 
       eventMap, 
-      true, 
+      false, 
       m_drive);
-    
-    //new SimpleMotorFeedforward(0.30226, 2.6, 0.20779),
 
     /** The autonomus route according to the selected on in the smartdashboard */
     switch (m_selected) {
@@ -226,7 +228,7 @@ public class RobotContainer {
         break;
     }
     
-    return autonomusCommand;
+    return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Ofiri", new PathConstraints(2, 1)));
   }
 
   /** Happens once uppon the robot being disabled */
