@@ -8,6 +8,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.Ports.*;
+import frc.robot.ElysiumLib.LogView;
 import frc.robot.commands.beak.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.intake.*;
@@ -55,6 +57,7 @@ public class RobotContainer {
   private final String m_cubeOut3 = "cube 3 Out";
 
   private String m_selected;
+  private Timer timer = new Timer();
 
   /** All needed buttons on the robot */
   private final Trigger rbButton = m_driverController.rightBumper();
@@ -79,6 +82,7 @@ public class RobotContainer {
   UsbCamera intakeCam;
   UsbCamera headCam;
   VideoSink server;
+  private LogView m_view;
 
   /** Open the lift and track simultaneously */
   private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
@@ -221,5 +225,16 @@ public class RobotContainer {
     headCam.setFPS(30);
     headCam.setPixelFormat(VideoMode.PixelFormat.kY16);
     server = CameraServer.getServer();
+
+    m_view = new LogView(m_drive.getLeftData(), m_drive.getRightData());
+    m_view.start();
+    timer.start();
+  }
+
+  public void robotPeriodic() {
+    if (timer.get() >= 1) {
+      m_view.update();
+      timer.reset();
+    }
   }
 }

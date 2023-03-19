@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -20,8 +19,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Ports;
+import frc.robot.ElysiumLib.MotorData;
 
 /** The drive subsystem for controlling the track */
 public class DriveSubsystem extends SubsystemBase {
@@ -32,6 +31,9 @@ public class DriveSubsystem extends SubsystemBase {
   private MotorControllerGroup m_left = new MotorControllerGroup(m_frontLeftMotor, m_rearLeftMotor);
   private MotorControllerGroup m_right = new MotorControllerGroup(m_frontRightMotor, m_rearRightMotor);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+
+  private MotorData leftData = new MotorData(m_rearLeftMotor.getEncoder(), "Left drive motor");
+  private MotorData rightData = new MotorData(m_frontRightMotor.getEncoder(), "Right drive motor");
 
   private WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(Ports.Drive.PIGEON_IMU);
   //private SlewRateLimiter m_filter = new SlewRateLimiter(0.25);
@@ -58,8 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_right.setInverted(true);
     m_left.setInverted(false);
 
-
-
     m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
     m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 42));
     m_frontLeftMotor.getEncoder().setVelocityConversionFactor((1.0 / 42));
@@ -77,7 +77,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.feed();
     m_gyro.reset();
     m_gyro.setYaw(0);
-    
   }
 
   @Override
@@ -193,7 +192,15 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getYaw();
   }
 
-public WPI_PigeonIMU getGyro() {
-    return m_gyro;
-}
+  public WPI_PigeonIMU getGyro() {
+      return m_gyro;
+  }
+
+  public MotorData getRightData() {
+    return rightData;
+  }
+
+  public MotorData getLeftData() {
+    return leftData;
+  }
 }
