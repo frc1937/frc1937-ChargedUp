@@ -31,10 +31,10 @@ public class AlignToGamePiece extends CommandBase {
     // Manipulate the rotation values a litle bit depending on the side of the tipped cone, so it will rotate more towards the tip
     x = tx.getDouble(0);
     if(coneStatus == 2){
-      x -= 0.4;
+      x -= 0.5;
     }
     else if(coneStatus == 3){
-      x += 0.4;
+      x += 0.5;
     }
 
     if(x != -2 && x != 0){
