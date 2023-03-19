@@ -182,7 +182,7 @@ public final class Constants {
     /**
      * The top position of the Beak
      */
-    public static final double BEAK_TOP_POSITION = -20;
+    public static final double BEAK_TOP_POSITION = -5;
 
     /**
      * The k_p value of the PIDF for the beak
