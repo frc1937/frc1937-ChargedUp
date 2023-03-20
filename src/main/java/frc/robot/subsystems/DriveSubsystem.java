@@ -57,10 +57,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_right.setInverted(true);
     m_left.setInverted(false);
 
-    m_frontLeftMotor.getEncoder().setPositionConversionFactor((1.0 / 84));
-    m_frontRightMotor.getEncoder().setPositionConversionFactor((1.0 / 84));
-    m_frontLeftMotor.getEncoder().setVelocityConversionFactor((1.0 / 84));
-    m_frontRightMotor.getEncoder().setVelocityConversionFactor((1.0 / 84));
+    m_frontLeftMotor.getEncoder().setPositionConversionFactor(1 / 42);
+    m_frontRightMotor.getEncoder().setPositionConversionFactor(1 / 42);
+    m_frontLeftMotor.getEncoder().setVelocityConversionFactor(1 / 42);
+    m_frontRightMotor.getEncoder().setVelocityConversionFactor(1 / 42);
 
     m_frontLeftMotor.getEncoder().setPosition(0);
     m_rearLeftMotor.getEncoder().setPosition(0);
@@ -83,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     m_odometry.update(
       m_gyro.getRotation2d(),
-      getLeftTravelDistanceMetres(),
+      m_frontLeftMotor.getEncoder().getPosition(),
       getRightTravelDistanceMetres()
     );
 
@@ -131,7 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getLeftTravelDistanceMetres() {
-    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71;
+    return m_frontLeftMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 100;
   }
 
   /**
@@ -139,7 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
    * encoder reset
    */
   public double getRightTravelDistanceMetres() {
-    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71;
+    return - m_frontRightMotor.getEncoder().getPosition() * Units.inchesToMeters(6) * Math.PI * 10.71 / 100;
   }
 
   /**
@@ -147,7 +147,7 @@ public class DriveSubsystem extends SubsystemBase {
    * last encoder reset
    */
   public double getLeftTravelVelocityMetresPerSecond() {
-    return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71;
+    return m_frontLeftMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 100;
   }
 
   /**
@@ -155,7 +155,7 @@ public class DriveSubsystem extends SubsystemBase {
    * last encoder reset
    */
   public double getRightTravelVelocityMetresPerSecond() {
-    return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71;
+    return - m_frontRightMotor.getEncoder().getVelocity() / 60 * Units.inchesToMeters(6) * Math.PI * 10.71 / 100;
   }
 
   /**
