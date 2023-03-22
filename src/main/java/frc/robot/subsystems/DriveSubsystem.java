@@ -86,9 +86,6 @@ public class DriveSubsystem extends SubsystemBase {
       m_frontLeftMotor.getEncoder().getPosition(),
       getRightTravelDistanceMetres()
     );
-
-    SmartDashboard.putNumber("Left Position", getLeftTravelDistanceMetres());
-    SmartDashboard.putNumber("Yaw", m_gyro.getYaw());
   }
 
   /**
@@ -196,24 +193,5 @@ public class DriveSubsystem extends SubsystemBase {
 
   public WPI_PigeonIMU getGyro() {
     return m_gyro;
-  }
-
-  public void resetYaw() {
-    m_gyro.setYaw(0);
-  }
-
-  public void setBrake() {
-    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
-    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
-    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
-    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
-  }
-
-  public void setCoast() {
-    m_frontLeftMotor.setIdleMode(IdleMode.kCoast);
-    m_frontRightMotor.setIdleMode(IdleMode.kCoast);
-    m_rearRightMotor.setIdleMode(IdleMode.kCoast);
-    m_rearLeftMotor.setIdleMode(IdleMode.kCoast);
-  }
-
+}
 }
