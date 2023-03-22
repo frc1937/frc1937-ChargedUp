@@ -228,7 +228,7 @@ public class RobotContainer {
         break;
     }
     
-    return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Ofiri", new PathConstraints(2, 1)));
+    return autonomusCommand;
   }
 
   /** Happens once uppon the robot being disabled */

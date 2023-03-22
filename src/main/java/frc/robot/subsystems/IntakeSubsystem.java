@@ -63,7 +63,6 @@ public class IntakeSubsystem extends SubsystemBase {
     
     m_leftMotor.setInverted(true);
     m_rightMotor.setInverted(false);
-    m_angleMotor.configReverseLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
     m_angleMotor.setNeutralMode(NeutralMode.Brake);
     
     m_angleMotor.configPeakOutputForward(0.6);
@@ -87,10 +86,6 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Micro-Switch pressed", getSwitch());
     SmartDashboard.putNumber("Intake velcoity", getVelocity());
     SmartDashboard.putNumber("Intake poiwion", getPosition());
-
-    if (m_angleMotor.isRevLimitSwitchClosed() == 1 && m_microSWitchActive) {
-      m_angleMotor.setSelectedSensorPosition(0);
-    }
   }
 
   /**
@@ -129,7 +124,7 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeed(-1);
         break;
       case ShootMiddle:
-        setIntakeWheelSpeed(-0.65);
+        setIntakeWheelSpeed(-0.5);
         break;
     }
   }
