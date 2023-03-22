@@ -7,25 +7,13 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveM extends CommandBase {
-  private DriveSubsystem m_drive;
-  private double targetPosition;
-  private double speed;
+public class ArcDrive extends CommandBase {
+  /** Creates a new ArcDrive. */
+  DriveSubsystem m_drive;
+  double startPitch;
 
-  
-  public DriveM(DriveSubsystem m_drive, double targetPosition) {
-    this.speed = targetPosition > 0 ? 0.55 : -0.55;
+  public ArcDrive(DriveSubsystem m_drive) {
     this.m_drive = m_drive;
-    this.targetPosition = targetPosition;
-
-    addRequirements(m_drive);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-  /** Creates a new DriveM. */
-  public DriveM(DriveSubsystem m_drive, double targetPosition, double speed) {
-    this.speed = speed;
-    this.m_drive = m_drive;
-    this.targetPosition = targetPosition;
 
     addRequirements(m_drive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,8 +22,8 @@ public class DriveM extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.resetpos();
-    m_drive.arcadeDrive(speed, 0);
+    startPitch = m_drive.getGyro().getYaw();
+    m_drive.arcDrive(0.2,-0.43);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,7 +39,6 @@ public class DriveM extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (targetPosition > 0 && m_drive.getLeftTravelDistanceMetres() >= targetPosition) ||
-           (targetPosition < 0 && m_drive.getLeftTravelDistanceMetres() <= targetPosition);
+    return Math.abs(m_drive.getGyro().getYaw() - startPitch) - 7.5 >= 85;
   }
 }

@@ -23,7 +23,7 @@ public class ChangeAngle extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetYaw();
-    m_drive.arcadeDrive(0, 0.4);
+    m_drive.arcadeDrive(0, 0.45);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

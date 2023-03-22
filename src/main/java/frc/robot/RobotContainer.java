@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -53,6 +54,8 @@ public class RobotContainer {
   private final String m_coneOut = "cone 2 Out";
   private final String m_cubeOut = "cube 2 Out";
   private final String m_cubeOut3 = "cube 3 Out";
+  private final String m_2cubeArc = "2 cubes to the third level";
+  private final String m_cubeLadder = "Put 2 cubes in a line";
 
   private String m_selected;
 
@@ -115,7 +118,8 @@ public class RobotContainer {
     rbButton.whileTrue(new AlignToGamePiece(m_drive));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
-    aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
+    aButton.onTrue(new ArcDrive(m_drive));
+    //aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
     yButton.onTrue(new ShootCubeTop(m_intake,m_lift));
     xButton.whileTrue(new LowerIntake(m_intake));
@@ -193,7 +197,35 @@ public class RobotContainer {
         .andThen(new WaitCommand(1))
         .andThen(new DriveM(m_drive, -3.75));
         break;
+      case m_2cubeArc:
+        autonomusCommand = new ShootCubeTop(m_intake, m_lift)
+        .andThen(new WaitCommand(1))
+        .andThen(new DriveM(m_drive, -2.85))
+        .andThen(new ChangeAngle(m_drive, 180))
+        .andThen(new CubeIntake(m_intake).raceWith(new DriveM(m_drive, 0.75, 0.35).withTimeout(2.5)))
+        .andThen(new CloseIntake(m_intake).withTimeout(0.75))
+        .andThen(new ChangeAngle(m_drive, 180))
+        .andThen(new DriveM(m_drive, 2.6))
+        .andThen(new ArcDrive(m_drive))
+        .andThen(new DriveM(m_drive, 0.6))
+        .andThen(new ChangeAngle(m_drive, 90))
+        .andThen(new ShootCubeTop(m_intake, m_lift));
+      case m_cubeLadder:
+      autonomusCommand = new ShootCubeTop(m_intake, m_lift)
+      .andThen(new WaitCommand(1))
+      .andThen(new InstantCommand(() -> m_drive.setCoast()))
+      .andThen(new DriveM(m_drive, -2.45, -0.75))
+      .andThen(new DriveM(m_drive, -0.45, -0.45))
+      .andThen(new InstantCommand(() -> m_drive.setBrake()))
+      .andThen(new ChangeAngle(m_drive, 180))
+      .andThen(new CubeIntake(m_intake).raceWith(new DriveM(m_drive, 0.8, 0.35).withTimeout(2.5)))
+      .andThen(new CloseIntake(m_intake).withTimeout(0.75))
+      .andThen(new ChangeAngle(m_drive, 174))
+      .andThen(new DriveM(m_drive, 3.65, 0.65))
+      .andThen(new ShootCubeMiddle(m_intake, m_lift));
     }
+
+    
     
     return autonomusCommand;
   }
@@ -213,6 +245,8 @@ public class RobotContainer {
     m_chooser.addOption(m_coneOut, m_coneOut);
     m_chooser.addOption(m_cubeOut, m_cubeOut);
     m_chooser.addOption(m_cubeOut3, m_cubeOut3);
+    m_chooser.addOption(m_2cubeArc, m_2cubeArc);
+    m_chooser.addOption(m_cubeLadder, m_cubeLadder);
 
     SmartDashboard.putData("Autonomus options", m_chooser);
     

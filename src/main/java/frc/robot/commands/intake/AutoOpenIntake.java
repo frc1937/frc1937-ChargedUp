@@ -19,7 +19,6 @@ public class AutoOpenIntake extends CommandBase {
   NetworkTableEntry tgamePiece = table.getEntry("game_piece");
   NetworkTableEntry tstatus = table.getEntry("cone_state");
   NetworkTableEntry tarea = table.getEntry("target_area");
-  NetworkTableEntry piActive = table.getEntry("pi_active");
   
   double gamePiece = -1;
   double coneStatus;
@@ -40,9 +39,6 @@ public class AutoOpenIntake extends CommandBase {
 
   @Override
   public void execute() {
-    if (piActive.getBoolean(false))
-      return;
-    
     if(tgamePiece.getDouble(0) != -1){
       gamePiece = tgamePiece.getDouble(0);
     }
