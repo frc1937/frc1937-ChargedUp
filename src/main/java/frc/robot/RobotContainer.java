@@ -212,17 +212,17 @@ public class RobotContainer {
         .andThen(new ShootCubeTop(m_intake, m_lift));
       case m_cubeLadder:
       autonomusCommand = new ShootCubeTop(m_intake, m_lift)
-      .andThen(new WaitCommand(1))
-      .andThen(new InstantCommand(() -> m_drive.setCoast()))
-      .andThen(new DriveM(m_drive, -2.45, -0.75))
-      .andThen(new DriveM(m_drive, -0.45, -0.45))
-      .andThen(new InstantCommand(() -> m_drive.setBrake()))
-      .andThen(new ChangeAngle(m_drive, 180))
-      .andThen(new CubeIntake(m_intake).raceWith(new DriveM(m_drive, 0.8, 0.35).withTimeout(2.5)))
-      .andThen(new CloseIntake(m_intake).withTimeout(0.75))
-      .andThen(new ChangeAngle(m_drive, 174))
-      .andThen(new DriveM(m_drive, 3.65, 0.65))
-      .andThen(new ShootCubeMiddle(m_intake, m_lift));
+        .andThen(new WaitCommand(1))
+        .andThen(new InstantCommand(() -> m_drive.setCoast()))
+        .andThen(new DriveM(m_drive, -2.45, -0.75))
+        .andThen(new DriveM(m_drive, -0.45, -0.45))
+        .andThen(new InstantCommand(() -> m_drive.setBrake()))
+        .andThen(new ChangeAngle(m_drive, 180))
+        .andThen(new CubeIntake(m_intake).raceWith(new DriveM(m_drive, 0.8, 0.35).withTimeout(2.5)))
+        .andThen(new CloseIntake(m_intake).withTimeout(0.75))
+        .andThen(new ChangeAngle(m_drive, 174))
+        .andThen(new DriveM(m_drive, 3.65, 0.65))
+        .andThen(new ShootCubeMiddle(m_intake, m_lift));
     }
 
     

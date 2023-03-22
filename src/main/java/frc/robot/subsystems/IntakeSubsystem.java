@@ -129,7 +129,7 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeed(-1);
         break;
       case ShootMiddle:
-        setIntakeWheelSpeed(-0.65);
+        setIntakeWheelSpeed(-0.5);
         break;
     }
   }
