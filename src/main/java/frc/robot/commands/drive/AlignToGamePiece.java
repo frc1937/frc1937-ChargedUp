@@ -38,10 +38,10 @@ public class AlignToGamePiece extends CommandBase {
     }
 
     if(x != -2 && x != 0){
-      m_drive.arcadeDrive(0.4, x/2);
+      m_drive.arcadeDrive(0.6, x/2);
     }
     else{
-      m_drive.arcadeDrive(0.3, 0);
+      m_drive.arcadeDrive(0.4, 0);
     }
 
   }

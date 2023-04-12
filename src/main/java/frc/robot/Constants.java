@@ -171,7 +171,7 @@ public final class Constants {
     /**
      * The catch position of the beak for the cube
      */
-    public static final double BEAK_CUBE_HOLD_POSITION = -110;
+    public static final double BEAK_CUBE_HOLD_POSITION = -100;
 
     /**
      * The catch position of the beak for the cone

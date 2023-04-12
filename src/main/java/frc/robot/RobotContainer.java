@@ -65,6 +65,7 @@ public class RobotContainer {
   private final String m_defaultRoute = "Exit line";
   private final String m_itemComplexRoute = "Stabilize ramp and put in grid and exit Line";
   private final String m_cube3OutStable = "Put cube in 3 level and stabilize ramp";
+  private final String m_cube2OutStable = "Put cube in 2 level and stabilize ramp";
   private final String m_coneOut = "cone 2 Out";
   private final String m_cubeOut = "cube 2 Out";
   private final String m_cubeOut3 = "cube 3 Out";
@@ -102,7 +103,7 @@ public class RobotContainer {
     new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
   
 
-  private final Command closeCubeCommand = new CloseCube(m_beak).alongWith(new RaiseCube(m_intake).withTimeout(0.5));
+  private final Command closeCubeCommand = new RaiseCube(m_intake).raceWith(new CloseCube(m_beak));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
@@ -132,8 +133,7 @@ public class RobotContainer {
     rbButton.whileTrue(new AlignToGamePiece(m_drive));
     ltButton.onTrue(new OpenBeak(m_beak));
     lbButton.onTrue(new CloseCube(m_beak));
-    aButton.onTrue(new ArcDrive(m_drive));
-    //aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift));
+    aButton.onTrue(new ShootCubeMiddle(m_intake,m_lift).andThen(new InstantCommand(() -> m_intake.stopAngle())));
     bButton.whileTrue(new SucCone(m_intake, m_lift));
     yButton.onTrue(new ShootCubeTop(m_intake,m_lift));
     xButton.whileTrue(new LowerIntake(m_intake));
@@ -143,7 +143,7 @@ public class RobotContainer {
     J2Button.onTrue(CloseLiftTrack);
     j3Button.whileTrue(new ConeLeft(m_intake));
     j4Button.whileTrue(new ConeRight(m_intake));
-    j7Button.onTrue(closeCubeCommand);
+    j7Button.onTrue(new CloseCube(m_beak));
     j8Button.onTrue(new CloseCone(m_beak));
     j9Button.onTrue(new OpenBeak(m_beak));
     POVdown.whileTrue(new SlowIntake(m_intake));
@@ -158,31 +158,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    PathPlannerServer.startServer(5811);
-
     m_selected = m_chooser.getSelected();
     Command autonomusCommand = null;
-
-    RamseteController m_controller = new RamseteController();
-
-    /** Define all autonomus drive paths */
-    List<PathPlannerTrajectory> m_doubleCubePath = PathPlanner.loadPathGroup(m_coneOut, new PathConstraints(0, 0));
-    
-    HashMap<String, Command> eventMap = new HashMap<>();
-
-    RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(
-      m_drive::getPoseMetres, 
-      m_drive::resetPoseMetres, 
-      m_controller, 
-      m_drive.kinematics, 
-      new SimpleMotorFeedforward(0, 0, 0), 
-      m_drive::getSpeeds, 
-      new PIDConstants(2, 0, 0), 
-      m_drive::setVoltage, 
-      eventMap, 
-      false, 
-      m_drive);
 
     /** The autonomus route according to the selected on in the smartdashboard */
     switch (m_selected) {
@@ -208,6 +185,12 @@ public class RobotContainer {
         .andThen(new DriveM(m_drive, -1.35))
         .andThen(new RampBalance(m_drive));
         break;
+      case m_cube2OutStable:
+        autonomusCommand = new ShootCubeMiddle(m_intake, m_lift)
+        .andThen(new WaitCommand(1))
+        .andThen(new DriveM(m_drive, -1.35))
+        .andThen(new RampBalance(m_drive));
+        break;
       case m_coneOut:
         autonomusCommand = new CloseCone(m_beak)
         .andThen(new WaitCommand(1.5))
@@ -220,7 +203,6 @@ public class RobotContainer {
         .withTimeout(7.5)
         .andThen(new DriveM(m_drive, -3));
         break;
-
       case m_cubeOut:
         autonomusCommand = new ShootCubeMiddle(m_intake, m_lift)
         .andThen(new WaitCommand(0.8))
@@ -248,15 +230,16 @@ public class RobotContainer {
       autonomusCommand = new ShootCubeTop(m_intake, m_lift)
         .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(() -> m_drive.setCoast()))
-        .andThen(new DriveM(m_drive, -2.45, -0.75))
-        .andThen(new DriveM(m_drive, -0.45, -0.45))
+        .andThen(new DriveM(m_drive, -1.45, -0.75))
+        .andThen(new DriveM(m_drive, -1.45, -0.45))
         .andThen(new InstantCommand(() -> m_drive.setBrake()))
         .andThen(new ChangeAngle(m_drive, 180))
         .andThen(new CubeIntake(m_intake).raceWith(new DriveM(m_drive, 0.8, 0.35).withTimeout(2.5)))
-        .andThen(new CloseIntake(m_intake).withTimeout(0.75))
-        .andThen(new ChangeAngle(m_drive, 174))
-        .andThen(new DriveM(m_drive, 3.65, 0.65))
-        .andThen(new ShootCubeMiddle(m_intake, m_lift));
+        .andThen(new CloseIntake(m_intake).withTimeout(0.75));
+        break;
+        //.andThen(new ChangeAngle(m_drive, 175))
+        //.andThen(new DriveM(m_drive, 3.65, 0.65))
+        //.andThen(new ShootCubeMiddle(m_intake, m_lift));
     }
 
     
@@ -271,46 +254,24 @@ public class RobotContainer {
     m_lift.stopMotor();
   }
 
-  /**
-   * The path that needs to be taken to get the item
-   * @param m_builder The {@link com.pathplanner.lib.auto.RamseteAutoBuilder AutoBuilder} needed 
-   * to take a path and make it into a command
-   * @param m_map The {@link java.util.HashMap HashMap} that will contain the path and the 
-   * commands to run in said path
-   * @return The path from the grid to the item including the item capturing
-   */
-  private Command getPathToItem(RamseteAutoBuilder m_builder, HashMap m_map) {
-    Command firstCommand = new ShootCubeTop(m_intake, m_lift);
-    List<PathPlannerTrajectory> pathToItem = PathPlanner.loadPathGroup(
-      "PathToItem", 
-      new PathConstraints(3.5, 2), 
-      new PathConstraints(3.5, 1.5),
-      new PathConstraints(2, 1));
-    m_map.put("OpenIntake", new AutoOpenIntake(m_intake).withTimeout(1.5));
-    m_map.put("CloseIntake", new CloseIntake(m_intake));
-    
-    Command secondCommand = m_builder.fullAuto(pathToItem);
-
-    return firstCommand.andThen(secondCommand);
-  }
-
   /** Happens once upon the codes being deployed */
   public void robotInit() {
-    m_chooser.setDefaultOption(m_defaultRoute, m_defaultRoute);
+    m_chooser.setDefaultOption(m_cube3OutStable, m_cube3OutStable);
     m_chooser.addOption(m_itemComplexRoute, m_itemComplexRoute);
-    m_chooser.addOption(m_cube3OutStable, m_cube3OutStable);
+    m_chooser.addOption(m_defaultRoute, m_defaultRoute);
     m_chooser.addOption(m_coneOut, m_coneOut);
     m_chooser.addOption(m_cubeOut, m_cubeOut);
     m_chooser.addOption(m_cubeOut3, m_cubeOut3);
     m_chooser.addOption(m_2cubeArc, m_2cubeArc);
     m_chooser.addOption(m_cubeLadder, m_cubeLadder);
+    m_chooser.addOption(m_cube2OutStable, m_cube2OutStable);
 
     SmartDashboard.putData("Autonomus options", m_chooser);
     
     headCam = CameraServer.startAutomaticCapture(0);
     headCam.setResolution(320, 240);
     headCam.setFPS(30);
-    headCam.setPixelFormat(VideoMode.PixelFormat.kY16);
+    //headCam.setPixelFormat(VideoMode.PixelFormat.kY16);
     server = CameraServer.getServer();
   }
 }

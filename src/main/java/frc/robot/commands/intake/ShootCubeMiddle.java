@@ -5,6 +5,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
@@ -33,10 +34,9 @@ public class ShootCubeMiddle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intake.getPosition() > IntakeConstants.SHOOT_POSITION){
+    if(m_intake.getPosition() > 650){
       m_intake.setWheelState(intakeWheelState.ShootMiddle);
-      m_intake.setAngleState(IntakeAngleState.Up);
-      //SmartDashboard.putNumber("Pos Intake", m_intake.getPosition());
+      m_intake.setAngleState(IntakeAngleState.Upwards);
     }
   }
 
@@ -50,5 +50,6 @@ public class ShootCubeMiddle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intake.getAngleState() == IntakeAngleState.Up && m_intake.getPosition() < 400;  }
+    return m_intake.getAngleState() == IntakeAngleState.Upwards && m_intake.getPosition() < 300;
+  }
 }

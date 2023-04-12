@@ -194,4 +194,17 @@ public class DriveSubsystem extends SubsystemBase {
   public WPI_PigeonIMU getGyro() {
     return m_gyro;
 }
+  public void setBrake() {
+    m_frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    m_frontRightMotor.setIdleMode(IdleMode.kBrake);
+    m_rearRightMotor.setIdleMode(IdleMode.kBrake);
+    m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void setCoast() {
+    m_frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    m_frontRightMotor.setIdleMode(IdleMode.kCoast);
+    m_rearRightMotor.setIdleMode(IdleMode.kCoast);
+    m_rearLeftMotor.setIdleMode(IdleMode.kCoast);
+  }
 }

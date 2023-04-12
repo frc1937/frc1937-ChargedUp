@@ -46,7 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /** All the intake angle's states */
   public enum IntakeAngleState {
-    Up("Up"), Down("Down"), Middle("Middle");
+    Up("Up"), Down("Down"), Middle("Middle"),Upwards("upwards");
     String name;
     private IntakeAngleState(String name) {
       this.name = name;
@@ -115,7 +115,7 @@ public class IntakeSubsystem extends SubsystemBase {
         setIntakeWheelSpeedOposing(0.2);
         break;
       case Slow:
-        setIntakeWheelSpeed(0.15);
+        setIntakeWheelSpeed(0.1);
         break;  
       case Outly:
         setIntakeWheelSpeed(-0.1);
@@ -148,6 +148,8 @@ public class IntakeSubsystem extends SubsystemBase {
         m_angleMotor.selectProfileSlot(2, 0);
         m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
+      case Upwards:
+        m_angleMotor.set(ControlMode.PercentOutput,-0.15);
     }
   }
 
