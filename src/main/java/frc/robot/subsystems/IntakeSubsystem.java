@@ -129,7 +129,10 @@ public class IntakeSubsystem extends SubsystemBase {
 =======
       case Spit:
         setIntakeWheelSpeed(-0.6);
+<<<<<<< HEAD
 >>>>>>> 0c90c25 (testy)
+=======
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
         break;
     }
   }

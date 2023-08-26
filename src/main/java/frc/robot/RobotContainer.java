@@ -31,10 +31,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import frc.robot.subsystems.BeakSubsystem;
 =======
 >>>>>>> 3519484 (only driving and unput systems)
+=======
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.Ports.*;
 import frc.robot.commands.drive.*;
@@ -51,10 +54,13 @@ public class RobotContainer {
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
 <<<<<<< HEAD
+<<<<<<< HEAD
   private LiftSubsystem m_lift = new LiftSubsystem(m_intake);
   private TrackSubsystem m_track = new TrackSubsystem();
 =======
 >>>>>>> 3519484 (only driving and unput systems)
+=======
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
 
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
@@ -81,6 +87,7 @@ public class RobotContainer {
   private final Trigger lbButton = m_driverController.leftBumper();
   private final Trigger aButton = m_driverController.a();
 <<<<<<< HEAD
+<<<<<<< HEAD
   private final Trigger bButton = m_driverController.b();
   private final Trigger yButton = m_driverController.y();
   private final Trigger xButton = m_driverController.x();
@@ -89,6 +96,11 @@ public class RobotContainer {
   private final Trigger xButton = m_driverController.x();
 
 >>>>>>> 0c90c25 (testy)
+=======
+  private final Trigger yButton = m_driverController.b();
+  private final Trigger xButton = m_driverController.x();
+
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -108,6 +120,7 @@ public class RobotContainer {
   
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   private final Command closeCubeCommand = new RaiseCube(m_intake).raceWith(new CloseCube(m_beak));
 
   /** Close the lift and the track simultaneously */
@@ -116,6 +129,8 @@ public class RobotContainer {
 
 =======
 >>>>>>> 3519484 (only driving and unput systems)
+=======
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
@@ -133,6 +148,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     //rtButton.onTrue(new ToggleOpenIntake(m_intake)); //Button for without vision
     //rbButton.onTrue(new CloseIntake(m_intake)); //Button for without vision
@@ -168,6 +184,18 @@ public class RobotContainer {
 
     
 >>>>>>> 3519484 (only driving and unput systems)
+=======
+    rtButton.onTrue(new ToggleOpenIntake(m_intake));
+    rbButton.onTrue(new CloseIntake(m_intake));
+    aButton.whileTrue(new S]\
+    
+    hootCube(m_intake));
+    xButton.onTrue(new CloseItakePistol(m_intake));
+    yButton.whileTrue(new EjectObject(m_intake));
+
+
+    
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
   }
 
 
@@ -183,6 +211,7 @@ public class RobotContainer {
     Command autonomusCommand = null;
 
     /** The autonomus route according to the selected on in the smartdashboard */
+<<<<<<< HEAD
 <<<<<<< HEAD
     switch (m_selected) {
       case m_defaultRoute :
@@ -268,6 +297,9 @@ public class RobotContainer {
 =======
    
 >>>>>>> 3519484 (only driving and unput systems)
+=======
+   
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e
     
     return autonomusCommand;
   }

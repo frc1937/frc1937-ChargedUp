@@ -22,18 +22,31 @@ public class LowerIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+<<<<<<< HEAD:src/main/java/frc/robot/commands/intake/LowerIntake.java
     m_intake.setAngleState(IntakeAngleState.Down);
     m_intake.setWheelState(intakeWheelState.Stop);
     m_intake.openIntake();
+=======
+    m_intake.setAngleState(IntakeAngleState.Up);
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e:src/main/java/frc/robot/commands/intake/ShootCube.java
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
+<<<<<<< HEAD:src/main/java/frc/robot/commands/intake/LowerIntake.java
   public void end(boolean interrupted) {}
+=======
+  public void end(boolean interrupted) {
+    m_intake.setWheelState(intakeWheelState.Spit);
+    
+  }
+>>>>>>> 0c90c2504786bed2c4f34a35ece2af59e0c23c0e:src/main/java/frc/robot/commands/intake/ShootCube.java
 
   // Returns true when the command should end.
   @Override
