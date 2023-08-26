@@ -120,11 +120,16 @@ public class IntakeSubsystem extends SubsystemBase {
       case Outly:
         setIntakeWheelSpeed(-0.1);
         break;
+<<<<<<< HEAD
       case ShootTop:
         setIntakeWheelSpeed(-1);
         break;
       case ShootMiddle:
         setIntakeWheelSpeed(-0.5);
+=======
+      case Spit:
+        setIntakeWheelSpeed(-0.6);
+>>>>>>> 0c90c25 (testy)
         break;
     }
   }
@@ -144,7 +149,7 @@ public class IntakeSubsystem extends SubsystemBase {
         m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
       case Middle:
-        targetPosition = IntakeConstants.MAXIMUM_POSITION;
+        targetPosition = IntakeConstants.MIDDLE_POSITION;
         m_angleMotor.selectProfileSlot(2, 0);
         m_angleMotor.set(ControlMode.Position, targetPosition);
         break;
