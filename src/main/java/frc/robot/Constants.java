@@ -114,7 +114,7 @@ public final class Constants {
     /**
      * The controller sensetivity for the driver controller for both x and y axis
      */
-    public static final double CONTROLLER_SENSETIVITY = 0.95;
+    public static final double CONTROLLER_SENSETIVITY = 0.7;
     public static final double MAX_RAMP_ANGLE = 15;
     public static final double TOLERANCE_DEGREES = 7;
   }
