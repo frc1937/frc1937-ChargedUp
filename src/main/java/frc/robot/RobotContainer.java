@@ -24,17 +24,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.BeakSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.Ports.*;
-import frc.robot.commands.beak.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.intake.*;
-import frc.robot.commands.lift.*;
-import frc.robot.commands.track.*;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
-import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,11 +37,8 @@ import frc.robot.subsystems.TrackSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private BeakSubsystem m_beak = new BeakSubsystem();
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
-  private LiftSubsystem m_lift = new LiftSubsystem();
-  private TrackSubsystem m_track = new TrackSubsystem();
 
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
@@ -84,15 +75,7 @@ public class RobotContainer {
   private final Trigger POVdown = m_opController.povDown();
 
   /** Open the lift and track simultaneously */
-  private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
-    new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
   
-
-  private final Command closeCubeCommand = new CloseCube(m_beak).alongWith(new RaiseCube(m_intake).withTimeout(0.5));
-
-  /** Close the lift and the track simultaneously */
-  private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
-    new CloseTrack(m_track).alongWith(new OpenIntakePistons(m_intake)));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -113,19 +96,9 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-    ltButton.onTrue(new OpenBeak(m_beak));
     aButton.whileTrue(new ShootCube(m_intake));
-    bButton.whileTrue(new SucCone(m_intake, m_lift));
 
-    J1Button.onTrue(OpenLiftTrack);
-    J2Button.onTrue(CloseLiftTrack);
-    j3Button.whileTrue(new ConeRight(m_intake));
-    j4Button.whileTrue(new ConeLeft(m_intake));
-    j7Button.onTrue(closeCubeCommand);
-    j8Button.onTrue(new CloseCone(m_beak));
-    j9Button.onTrue(new OpenBeak(m_beak));
-    j10Button.onTrue(new RampBalance(m_drive));
-    POVdown.whileTrue(new CubeIntake(m_intake));
+    
   }
 
   public void teleopInit() {}
@@ -158,24 +131,7 @@ public class RobotContainer {
     );
 
     /** The autonomus route according to the selected on in the smartdashboard */
-    switch (m_selected) {
-      case m_defaultRoute :
-        autonomusCommand = new ChangeAngle(m_drive, 180).andThen(defaultRoute(eventMap, autoBuilder));
-        break;
-      case m_itemComplexRoute:
-        autonomusCommand = OpenLiftTrack.andThen(
-        new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
-          new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder)).andThen(
-            new ChangeAngle(m_drive, 180).andThen(commToRamp(eventMap, autoBuilder))); //TODO: add ramp stabilazation
-        autonomusCommand = addBeak(autonomusCommand);
-        break;
-      case m_itemDefaultRoute:
-        autonomusCommand = OpenLiftTrack.andThen(
-          new WaitCommand(0.5)).andThen(new OpenBeak(m_beak)).andThen(CloseLiftTrack).andThen(
-            new ChangeAngle(m_drive, 180)).andThen(defaultRoute(eventMap, autoBuilder));
-        autonomusCommand = addBeak(autonomusCommand);
-        break;
-    }
+   
     
     return autonomusCommand;
   }
@@ -184,7 +140,6 @@ public class RobotContainer {
   public void disabledInit() {
     m_intake.stopIntakeWheel();
     m_intake.stopAngle();
-    m_lift.stopMotor();
   }
 
   /**
@@ -211,9 +166,7 @@ public class RobotContainer {
     return autoBuilder.fullAuto(pathGroup);
   }
 
-  public Command addBeak(Command m_nextCommand) {
-    return (m_selectedItem == "Cube" ? new CloseCube(m_beak) : new CloseCone(m_beak)).andThen(m_nextCommand);
-  }
+ 
 
   /** Happens once upon the codes being deployed */
   public void robotInit() {
