@@ -6,36 +6,32 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.IntakeSubsystem.IntakeAngleState;
 import frc.robot.subsystems.IntakeSubsystem.intakeWheelState;
 
-public class ShootCube extends CommandBase {
-  IntakeSubsystem m_intake;
-  /** Creates a new ShootCube. */
-  public ShootCube(IntakeSubsystem m_intake) {
-    this.m_intake = m_intake;
+public class CloseItakePistol extends CommandBase {
+  /** Creates a new CloseItakePistol. */
+  private IntakeSubsystem m_intake;
 
-    addRequirements(m_intake);
+  public CloseItakePistol(IntakeSubsystem m_intake) {
+    this.m_intake = m_intake;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setAngleState(IntakeAngleState.Up);
+    m_intake.closeIntake();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.setWheelState(intakeWheelState.Spit);
-    
+    m_intake.setWheelState(intakeWheelState.Stop);
   }
 
   // Returns true when the command should end.

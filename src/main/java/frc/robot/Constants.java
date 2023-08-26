@@ -51,7 +51,7 @@ public final class Constants {
     /**
      * The speed the intake wheels move at, a value between 1 and -1 
      */
-    public static final double INTAKE_WHEEL_SPEED = 0.4;
+    public static final double INTAKE_WHEEL_SPEED = 0.2;
 
     /**
      * The intake angle's minimum position

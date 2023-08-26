@@ -61,7 +61,9 @@ public class RobotContainer {
   private final Trigger rtButton = m_driverController.rightTrigger();
   private final Trigger ltButton = m_driverController.leftTrigger();
   private final Trigger aButton = m_driverController.a();
-  private final Trigger bButton = m_driverController.b();
+  private final Trigger yButton = m_driverController.b();
+  private final Trigger xButton = m_driverController.x();
+
 
   private final Trigger J1Button =  m_opController.button(1);
   private final Trigger J2Button = m_opController.button(2);
@@ -96,10 +98,16 @@ public class RobotContainer {
 
     rtButton.onTrue(new ToggleOpenIntake(m_intake));
     rbButton.onTrue(new CloseIntake(m_intake));
-    aButton.whileTrue(new ShootCube(m_intake));
+    aButton.whileTrue(new S]\
+    
+    hootCube(m_intake));
+    xButton.onTrue(new CloseItakePistol(m_intake));
+    yButton.whileTrue(new EjectObject(m_intake));
+
 
     
   }
+
 
   public void teleopInit() {}
 
