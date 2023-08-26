@@ -30,18 +30,16 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+<<<<<<< HEAD
 
 import frc.robot.subsystems.BeakSubsystem;
+=======
+>>>>>>> 3519484 (only driving and unput systems)
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.Ports.*;
-import frc.robot.commands.beak.*;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.intake.*;
-import frc.robot.commands.lift.*;
-import frc.robot.commands.track.*;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
-import frc.robot.subsystems.TrackSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -50,11 +48,13 @@ import frc.robot.subsystems.TrackSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private BeakSubsystem m_beak = new BeakSubsystem();
   private IntakeSubsystem m_intake = new IntakeSubsystem();
   private DriveSubsystem m_drive = new DriveSubsystem();
+<<<<<<< HEAD
   private LiftSubsystem m_lift = new LiftSubsystem(m_intake);
   private TrackSubsystem m_track = new TrackSubsystem();
+=======
+>>>>>>> 3519484 (only driving and unput systems)
 
   private final CommandXboxController m_driverController =
       new CommandXboxController(Controllers.DRIVER_CONTROLLER);
@@ -99,16 +99,17 @@ public class RobotContainer {
   VideoSink server;
 
   /** Open the lift and track simultaneously */
-  private final Command OpenLiftTrack = new OpenIntakePistons(m_intake).alongWith(
-    new OpenLift(m_lift)).alongWith(new OpenTrack(m_track));
   
 
+<<<<<<< HEAD
   private final Command closeCubeCommand = new RaiseCube(m_intake).raceWith(new CloseCube(m_beak));
 
   /** Close the lift and the track simultaneously */
   private final Command CloseLiftTrack = new CloseLift(m_lift).alongWith(
     new CloseTrack(m_track).alongWith(new OpenIntakePistons(m_intake)));
 
+=======
+>>>>>>> 3519484 (only driving and unput systems)
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureBindings();
@@ -126,6 +127,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_drive.setDefaultCommand(new ArcadeDrive(m_driverController, m_drive));
 
+<<<<<<< HEAD
     //rtButton.onTrue(new ToggleOpenIntake(m_intake)); //Button for without vision
     //rbButton.onTrue(new CloseIntake(m_intake)); //Button for without vision
     rtButton.whileTrue(new AutoOpenIntake(m_intake));
@@ -148,6 +150,13 @@ public class RobotContainer {
     j9Button.onTrue(new OpenBeak(m_beak));
     POVdown.whileTrue(new SlowIntake(m_intake));
     j11Button.onTrue(new ToggleSwitchActive(m_intake));
+=======
+    rtButton.onTrue(new ToggleOpenIntake(m_intake));
+    rbButton.onTrue(new CloseIntake(m_intake));
+    aButton.whileTrue(new ShootCube(m_intake));
+
+    
+>>>>>>> 3519484 (only driving and unput systems)
   }
 
   public void teleopInit() {}
@@ -162,6 +171,7 @@ public class RobotContainer {
     Command autonomusCommand = null;
 
     /** The autonomus route according to the selected on in the smartdashboard */
+<<<<<<< HEAD
     switch (m_selected) {
       case m_defaultRoute :
         autonomusCommand = new DriveM(m_drive, 4);
@@ -243,6 +253,9 @@ public class RobotContainer {
     }
 
     
+=======
+   
+>>>>>>> 3519484 (only driving and unput systems)
     
     return autonomusCommand;
   }
@@ -251,9 +264,37 @@ public class RobotContainer {
   public void disabledInit() {
     m_intake.stopIntakeWheel();
     m_intake.stopAngle();
-    m_lift.stopMotor();
   }
 
+<<<<<<< HEAD
+=======
+  /**
+   * Make command to move autonomuslly from the community to the ramp.
+   * @param eventMap      the event map that includes all events.
+   * @param autoBuilder   the auto builder to make the command accorrding to the path.
+   * @return              the command that needs to be run to complete the stated path.
+   */
+  public Command commToRamp(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
+      "CommToRamp", new PathConstraints(3.25, 1.75));
+    return autoBuilder.fullAuto(pathGroup);
+  }
+
+  /**
+   * Make command to move autonomuslly from the grid to the Community.
+   * @param eventMap      the event map that includes all events.
+   * @param autoBuilder   the auto builder to make the command accorrding to the path.
+   * @return              the command that needs to be run to complete the stated path.
+   */
+  public Command defaultRoute(HashMap<String,Command> eventMap, RamseteAutoBuilder autoBuilder) {
+    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(
+      "DefaultRoute", new PathConstraints(3.25, 1.75));
+    return autoBuilder.fullAuto(pathGroup);
+  }
+
+ 
+
+>>>>>>> 3519484 (only driving and unput systems)
   /** Happens once upon the codes being deployed */
   public void robotInit() {
     m_chooser.setDefaultOption(m_cube3OutStable, m_cube3OutStable);
